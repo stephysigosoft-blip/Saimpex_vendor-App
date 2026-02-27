@@ -6,7 +6,7 @@ import 'package:saimpex_vendor/view/Profile/widgets/editable_name_field.dart';
 import 'package:saimpex_vendor/view/Profile/widgets/editable_phone_field.dart';
 // import 'package:saimpex_vendor/view/Profile/widgets/edit_profile_picture_widget.dart';
 import 'package:saimpex_vendor/view/Profile/widgets/otp_verfication_alert_dialog.dart';
-import 'package:saimpex_vendor/view/Profile/widgets/select_image_alert_dialog.dart';
+// // import 'package:saimpex_vendor/view/Profile/widgets/select_image_alert_dialog.dart';
 import 'package:saimpex_vendor/view/Profile/widgets/update_profile_button.dart';
 import 'package:saimpex_vendor/view/login/widgets/country_code_mobile_number.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
@@ -50,7 +50,7 @@ class _EditProfileState extends State<EditProfile> {
                 child: Column(
                   children: [
                     SizedBox(height: media.size.height * 0.04),
-/*
+                    /*
                     EditProfilePictureWidget(
                       profilePicture: controller.profilePicture,
                       imageSource: controller.imageSource,

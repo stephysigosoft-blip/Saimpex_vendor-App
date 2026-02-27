@@ -67,42 +67,17 @@ class HomeController extends GetxController {
     // Load corresponding API based on selected tab
     try {
       switch (index) {
-        case 0: // Food tab
-          // Reload food/restaurant data
+        case 0: // Home tab
           await getHome();
           break;
-        case 1: // Grocery tab
-          // Get or create GroceryController instance and load grocery data
-          // GroceryController groceryController;
-          // if (Get.isRegistered<GroceryController>()) {
-          //   groceryController = Get.find<GroceryController>();
-          // } else {
-          //   groceryController = Get.put(GroceryController());
-          // }
-          // await groceryController.getGroceryHome();
+        case 1: // My Restaurant tab
+          // Reload restaurant data if needed
           break;
-        case 2: // Cart tab
-          // Get or create CartController instance and load cart data
-          // CartController cartController;
-          // if (Get.isRegistered<CartController>()) {
-          //   cartController = Get.find<CartController>();
-          // } else {
-          //   cartController = Get.put(CartController());
-          // }
-          // await cartController.getCartData(context);
+        case 2: // Chat tab
+          // Reload chat data if needed
           break;
-        case 3: // Chat tab
-          // Get or create Chatcontroller instance and load conversations
-          // Chatcontroller chatController;
-          // if (Get.isRegistered<Chatcontroller>()) {
-          //   chatController = Get.find<Chatcontroller>();
-          // } else {
-          //   chatController = Get.put(Chatcontroller());
-          // }
-          // await chatController.initAsync();
-          // if (context.mounted) {
-          //   await chatController.getConversations(context);
-          // }
+        case 3: // Settings tab
+          // Reload settings/profile data if needed
           break;
       }
     } catch (e) {
