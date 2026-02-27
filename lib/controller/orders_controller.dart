@@ -2,16 +2,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
-import 'package:saimpex_vendor/model/grocery_orders_model.dart';
-import 'package:saimpex_vendor/model/order_details_model.dart';
+// import 'package:saimpex_vendor/model/grocery_orders_model.dart';
+// import 'package:saimpex_vendor/model/order_details_model.dart';
 import 'package:saimpex_vendor/model/restaurant_orders_model.dart';
 import 'package:saimpex_vendor/utils/Utils.dart';
 
 class OrdersController extends GetxController {
   final FlutterLocalization localization = FlutterLocalization.instance;
   List<RestaurantOrderItem>? restaurantOrders;
-  OrderDetailsModel? orderDetails;
-  List<GroceryOrderItem>? groceryOrders;
+  dynamic orderDetails;
+  List<dynamic>? groceryOrders;
   bool isLoading = false;
   bool _hasNextPage = true;
   bool isFirstLoadRunning = false;

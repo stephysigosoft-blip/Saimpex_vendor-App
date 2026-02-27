@@ -6,13 +6,13 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/utils/utils.dart';
-import 'package:saimpex_vendor/utils/widgets/delete_cart_dialog.dart';
+// import 'package:saimpex_vendor/utils/widgets/delete_cart_dialog.dart';
 import 'package:saimpex_vendor/view/login/login.dart';
 import 'package:saimpex_vendor/view/login/widgets/login_to_continue_alert_dialogue.dart';
 import '../../controller/restaurant_details_controller.dart';
 import '../../generated/l10n.dart';
 import '../../resources/colors.dart';
-import '../../utils/widgets/food_product_item.dart';
+// import '../../utils/widgets/food_product_item.dart';
 import '../../utils/widgets/no_data_widget.dart';
 import '../../utils/widgets/restaurant_details_widget.dart';
 import '../../utils/widgets/restaurant_items_filter_bottom_sheet.dart';
@@ -551,13 +551,14 @@ Widget _buildContent(
                                           itemBuilder: (context, index) {
                                             final item = controller
                                                 .restaurantItemsList[index];
-                                            return FoodProductItem(
-                                              item: item,
-                                              cartItems: controller
-                                                  .data!
-                                                  .data!
-                                                  .cartItems,
-                                            );
+                                            // return FoodProductItem(
+                                            //   item: item,
+                                            //   cartItems: controller
+                                            //       .data!
+                                            //       .data!
+                                            //       .cartItems,
+                                            // );
+                                            return const SizedBox();
                                           },
                                         ),
                                       ),
@@ -670,13 +671,14 @@ Widget _buildCartBottomBar(
           child: Row(
             children: [
               InkWell(
-                onTap: () {
-                  // Navigate to cart or checkout
-                  Get.to(FoodCart(route: "restaurant"))!.then((value) {
-                    // Refresh cart count
-                    controller.getCartCount(context);
-                  });
-                },
+                // onTap: () {
+                //   // Navigate to cart or checkout
+                //   // Get.to(FoodCart(route: "restaurant"))!.then((value) {
+                //   //   // Refresh cart count
+                //   //   controller.getCartCount(context);
+                //   // }
+                //   // );
+                // },
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 5,
@@ -715,7 +717,8 @@ Widget _buildCartBottomBar(
                   showDialog(
                     context: context,
                     barrierDismissible: false,
-                    builder: (_) => DeleteCartDialog(route: "restaurant"),
+                    // builder: (_) => DeleteCartDialog(route: "restaurant"),
+                    builder: (_) => const SizedBox.shrink(),
                   );
                 },
                 child: Image.asset(

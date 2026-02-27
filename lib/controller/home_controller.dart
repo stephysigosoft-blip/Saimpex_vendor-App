@@ -4,9 +4,9 @@ import 'package:get/get.dart';
 
 import '../Utils/utils.dart';
 import '../model/home_model.dart';
-import 'grocery_controller.dart';
-import 'cart_controller.dart';
-import 'chat_controller.dart';
+// import 'grocery_controller.dart';
+// import 'cart_controller.dart';
+// import 'chat_controller.dart';
 
 class HomeController extends GetxController {
   int currentIndex = 0;
@@ -73,36 +73,36 @@ class HomeController extends GetxController {
           break;
         case 1: // Grocery tab
           // Get or create GroceryController instance and load grocery data
-          GroceryController groceryController;
-          if (Get.isRegistered<GroceryController>()) {
-            groceryController = Get.find<GroceryController>();
-          } else {
-            groceryController = Get.put(GroceryController());
-          }
-          await groceryController.getGroceryHome();
+          // GroceryController groceryController;
+          // if (Get.isRegistered<GroceryController>()) {
+          //   groceryController = Get.find<GroceryController>();
+          // } else {
+          //   groceryController = Get.put(GroceryController());
+          // }
+          // await groceryController.getGroceryHome();
           break;
         case 2: // Cart tab
           // Get or create CartController instance and load cart data
-          CartController cartController;
-          if (Get.isRegistered<CartController>()) {
-            cartController = Get.find<CartController>();
-          } else {
-            cartController = Get.put(CartController());
-          }
-          await cartController.getCartData(context);
+          // CartController cartController;
+          // if (Get.isRegistered<CartController>()) {
+          //   cartController = Get.find<CartController>();
+          // } else {
+          //   cartController = Get.put(CartController());
+          // }
+          // await cartController.getCartData(context);
           break;
         case 3: // Chat tab
           // Get or create Chatcontroller instance and load conversations
-          Chatcontroller chatController;
-          if (Get.isRegistered<Chatcontroller>()) {
-            chatController = Get.find<Chatcontroller>();
-          } else {
-            chatController = Get.put(Chatcontroller());
-          }
-          await chatController.initAsync();
-          if (context.mounted) {
-            await chatController.getConversations(context);
-          }
+          // Chatcontroller chatController;
+          // if (Get.isRegistered<Chatcontroller>()) {
+          //   chatController = Get.find<Chatcontroller>();
+          // } else {
+          //   chatController = Get.put(Chatcontroller());
+          // }
+          // await chatController.initAsync();
+          // if (context.mounted) {
+          //   await chatController.getConversations(context);
+          // }
           break;
       }
     } catch (e) {

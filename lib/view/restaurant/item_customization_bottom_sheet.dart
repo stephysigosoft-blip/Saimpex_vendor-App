@@ -67,16 +67,16 @@ class ItemCustomizationBottomSheet extends StatelessWidget {
                         children: [
                           ClipRRect(
                             borderRadius: BorderRadius.circular(12),
-                            child: CachedNetworkImage(
-                              imageUrl: ApiConfigs.IMAGE_URL + image.toString(),
-                              height: 45,
-                              width: 45,
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) => Image.asset(
-                                'lib/assets/images/logo.png',
-                                fit: BoxFit.contain,
-                              ),
-                            ),
+                            // child: CachedNetworkImage(
+                            //   imageUrl: image.toString(),
+                            //   height: 45,
+                            //   width: 45,
+                            //   fit: BoxFit.cover,
+                            //   errorWidget: (context, url, error) => Image.asset(
+                            //     'lib/assets/images/logo.png',
+                            //     fit: BoxFit.contain,
+                            //   ),
+                            // ),
                           ),
                           const SizedBox(width: 12),
                           Text(

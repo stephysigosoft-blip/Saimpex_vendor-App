@@ -5,9 +5,8 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/get_navigation.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
-import 'package:saimpex_vendor/view/grocery/grocery_store_detail_page.dart';
-
-import '../../config/api_configs.dart';
+// import 'package:saimpex_vendor/view/grocery/grocery_store_detail_page.dart';
+// import '../../config/api_configs.dart';
 import '../../generated/l10n.dart';
 import '../../view/restaurant/restaurant_details.dart';
 import '../Utils.dart';
@@ -59,7 +58,7 @@ class RestaurantItemWidget extends StatelessWidget {
                           convertToAmPm(openingTime),
                     );
             } else {
-              Get.to(StoreDetailPage(groceryId: id));
+              // Get.to(StoreDetailPage(groceryId: id));
             }
           } else {
             if (isOpen == "0") {
@@ -110,7 +109,8 @@ class RestaurantItemWidget extends StatelessWidget {
                           topRight: Radius.circular(16),
                         ),
                         child: CachedNetworkImage(
-                          imageUrl: ApiConfigs.IMAGE_URL + imageUrl,
+                          // imageUrl: ApiConfigs.IMAGE_URL + imageUrl,
+                          imageUrl: imageUrl,
                           height: 150,
                           fit: BoxFit.cover,
                           width: double.infinity,
