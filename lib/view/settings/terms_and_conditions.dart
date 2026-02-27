@@ -3,11 +3,8 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 
 import '../../controller/settings_controller.dart';
-import '../../generated/l10n.dart';
-import '../../utils/widgets/custom_app_bar.dart';
 import '../../view/shimmer_loading/shimmer_text_content.dart';
 
 class TermsandConditions extends StatelessWidget {
@@ -20,9 +17,35 @@ class TermsandConditions extends StatelessWidget {
       textDirection: localization.currentLocale!.languageCode == "ar"
           ? TextDirection.rtl
           : TextDirection.ltr,
-      child: CommonBackground(
-        appBar: CustomAppBar(title: S.of(context).termsConditions),
-        child: GetBuilder<SettingsController>(
+      child: Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          centerTitle: false,
+          titleSpacing: 0,
+          leading: IconButton(
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xFF333E63),
+              size: 20,
+            ),
+            onPressed: () => Navigator.pop(context),
+          ),
+          title: Text(
+            "Terms & Conditions",
+            style: GoogleFonts.rubik(
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF333E63),
+            ),
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(1.0),
+            child: Divider(color: Colors.grey.withOpacity(0.1), height: 1),
+          ),
+        ),
+        body: GetBuilder<SettingsController>(
           init: SettingsController(),
           didChangeDependencies: (state) {
             WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -31,22 +54,23 @@ class TermsandConditions extends StatelessWidget {
           },
           builder: (controller) {
             return SingleChildScrollView(
-              padding: const EdgeInsetsDirectional.only(
-                start: 15,
-                end: 15,
-                bottom: 15,
-                top: 15,
-              ),
+              padding: const EdgeInsets.all(20),
               child: controller.isLoading
                   ? const ShimmerTextContent()
                   : Html(
                       data: controller.htmlData,
                       style: {
+                        "body": Style(
+                          margin: Margins.zero,
+                          padding: HtmlPaddings.zero,
+                        ),
                         "p": Style(
                           fontSize: FontSize(14),
                           fontFamily: GoogleFonts.rubik().fontFamily,
-                          lineHeight: LineHeight(1.2),
-                          color: Colors.black87,
+                          lineHeight: LineHeight(1.6),
+                          color: const Color(0xFF64748B),
+                          fontWeight: FontWeight.w400,
+                          textAlign: TextAlign.justify,
                         ),
                       },
                     ),

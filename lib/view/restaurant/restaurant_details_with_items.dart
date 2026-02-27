@@ -549,8 +549,8 @@ Widget _buildContent(
                                                 childAspectRatio: 0.68,
                                               ),
                                           itemBuilder: (context, index) {
-                                            final item = controller
-                                                .restaurantItemsList[index];
+                                            // final item = controller
+                                            //     .restaurantItemsList[index];
                                             // return FoodProductItem(
                                             //   item: item,
                                             //   cartItems: controller

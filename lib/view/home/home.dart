@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _screens = [
     const VendorHomeScreen(),
     const VendorRestaurantScreen(),
-    // const ChatListing(),
+    const SizedBox.shrink(), // Placeholder for ChatListing
     const Settings(),
   ];
 
@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
     return WillPopScope(
       onWillPop: _onWillPop,
       child: GetBuilder<HomeController>(
-        builder: (homescreenController) {
+        builder: (controller) {
           return Directionality(
             textDirection:
                 localization.currentLocale!.languageCode.toString() == "ar"
@@ -63,7 +63,7 @@ class _HomeState extends State<Home> {
               child: Scaffold(
                 backgroundColor: const Color(0xFFFDFDFD),
                 body: IndexedStack(
-                  index: homescreenController.selectedcurrentIndex,
+                  index: controller.selectedcurrentIndex,
                   children: _screens,
                 ),
                 bottomNavigationBar: Container(
@@ -98,7 +98,7 @@ class _HomeState extends State<Home> {
                         showUnselectedLabels: true,
                         showSelectedLabels: true,
                         type: BottomNavigationBarType.fixed,
-                        currentIndex: homescreenController.selectedcurrentIndex,
+                        currentIndex: controller.selectedcurrentIndex,
                         selectedLabelStyle: GoogleFonts.rubik(
                           fontSize: 12,
                           color: colorPrimary,
