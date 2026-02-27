@@ -10,12 +10,9 @@ import 'package:saimpex_vendor/view/profile/widgets/language_selection_widget.da
 import 'package:saimpex_vendor/view/profile/widgets/menu_item.dart';
 import 'package:saimpex_vendor/view/profile/widgets/points_floating_widget.dart'
     show PointsFloatingWidget;
-import 'package:saimpex_vendor/view/profile/widgets/profile_picture_widget.dart';
 import 'package:saimpex_vendor/view/profile/widgets/social_button.dart';
 import 'package:saimpex_vendor/view/shimmer_loading/shimmer_profile.dart';
 import 'package:saimpex_vendor/view/login/widgets/bold_text-rubik.dart';
-import 'package:saimpex_vendor/view/my_orders/my_orders.dart';
-import 'package:saimpex_vendor/view/mypoints/redeemable_screen.dart';
 import 'package:saimpex_vendor/view/profile/widgets/logout_bottom_sheet.dart';
 import 'package:saimpex_vendor/view/settings/settings.dart';
 import 'package:saimpex_vendor/view/settings/about_us.dart';
@@ -26,7 +23,6 @@ import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_app_bar.dart';
 
 import '../../controller/profile_controller.dart';
-import '../basket_orders/basket_orders.dart';
 import '../home/home.dart';
 import '../settings/terms_and_conditions.dart';
 
@@ -80,10 +76,10 @@ class _ProfileState extends State<Profile> {
                   children: [
                     const SizedBox(height: 10),
                     PointsFloatingWidget(points: controller.points),
-                    ProfilePicWidget(
-                      media: media,
-                      profileData: controller.profileData ?? ProfileData(),
-                    ),
+                    // ProfilePicWidget(
+                    //   media: media,
+                    //   profileData: controller.profileData ?? ProfileData(),
+                    // ),
                     SizedBox(height: media.size.height * 0.01),
                     BoldTextRubik(
                       text: controller.profileData?.name ?? '',
@@ -144,7 +140,7 @@ class _ProfileState extends State<Profile> {
                                 icon: "lib/assets/images/your_orders_icon.png",
                                 title: S.of(context).yourOrders,
                                 onTap: () {
-                                  Get.to(const MyOrders(route: 'profile'));
+                                  // Get.to(const MyOrders(route: 'profile'));
                                 },
                               ),
                               SizedBox(height: media.size.height * 0.01),
@@ -156,9 +152,9 @@ class _ProfileState extends State<Profile> {
                                           "lib/assets/images/your_orders_icon.png",
                                       title: S.of(context).basketOrderss,
                                       onTap: () {
-                                        Get.to(
-                                          const BasketOrders(route: 'profile'),
-                                        );
+                                        // Get.to(
+                                        //   const BasketOrders(route: 'profile'),
+                                        // );
                                       },
                                     ),
                               controller.profileData?.hasBasketOrders == false
@@ -170,7 +166,7 @@ class _ProfileState extends State<Profile> {
                                     "lib/assets/images/profile_mypoints_icon.png",
                                 title: S.of(context).myPoints,
                                 onTap: () {
-                                  Get.to(() => const RedeemableScreen());
+                                  // Get.to(() => const RedeemableScreen());
                                 },
                               ),
                               SizedBox(height: media.size.height * 0.01),

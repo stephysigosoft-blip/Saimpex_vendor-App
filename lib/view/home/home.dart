@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/controller/home_controller.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
-import 'package:saimpex_vendor/view/chat/chat_listing.dart';
 import 'package:saimpex_vendor/view/home/vendor_home_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/vendor_restaurant_screen.dart';
 import 'package:saimpex_vendor/view/settings/settings.dart';
@@ -24,7 +23,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _screens = [
     const VendorHomeScreen(),
     const VendorRestaurantScreen(),
-    const ChatListing(),
+    // const ChatListing(),
     const Settings(),
   ];
 

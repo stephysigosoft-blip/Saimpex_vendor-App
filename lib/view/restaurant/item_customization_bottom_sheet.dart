@@ -6,7 +6,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:saimpex_vendor/controller/restaurant_details_controller.dart';
-import '../../config/api_configs.dart';
 import '../../generated/l10n.dart';
 import '../../model/restaurant_items_model.dart';
 import '../../resources/colors.dart';

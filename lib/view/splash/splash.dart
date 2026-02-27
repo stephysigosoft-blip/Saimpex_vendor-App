@@ -9,7 +9,6 @@ import 'package:saimpex_vendor/view/Login/login.dart';
 
 import '../../Utils/Utils.dart';
 import '../home/home.dart';
-import '../onboarding/onboarding_screen.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -40,7 +39,7 @@ class _SplashState extends State<Splash> {
     isFirstLaunch = await getSavedObject("@isFirstLaunch");
     Timer(const Duration(seconds: 3), () async {
       if (isFirstLaunch == null) {
-        Get.offAll(OnBoardingScreen());
+        //Get.offAll(OnBoardingScreen());
         await savename("@isFirstLaunch", "true");
       } else {
         var loginStatus = await getSavedObject("loginStatus");

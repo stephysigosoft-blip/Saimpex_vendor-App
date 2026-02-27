@@ -5,9 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:saimpex_vendor/config/api_configs.dart';
 import 'package:saimpex_vendor/utils/Utils.dart';
-import 'package:saimpex_vendor/view/chat/chat_details.dart';
 import 'package:saimpex_vendor/view/login/login.dart';
 import 'package:saimpex_vendor/view/login/widgets/login_to_continue_alert_dialogue.dart';
 import 'package:saimpex_vendor/view/restaurant/restaurant_details_with_items.dart';
@@ -156,7 +154,7 @@ Widget _buildContent(
                         ),
                       );
                     } else {
-                      Get.to(ChatDetails(vendorId: int.parse(restaurantId)));
+                      // Get.to(ChatDetails(vendorId: int.parse(restaurantId)));
                     }
                   },
                 ),
@@ -272,7 +270,7 @@ Widget _buildContent(
                                             height: 60,
                                             width: 70,
                                             imageUrl:
-                                                ApiConfigs.IMAGE_URL +
+                                                // ApiConfigs.IMAGE_URL +
                                                 item.image.toString(),
                                             fit: BoxFit.cover,
                                             errorWidget:
@@ -351,4 +349,3 @@ Widget _buildShimmerGrid() {
     },
   );
 }
-

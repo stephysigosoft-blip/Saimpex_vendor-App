@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/utils/utils.dart';
 import 'package:saimpex_vendor/utils/widgets/delete_cart_dialog.dart';
-import 'package:saimpex_vendor/view/cart/food_cart.dart';
 import 'package:saimpex_vendor/view/login/login.dart';
 import 'package:saimpex_vendor/view/login/widgets/login_to_continue_alert_dialogue.dart';
 import '../../controller/restaurant_details_controller.dart';
@@ -18,7 +17,6 @@ import '../../utils/widgets/no_data_widget.dart';
 import '../../utils/widgets/restaurant_details_widget.dart';
 import '../../utils/widgets/restaurant_items_filter_bottom_sheet.dart';
 import '../shimmer_loading/shimmer_food_product_item.dart';
-import '../chat/chat_details.dart';
 
 class RestaurantDetailsWithItems extends StatefulWidget {
   const RestaurantDetailsWithItems({
@@ -264,9 +262,9 @@ Widget _buildContent(
                             ),
                           );
                         } else {
-                          Get.to(
-                            ChatDetails(vendorId: int.parse(restaurantId)),
-                          );
+                          // Get.to(
+                          //   ChatDetails(vendorId: int.parse(restaurantId)),
+                          // );
                         }
                       },
                     ),
