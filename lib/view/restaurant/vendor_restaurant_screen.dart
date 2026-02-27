@@ -109,114 +109,196 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               child: Row(
                 children: [
                   _buildMenuButton("Account"),
-                  const SizedBox(width: 12),
-                  _buildMenuButton("Working Hour"),
-                  const SizedBox(width: 12),
+                  const SizedBox(width: 10),
+                  _buildMenuButton("Working Hours"),
+                  const SizedBox(width: 10),
                   _buildMenuButton("Leaves"),
+                  const SizedBox(width: 10),
+                  _buildMenuButton("Menu"),
+                  const SizedBox(width: 10),
+                  _buildMenuButton("Items"),
+                  const SizedBox(width: 10),
+                  _buildMenuButton("Menu Bulk Import"),
+                  const SizedBox(width: 10),
+                  _buildMenuButton("Basket"),
+                  const SizedBox(width: 10),
+                  _buildMenuButton("Received Payouts"),
+                  const SizedBox(width: 10),
+                  _buildMenuButton("Restaurant Reports"),
                 ],
               ),
             ),
             const SizedBox(height: 24),
 
-            _sectionHeader("RESTAURANT DETAILS"),
-            const SizedBox(height: 12),
-            _buildDetailCard(
-              height: 231,
-              child: Column(
-                children: [
-                  _detailRow("Name", "Restaurant 1"),
-                  _detailRow("Owner", "Salman"),
-                  _detailRow("ID", "1"),
-                  _detailRow("Contact", "+22241518211"),
-                  _detailRow("Email", "rest1@saimpex.com"),
-                  _detailRow("Status", "ACTIVE", isStatus: true),
-                  _detailRow("Address", "Restaurant Block 5, Mauritania"),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-            _sectionHeader("BANK DETAILS"),
-            const SizedBox(height: 12),
-            _buildDetailCard(
-              height: 124,
-              child: Column(
-                children: [
-                  _detailRow("Holder Name", "Salman H"),
-                  _detailRow("IBAN Number", "121236218936189111"),
-                  _detailRow("SWIFT Code", "TESTMRMR001"),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-            _sectionHeader("ABOUT THE RESTAURANT"),
-            const SizedBox(height: 12),
-            _buildDetailCard(
-              height: 69,
-              child: Column(children: [_detailRow("Category", "Non-Veg")]),
-            ),
-
-            const SizedBox(height: 24),
-            _sectionHeader("REGISTRATION DETAILS"),
-            const SizedBox(height: 12),
-            _buildDetailCard(
-              height: 124,
-              child: Column(
-                children: [
-                  _detailRow("Reg. Number", "REST11MAUR13"),
-                  _detailRow("Reg. Date", "Dec 7, 2025"),
-                  _detailRow("GST Number", "GSTRMAU127444"),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-            _sectionHeader("PAYMENT DETAILS"),
-            const SizedBox(height: 12),
-            _buildDetailCard(
-              height: 96,
-              child: Column(
-                children: [
-                  _detailRow("Commission %", "5.00%"),
-                  _detailRow("Total Profit", "0 MRU", isBoldValue: true),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-            _sectionHeader("OWNER IDENTITY PROOF"),
-            const SizedBox(height: 12),
-            _buildDetailCard(height: 98, child: const SizedBox.shrink()),
-
-            const SizedBox(height: 24),
-            _sectionHeader("CERTIFICATES"),
-            const SizedBox(height: 12),
-            _buildDetailCard(height: 98, child: const SizedBox.shrink()),
-
-            const SizedBox(height: 24),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _sectionHeader("RATING & REVIEWS"),
-                Text(
-                  "View All",
-                  style: GoogleFonts.rubik(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFFFF5216),
-                  ),
+            if (selectedMenu == "Account") ...[
+              _sectionHeader("RESTAURANT DETAILS"),
+              const SizedBox(height: 12),
+              _buildDetailCard(
+                height: 231,
+                child: Column(
+                  children: [
+                    _detailRow("Name", "Restaurant 1"),
+                    _detailRow("Owner", "Salman"),
+                    _detailRow("ID", "1"),
+                    _detailRow("Contact", "+22241518211"),
+                    _detailRow("Email", "rest1@saimpex.com"),
+                    _detailRow("Status", "ACTIVE", isStatus: true),
+                    _detailRow("Address", "Restaurant Block 5, Mauritania"),
+                  ],
                 ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            _buildReviewCard(),
-            const SizedBox(height: 12),
-            _buildReviewCard(),
+              ),
+              const SizedBox(height: 24),
+              _sectionHeader("BANK DETAILS"),
+              const SizedBox(height: 12),
+              _buildDetailCard(
+                height: 124,
+                child: Column(
+                  children: [
+                    _detailRow("Holder Name", "Salman H"),
+                    _detailRow("IBAN Number", "121236218936189111"),
+                    _detailRow("SWIFT Code", "TESTMRMR001"),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              _sectionHeader("ABOUT THE RESTAURANT"),
+              const SizedBox(height: 12),
+              _buildDetailCard(
+                height: 69,
+                child: Column(children: [_detailRow("Category", "Non-Veg")]),
+              ),
+              const SizedBox(height: 24),
+              _sectionHeader("REGISTRATION DETAILS"),
+              const SizedBox(height: 12),
+              _buildDetailCard(
+                height: 124,
+                child: Column(
+                  children: [
+                    _detailRow("Reg. Number", "REST11MAUR13"),
+                    _detailRow("Reg. Date", "Dec 7, 2025"),
+                    _detailRow("GST Number", "GSTRMAU127444"),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              _sectionHeader("PAYMENT DETAILS"),
+              const SizedBox(height: 12),
+              _buildDetailCard(
+                height: 96,
+                child: Column(
+                  children: [
+                    _detailRow("Commission %", "5.00%"),
+                    _detailRow("Total Profit", "0 MRU", isBoldValue: true),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+              _sectionHeader("OWNER IDENTITY PROOF"),
+              const SizedBox(height: 12),
+              _buildDetailCard(height: 98, child: const SizedBox.shrink()),
+              const SizedBox(height: 24),
+              _sectionHeader("CERTIFICATES"),
+              const SizedBox(height: 12),
+              _buildDetailCard(height: 98, child: const SizedBox.shrink()),
+              const SizedBox(height: 24),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  _sectionHeader("RATING & REVIEWS"),
+                  Text(
+                    "View All",
+                    style: GoogleFonts.rubik(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFFFF5216),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              _buildReviewCard(),
+              const SizedBox(height: 12),
+              _buildReviewCard(),
+            ] else if (selectedMenu == "Working Hours") ...[
+              _buildWorkingHours(),
+            ] else ...[
+              const SizedBox(
+                height: 200,
+                child: Center(child: Text("Coming Soon")),
+              ),
+            ],
 
             const SizedBox(height: 100),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildWorkingHours() {
+    final List<String> days = [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ];
+
+    return Container(
+      width: 350,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFFF1F5F9), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: days.map((day) {
+          bool isLast = day == days.last;
+          return Padding(
+            padding: EdgeInsets.only(bottom: isLast ? 0 : 24.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  day,
+                  style: GoogleFonts.rubik(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: const Color(0xFF1F2937),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 6,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF1EE),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
+                  child: Text(
+                    "24 Hr",
+                    style: GoogleFonts.rubik(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: const Color(0xFFFF5216),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
       ),
     );
   }
@@ -230,11 +312,17 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         });
       },
       child: Container(
-        width: 105.25,
+        width: 125,
         height: 42,
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFFFF5216) : const Color(0xFFF8FAFC),
           borderRadius: BorderRadius.circular(9999),
+          border: Border.all(
+            color: isSelected
+                ? const Color(0xFFFF5216)
+                : const Color.fromARGB(255, 200, 202, 203),
+            width: 1,
+          ),
         ),
         child: Center(
           child: Text(

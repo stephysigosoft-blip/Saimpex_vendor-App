@@ -101,15 +101,14 @@ class _HomeState extends State<Home> {
                         currentIndex: controller.selectedcurrentIndex,
                         selectedLabelStyle: GoogleFonts.rubik(
                           fontSize: 12,
-                          color: colorPrimary,
                           fontWeight: FontWeight.w400,
                         ),
                         unselectedLabelStyle: GoogleFonts.rubik(
                           fontSize: 12,
-                          color: Colors.black,
                           fontWeight: FontWeight.w400,
                         ),
                         selectedItemColor: colorPrimary,
+                        unselectedItemColor: const Color(0xFF94A3B8),
                         onTap: (index) async {
                           homescreenController.onTabTapped(index, context);
                         },
@@ -118,6 +117,7 @@ class _HomeState extends State<Home> {
                             icon: Image.asset(
                               "lib/assets/images/Home.png",
                               height: 24,
+                              color: const Color(0xFF94A3B8),
                             ),
                             activeIcon: Image.asset(
                               "lib/assets/images/Home.png",
@@ -130,6 +130,7 @@ class _HomeState extends State<Home> {
                             icon: Image.asset(
                               "lib/assets/images/Restaurant.png",
                               height: 24,
+                              color: const Color(0xFF94A3B8),
                             ),
                             activeIcon: Image.asset(
                               "lib/assets/images/Restaurant.png",
@@ -142,6 +143,7 @@ class _HomeState extends State<Home> {
                             icon: Image.asset(
                               "lib/assets/images/Chat vendor.png",
                               height: 24,
+                              color: const Color(0xFF94A3B8),
                             ),
                             activeIcon: Image.asset(
                               "lib/assets/images/Chat vendor.png",
@@ -154,6 +156,7 @@ class _HomeState extends State<Home> {
                             icon: Image.asset(
                               "lib/assets/images/Settings vendor.png",
                               height: 24,
+                              color: const Color(0xFF94A3B8),
                             ),
                             activeIcon: Image.asset(
                               "lib/assets/images/Settings vendor.png",
