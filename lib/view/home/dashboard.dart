@@ -1,0 +1,452 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/utils/widgets/common_background.dart';
+import 'package:saimpex_vendor/view/home/widgets/vendor_stat_card.dart';
+
+class Dashboard extends StatefulWidget {
+  const Dashboard({super.key});
+
+  @override
+  State<Dashboard> createState() => _DashboardState();
+}
+
+class _DashboardState extends State<Dashboard> {
+  String selectedYear = "2026";
+  final List<String> years = ["2024", "2025", "2026"];
+
+  @override
+  Widget build(BuildContext context) {
+    return CommonBackground(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.black,
+            size: 20,
+          ),
+        ),
+        title: Text(
+          "Dashboard",
+          style: GoogleFonts.rubik(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1F1F1F),
+          ),
+        ),
+        centerTitle: true,
+      ),
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20),
+            // Membership Card
+            Container(
+              width: double.infinity,
+              height: 60.25,
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: const Color(0xFFE5E5E5), width: 1),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.05),
+                    blurRadius: 10,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    'lib/assets/images/Silver.png',
+                    width: 30,
+                    height: 30,
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      "Silver Member",
+                      style: GoogleFonts.rubik(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF1F1F1F),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFE5E5),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      "Expires in 7 days",
+                      style: GoogleFonts.rubik(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+            // Stats
+            const Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                VendorStatCard(
+                  title: "Today's Orders",
+                  value: "69",
+                  icon: Icons.shopping_bag,
+                  backgroundColor: Color(0xFFE5E5FF),
+                  iconDecorationColor: Color(0xFF6B6BFF),
+                ),
+                VendorStatCard(
+                  title: "Total Orders",
+                  value: "100",
+                  icon: Icons.payments,
+                  backgroundColor: Color(0xFFD9F9E7),
+                  iconDecorationColor: Color(0xFF00D15D),
+                ),
+                VendorStatCard(
+                  title: "Products",
+                  value: "10",
+                  icon: Icons.shopping_bag,
+                  backgroundColor: Color(0xFFFFE5D9),
+                  iconDecorationColor: Color(0xFFFF5216),
+                ),
+              ],
+            ),
+            const SizedBox(height: 32),
+            // Revenue Report Section
+            Text(
+              "REVENUE REPORT",
+              style: GoogleFonts.rubik(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF1F1F1F),
+              ),
+            ),
+            const SizedBox(height: 16),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.03),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Total Revenue",
+                            style: GoogleFonts.rubik(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w500,
+                              color: const Color(0xFF9CA3AF),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            "45,280 MRU",
+                            style: GoogleFonts.rubik(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: const Color(0xFF1F1F1F),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 12,
+                          vertical: 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFFFE5D9),
+                          borderRadius: BorderRadius.circular(15),
+                          border: Border.all(
+                            color: const Color(0xFFFF5216).withOpacity(0.2),
+                          ),
+                        ),
+                        child: Row(
+                          children: [
+                            Text(
+                              selectedYear,
+                              style: GoogleFonts.rubik(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w500,
+                                color: const Color(0xFF1F1F1F),
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            const Icon(Icons.keyboard_arrow_down, size: 18),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 24),
+                  // Placeholder for Chart
+                  Stack(
+                    alignment: Alignment.topRight,
+                    children: [
+                      SizedBox(
+                        height: 150,
+                        width: double.infinity,
+                        child: CustomPaint(painter: RevenueChartPainter()),
+                      ),
+                      Positioned(
+                        top: 0,
+                        right: 10,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFF5216),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            "45,000 MRU",
+                            style: GoogleFonts.rubik(
+                              fontSize: 8,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: ["Jan", "Mar", "Jun", "Sep", "Dec"]
+                        .map(
+                          (e) => Text(
+                            e,
+                            style: GoogleFonts.rubik(
+                              fontSize: 10,
+                              color: const Color(0xFF9CA3AF),
+                            ),
+                          ),
+                        )
+                        .toList(),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 32),
+            // Popular Items Section
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "POPULAR ITEMS",
+                  style: GoogleFonts.rubik(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF1F1F1F),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () {},
+                  child: Text(
+                    "View All",
+                    style: GoogleFonts.rubik(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFFFF5216),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.03),
+                    blurRadius: 10,
+                    spreadRadius: 2,
+                    offset: const Offset(0, 4),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  _popularItem(
+                    name: "Double Cheeseburger",
+                    subtitle: "#3-Full",
+                    orders: "28 Orders",
+                    imageUrl: "lib/assets/images/Food vendor.png",
+                  ),
+                  const Divider(indent: 70, endIndent: 20, height: 1),
+                  _popularItem(
+                    name: "Double Cheeseburger",
+                    subtitle: "#5-Full",
+                    orders: "16 Orders",
+                    imageUrl: "lib/assets/images/Food vendor.png",
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _popularItem({
+    required String name,
+    required String subtitle,
+    required String orders,
+    required String imageUrl,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 12),
+      child: Row(
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Image.asset(
+              imageUrl,
+              width: 50,
+              height: 50,
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  width: 50,
+                  height: 50,
+                  color: Colors.grey[200],
+                  child: const Icon(Icons.fastfood, color: Colors.grey),
+                );
+              },
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  name,
+                  style: GoogleFonts.rubik(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF1F1F1F),
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.rubik(
+                    fontSize: 12,
+                    color: const Color(0xFF9CA3AF),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Text(
+            orders,
+            style: GoogleFonts.rubik(
+              fontSize: 13,
+              fontWeight: FontWeight.w500,
+              color: const Color(0xFF6B7280),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class RevenueChartPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = const Color(0xFFFF5216)
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5
+      ..strokeCap = StrokeCap.round;
+
+    final fillPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [
+          const Color(0xFFFF5216).withOpacity(0.2),
+          const Color(0xFFFF5216).withOpacity(0.0),
+        ],
+      ).createShader(Rect.fromLTRB(0, 0, size.width, size.height));
+
+    final path = Path();
+    path.moveTo(0, size.height * 0.9);
+    path.quadraticBezierTo(
+      size.width * 0.25,
+      size.height * 0.8,
+      size.width * 0.5,
+      size.height * 0.5,
+    );
+    path.quadraticBezierTo(
+      size.width * 0.75,
+      size.height * 0.35,
+      size.width,
+      size.height * 0.2,
+    );
+
+    final fillPath = Path();
+    fillPath.addPath(path, Offset.zero);
+    fillPath.lineTo(size.width, size.height);
+    fillPath.lineTo(0, size.height);
+    fillPath.close();
+
+    canvas.drawPath(fillPath, fillPaint);
+    canvas.drawPath(path, paint);
+
+    // Draw grid lines
+    final gridPaint = Paint()
+      ..color = const Color(0xFFE5E5E5).withOpacity(0.3)
+      ..strokeWidth = 1;
+
+    for (int i = 1; i <= 4; i++) {
+      double x = i * size.width / 4;
+      canvas.drawLine(Offset(x, 0), Offset(x, size.height), gridPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}

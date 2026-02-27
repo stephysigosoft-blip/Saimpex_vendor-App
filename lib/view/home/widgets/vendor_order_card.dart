@@ -1,0 +1,359 @@
+import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/resources/colors.dart';
+
+class VendorOrderCard extends StatelessWidget {
+  final String orderId;
+  final String customerName;
+  final int itemsCount;
+  final double price;
+  final String dateTime;
+  final String status;
+  final VoidCallback onReject;
+  final VoidCallback onAccept;
+  final VoidCallback? onTap;
+
+  const VendorOrderCard({
+    super.key,
+    required this.orderId,
+    required this.customerName,
+    required this.itemsCount,
+    required this.price,
+    required this.dateTime,
+    required this.status,
+    required this.onReject,
+    required this.onAccept,
+    this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: 350,
+        constraints: const BoxConstraints(minHeight: 199),
+        margin: const EdgeInsets.only(bottom: 16),
+        padding: const EdgeInsets.all(16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFE5E5E5), width: 1),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "ORDER #$orderId",
+                  style: GoogleFonts.rubik(
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                    color: colorPrimary,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: status.toLowerCase() == 'pending'
+                        ? const Color(0xFFF59E0B)
+                        : status.toLowerCase() == 'accepted'
+                        ? const Color(0xFF22C55E)
+                        : status.toLowerCase() == 'preparing'
+                        ? const Color(0xFF60A5FA)
+                        : status.toLowerCase() == 'ready'
+                        ? const Color(0xFF22C55E)
+                        : status.toLowerCase() == 'delivered'
+                        ? const Color(0xFF15803D)
+                        : status.toLowerCase() == 'cancelled'
+                        ? const Color(0xFFEF4444)
+                        : const Color(0xFFFFB800),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    status.toUpperCase(),
+                    style: GoogleFonts.rubik(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            if (status.toLowerCase() == 'preparing')
+              Align(
+                alignment: Alignment.centerRight,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Text(
+                    "00:05:00 min",
+                    style: GoogleFonts.rubik(
+                      fontSize: 10,
+                      color: const Color(0xFF64748B),
+                    ),
+                  ),
+                ),
+              ),
+            const SizedBox(height: 4), // Reduced gap
+            Text(
+              customerName,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.rubik(
+                fontSize: 16,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF1F1F1F),
+              ),
+            ),
+            const SizedBox(height: 7), // Gap 7px
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "ITEMS",
+                      style: GoogleFonts.rubik(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    RichText(
+                      text: TextSpan(
+                        style: GoogleFonts.rubik(
+                          fontSize: 12,
+                          color: Colors.grey[700],
+                        ),
+                        children: [
+                          TextSpan(text: "$itemsCount Items • "),
+                          TextSpan(
+                            text: "${price.toStringAsFixed(2)} MRU",
+                            style: const TextStyle(
+                              color: Color(0xFFFF5216),
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text(
+                      "DATE & TIME",
+                      style: GoogleFonts.rubik(
+                        fontSize: 10,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      dateTime,
+                      style: GoogleFonts.rubik(
+                        fontSize: 10,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            if (status.toLowerCase() == 'ready' ||
+                status.toLowerCase() == 'delivered') ...[
+              const SizedBox(height: 12),
+              Text(
+                "DRIVER",
+                style: GoogleFonts.rubik(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.grey,
+                ),
+              ),
+              const SizedBox(height: 4),
+              Text.rich(
+                TextSpan(
+                  style: GoogleFonts.rubik(fontSize: 11),
+                  children: [
+                    const TextSpan(
+                      text: "Assigned ",
+                      style: TextStyle(
+                        color: Color(0xFFFF5216),
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                    TextSpan(
+                      text: "[Abdallahi Ould Ahmed]",
+                      style: TextStyle(color: Color(0xFF6B7280), fontSize: 11),
+                    ),
+                  ],
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ],
+            if (status.toLowerCase() == 'cancelled') ...[
+              const SizedBox(height: 16),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF1F5F9),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    "Cancelled On  $dateTime",
+                    style: GoogleFonts.rubik(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFFEF4444),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+              Text(
+                "Reason: Changed mind",
+                style: GoogleFonts.rubik(
+                  fontSize: 11,
+                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFFEF4444),
+                ),
+              ),
+            ],
+            const SizedBox(height: 12),
+            if (status.toLowerCase() == 'pending')
+              Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: onReject,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFF1F5F9),
+                        foregroundColor: Colors.red,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                      ),
+                      child: Text(
+                        "Reject",
+                        style: GoogleFonts.rubik(fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: onAccept,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF5216),
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                      ),
+                      child: Text(
+                        "Accept Order",
+                        style: GoogleFonts.rubik(fontWeight: FontWeight.w500),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            else if (status.toLowerCase() == 'preparing')
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: onTap,
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Color(0xFFFF5216)),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                      ),
+                      child: Text(
+                        "View Details",
+                        style: GoogleFonts.rubik(
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFFFF5216),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFFFF5216),
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        padding: const EdgeInsets.symmetric(vertical: 10),
+                      ),
+                      child: Text(
+                        "Mark as Ready",
+                        style: GoogleFonts.rubik(fontWeight: FontWeight.w600),
+                      ),
+                    ),
+                  ),
+                ],
+              )
+            else if (status.toLowerCase() == 'cancelled')
+              const SizedBox.shrink()
+            else
+              SizedBox(
+                width: double.infinity,
+                height: 40,
+                child: OutlinedButton(
+                  onPressed: onTap,
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Color(0xFFFF5216)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    "View Details",
+                    style: GoogleFonts.rubik(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFFFF5216),
+                    ),
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+}
