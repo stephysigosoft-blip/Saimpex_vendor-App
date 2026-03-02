@@ -7,6 +7,7 @@ class CommonBackground extends StatelessWidget {
   final Widget? floatingActionButton;
   final double gradientHeight;
   final Color? backgroundColor;
+  final Widget? bottomNavigationBar;
 
   const CommonBackground({
     super.key,
@@ -14,6 +15,7 @@ class CommonBackground extends StatelessWidget {
     this.appBar,
     this.bottomSheet,
     this.floatingActionButton,
+    this.bottomNavigationBar,
     this.gradientHeight = 300,
     this.backgroundColor = const Color(0xFFFDFDFD),
   });
@@ -25,6 +27,7 @@ class CommonBackground extends StatelessWidget {
       appBar: appBar,
       bottomSheet: bottomSheet,
       floatingActionButton: floatingActionButton,
+      bottomNavigationBar: bottomNavigationBar,
       body: Stack(
         children: [
           // Top Gradient Background

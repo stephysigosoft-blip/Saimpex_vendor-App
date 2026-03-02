@@ -16,6 +16,7 @@ import '../../resources/colors.dart';
 import '../../utils/widgets/no_data_widget.dart';
 import '../../utils/widgets/restaurant_details_widget.dart';
 import '../../utils/widgets/restaurant_items_filter_bottom_sheet.dart';
+import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
 import '../shimmer_loading/shimmer_food_product_item.dart';
 
 class RestaurantDetailsWithItems extends StatefulWidget {
@@ -271,51 +272,21 @@ Widget _buildContent(
 
                     const SizedBox(height: 15),
 
-                    SizedBox(
-                      height: 50,
-                      child: TextFormField(
-                        controller: controller.searchController,
-                        onTap: () {},
-                        onChanged: (value) {
-                          controller.searchController.text = value;
-                          controller.getRestaurantItems();
-                        },
-                        style: GoogleFonts.rubik(fontSize: 15),
-                        decoration: InputDecoration(
-                          filled: true,
-                          fillColor: Colors.white,
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 16),
+                        child: CustomSearchBox(
+                          controller: controller.searchController,
+                          onChanged: (value) {
+                            controller.searchController.text = value;
+                            controller.getRestaurantItems();
+                          },
                           hintText: S
                               .of(context)
                               .findSomethingFromThisRestaurant,
-                          hintStyle: GoogleFonts.rubik(
-                            fontSize: 13,
-                            color: Colors.grey,
-                          ),
-
-                          // Remove borders
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none,
-                          ),
-                          prefixIcon: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: SizedBox(
-                              height: 6,
-                              width: 6,
-                              child: Image.asset(
-                                'lib/assets/images/search.png',
-                                fit: BoxFit.contain,
-                              ),
-                            ),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.white),
-                          ),
+                          boxColor: Colors.white,
+                          width: 293,
                         ),
                       ),
                     ),
