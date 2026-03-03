@@ -24,5 +24,6 @@ const chatReceiverColor = Color(0xffFFF7E4);
 const boxColor1 = Color(0xffF3F3F3);
 const darkGrey = Color(0xff626060);
 const lightgreen = Color(0xffC5F4D3);
+const chatgrey = Color(0xffE6E6E6);
 
 

@@ -6,6 +6,7 @@ import 'package:saimpex_vendor/resources/colors.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/view/chat/chat_listing_item.dart';
 import '../../generated/l10n.dart';
+import 'ChatDetails.dart';
 
 class ChatListing extends StatelessWidget {
   const ChatListing({super.key});
@@ -21,9 +22,9 @@ class ChatListing extends StatelessWidget {
       child: CommonBackground(
         appBar: _buildAppBar(context, isRtl),
         child: ListView.separated(
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 30),
+          padding: const EdgeInsets.fromLTRB(10, 15, 10, 30),
           itemCount: _dummyChats.length,
-          separatorBuilder: (_, __) => const SizedBox(height: 16),
+          separatorBuilder: (_, __) => const SizedBox(height: 10),
           itemBuilder: (context, index) {
             final chat = _dummyChats[index];
             return ChatListingItem(
@@ -33,7 +34,7 @@ class ChatListing extends StatelessWidget {
               lastMessage: chat.lastMessage,
               timestamp: chat.timestamp,
               onTap: () {
-                // TODO: Navigate to chat screen
+               Get.to(ChatDetails(contactName: chat.name));
               },
             );
           },
@@ -45,7 +46,7 @@ class ChatListing extends StatelessWidget {
   PreferredSizeWidget _buildAppBar(BuildContext context, bool isRtl) {
     return AppBar(
       backgroundColor: Colors.white,
-      centerTitle: true,
+      centerTitle: false,
       forceMaterialTransparency: true,
       elevation: 0,
       leading: IconButton(
@@ -101,5 +102,6 @@ class ChatListing extends StatelessWidget {
     (initials: 'AM', name: 'Aicha Mint Ahmed', phone: '+222 62345678', lastMessage: 'Hello', timestamp: 'Today'),
     (initials: 'AM', name: 'Aicha Mint Ahmed', phone: '+222 62345678', lastMessage: 'Hello', timestamp: 'Today'),
     (initials: 'AM', name: 'Aicha Mint Ahmed', phone: '+222 62345678', lastMessage: 'Hello', timestamp: 'Today'),
+
   ];
 }
