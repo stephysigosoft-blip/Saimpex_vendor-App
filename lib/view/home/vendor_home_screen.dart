@@ -6,7 +6,7 @@ import 'package:saimpex_vendor/view/home/widgets/vendor_order_card.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_stat_card.dart';
 import 'package:saimpex_vendor/view/notifications/notifications.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
-
+import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
 import 'package:saimpex_vendor/view/home/dashboard.dart';
 
 class VendorHomeScreen extends StatefulWidget {
@@ -265,45 +265,16 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                 ],
               ),
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 5),
             // Search Bar
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                width: double.infinity,
+              child: CustomSearchBox(
+                hintText: "Search by ID, name",
+                boxColor: Colors.white,
+                showSearchIcon: true,
+                width: 395,
                 height: 44,
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(22),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.04),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: TextField(
-                  decoration: InputDecoration(
-                    prefixIcon: const Icon(
-                      Icons.search,
-                      color: Color(0xFF9CA3AF),
-                      size: 20,
-                    ),
-                    prefixIconConstraints: const BoxConstraints(
-                      minWidth: 36,
-                      maxHeight: 20,
-                    ),
-                    hintText: "Search by ID, name",
-                    hintStyle: GoogleFonts.rubik(
-                      fontSize: 14,
-                      color: const Color(0xFF9CA3AF),
-                    ),
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 10),
-                  ),
-                ),
               ),
             ),
             const SizedBox(height: 16),
