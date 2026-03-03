@@ -6,6 +6,7 @@ import 'package:saimpex_vendor/view/restaurant/add_menu_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/add_items_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/edit_items_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/menu_item_details_screen.dart';
+import 'package:saimpex_vendor/view/restaurant/basket_details_screen.dart';
 
 class VendorRestaurantScreen extends StatefulWidget {
   const VendorRestaurantScreen({super.key});
@@ -16,6 +17,7 @@ class VendorRestaurantScreen extends StatefulWidget {
 
 class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   String selectedMenu = "Account";
+  bool isInstructionsExpanded = false;
 
   @override
   Widget build(BuildContext context) {
@@ -232,6 +234,14 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               _buildMenuSection(),
             ] else if (selectedMenu == "Items") ...[
               _buildItemsSection(),
+            ] else if (selectedMenu == "Menu Bulk Import") ...[
+              _buildMenuBulkImportSection(),
+            ] else if (selectedMenu == "Basket") ...[
+              _buildBasketSection(),
+            ] else if (selectedMenu == "Received Payouts") ...[
+              _buildReceivedPayoutsSection(),
+            ] else if (selectedMenu == "Restaurant Reports") ...[
+              _buildRestaurantReportsSection(),
             ] else ...[
               const SizedBox(
                 height: 200,
@@ -887,8 +897,11 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     required Color borderColor,
     required Color textColor,
     bool iconOnRight = true,
+    double? width,
+    bool isCentered = false,
   }) {
     return Container(
+      width: width,
       height: 40,
       padding: const EdgeInsets.symmetric(horizontal: 10),
       decoration: BoxDecoration(
@@ -897,7 +910,10 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         border: Border.all(color: borderColor, width: 0.5),
       ),
       child: Row(
-        mainAxisSize: MainAxisSize.min,
+        mainAxisSize: width != null ? MainAxisSize.max : MainAxisSize.min,
+        mainAxisAlignment: isCentered
+            ? MainAxisAlignment.center
+            : MainAxisAlignment.start,
         children: [
           if (!iconOnRight) ...[
             Icon(icon, color: textColor, size: 16),
@@ -1475,6 +1491,864 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildMenuBulkImportSection() {
+    final List<Map<String, String>> categories = [
+      {"name": "Soups", "image": "lib/assets/images/Soups.png"},
+      {"name": "Juice", "image": "lib/assets/images/Juice.png"},
+      {"name": "Chinese", "image": "lib/assets/images/Chinese.png"},
+      {"name": "Sandwich", "image": "lib/assets/images/Sandwich.png"},
+    ];
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Menu Bulk Import",
+          style: GoogleFonts.rubik(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1F1F1F),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          "Select a category and import menu items in bulk",
+          style: GoogleFonts.rubik(
+            fontSize: 10,
+            color: const Color(0xFF94A3B8),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildItemsActionButton(
+              label: "Download Template",
+              icon: Icons.file_download_outlined,
+              bgColor: const Color(0xFFFFF1EE),
+              borderColor: const Color(0xFFFF5216),
+              textColor: const Color(0xFFFF5216),
+              width: 169,
+              isCentered: true,
+            ),
+            _buildItemsActionButton(
+              label: "Upload Images",
+              icon: Icons.file_upload_outlined,
+              bgColor: const Color(0xFFEEF2FF),
+              borderColor: const Color(0xFF3B82F6),
+              textColor: const Color(0xFF3B82F6),
+              width: 169,
+              isCentered: true,
+            ),
+          ],
+        ),
+        const SizedBox(height: 16),
+        GestureDetector(
+          onTap: () {
+            setState(() {
+              isInstructionsExpanded = !isInstructionsExpanded;
+            });
+          },
+          child: Container(
+            width: 350,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFF1F5F9)),
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: 48,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        "Instructions",
+                        style: GoogleFonts.rubik(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xFF1F1F1F),
+                        ),
+                      ),
+                      Icon(
+                        isInstructionsExpanded
+                            ? Icons.keyboard_arrow_up
+                            : Icons.keyboard_arrow_down,
+                        color: const Color(0xFF64748B),
+                      ),
+                    ],
+                  ),
+                ),
+                if (isInstructionsExpanded) ...[_buildInstructionsDetails()],
+              ],
+            ),
+          ),
+        ),
+        // const SizedBox(height: 15),
+        SizedBox(
+          width: 350,
+          child: ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: (categories.length / 2).ceil(),
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  bottom: index == (categories.length / 2).ceil() - 1
+                      ? 0
+                      : 16.0,
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _buildBulkImportCard(
+                      categories[index * 2]["name"]!,
+                      categories[index * 2]["image"]!,
+                    ),
+                    if (index * 2 + 1 < categories.length)
+                      _buildBulkImportCard(
+                        categories[index * 2 + 1]["name"]!,
+                        categories[index * 2 + 1]["image"]!,
+                      )
+                    else
+                      const SizedBox(width: 169),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBulkImportCard(String category, String imagePath) {
+    return Container(
+      width: 169,
+      height: 215,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          // Image
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8),
+              child: Image.asset(
+                imagePath,
+                width: 153,
+                height: 118,
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(height: 4),
+          Text(
+            category,
+            style: GoogleFonts.rubik(
+              fontSize: 14,
+              fontWeight: FontWeight.w600,
+              color: const Color(0xFF1F1F1F),
+            ),
+          ),
+          const Spacer(),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 12.0),
+            child: SizedBox(
+              width: 153,
+              height: 32,
+              child: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFFF5216),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(9),
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 0),
+                  elevation: 0,
+                ),
+                child: Text(
+                  "Import",
+                  style: GoogleFonts.rubik(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInstructionsDetails() {
+    return Container(
+      padding: const EdgeInsets.only(top: 24, right: 14, bottom: 24, left: 14),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _instructionItem(
+            "1. Download Template",
+            "Download the template file and fill it with proper data.",
+          ),
+          const SizedBox(height: 10),
+          _instructionItem(
+            "2. Select Category",
+            "Once you have downloaded and filled the template, select the corresponding category and upload the file.",
+          ),
+          const SizedBox(height: 10),
+          _instructionItem(
+            "3. Attributes Reference",
+            "For attributes, refer to the attributes list below and use the attribute ID in the attribute_id column along with its corresponding value.",
+          ),
+          const SizedBox(height: 10),
+          _instructionItem(
+            "4. Post-Upload Editing",
+            "After uploading, you need to edit the items individually to set images and variations.",
+          ),
+          const SizedBox(height: 10),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "5. Image File Naming",
+                style: GoogleFonts.rubik(
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF1F1F1F),
+                ),
+              ),
+              const SizedBox(height: 4),
+              RichText(
+                text: TextSpan(
+                  style: GoogleFonts.rubik(
+                    fontSize: 10,
+                    color: const Color(0xFF94A3B8),
+                    fontWeight: FontWeight.w500,
+                  ),
+                  children: [
+                    const TextSpan(text: "Image file names must start with "),
+                    TextSpan(
+                      text: "restaurant/menus/filename.extension",
+                      style: GoogleFonts.rubik(color: const Color(0xFFFF5216)),
+                    ),
+                    const TextSpan(text: " (e.g., restaurant/menus/pizza.jpg)"),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "Available Attributes",
+                style: GoogleFonts.rubik(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF1F1F1F),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF1EE),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                child: Text(
+                  "3 ATTRIBUTES",
+                  style: GoogleFonts.rubik(
+                    fontSize: 10,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFFFF5216),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          _buildAttributeTableHeader(),
+          _attributeRow("1", "Full", isGray: false),
+          _attributeRow("2", "Half", isGray: true),
+          _attributeRow("4", "Quarter", isGray: false),
+        ],
+      ),
+    );
+  }
+
+  Widget _instructionItem(String title, String description) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          title,
+          style: GoogleFonts.rubik(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1F1F1F),
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          description,
+          style: GoogleFonts.rubik(
+            fontSize: 10,
+            color: const Color(0xFF94A3B8),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAttributeTableHeader() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0, left: 16, right: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            "ID",
+            style: GoogleFonts.rubik(
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF94A3B8),
+            ),
+          ),
+          Text(
+            "NAME",
+            style: GoogleFonts.rubik(
+              fontSize: 10,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF94A3B8),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _attributeRow(String id, String name, {required bool isGray}) {
+    return Container(
+      height: 48,
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      decoration: BoxDecoration(
+        color: isGray ? const Color(0xFFF8FAFC) : Colors.white,
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            id,
+            style: GoogleFonts.rubik(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF1F1F1F),
+            ),
+          ),
+          Text(
+            name,
+            style: GoogleFonts.rubik(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: const Color(0xFF1F1F1F),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBasketSection() {
+    return Column(
+      children: [
+        _buildMenuSearchRow(),
+        const SizedBox(height: 16),
+        _buildBasketCard(
+          title: "Restaurant Basket 1",
+          basketId: "12",
+          createdDate: "Nov 25, 2025",
+          itemsCount: "3 Items",
+          redeemPoints: "2000 Pts",
+          status: "ACTIVE",
+          statusColor: const Color(0xFF22C55E),
+          statusBg: const Color(0xFFDCFCE7),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBasketCard({
+    required String title,
+    required String basketId,
+    required String createdDate,
+    required String itemsCount,
+    required String redeemPoints,
+    required String status,
+    required Color statusColor,
+    required Color statusBg,
+  }) {
+    return Container(
+      width: 350,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.02),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // R1 Logo Box
+              Container(
+                width: 48,
+                height: 48,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFEEF2FF),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: Center(
+                  child: Text(
+                    "R1",
+                    style: GoogleFonts.rubik(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFFFF5216),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          title,
+                          style: GoogleFonts.rubik(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF1F1F1F),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 8,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: statusBg,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            status,
+                            style: GoogleFonts.rubik(
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                              color: statusColor,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      "Basket ID: $basketId • Created $createdDate",
+                      style: GoogleFonts.rubik(
+                        fontSize: 10,
+                        color: const Color(0xFF94A3B8),
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Row(
+            children: [
+              // Items Count Box
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF8FAFC),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "ITEMS COUNT",
+                        style: GoogleFonts.rubik(
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF94A3B8),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        itemsCount,
+                        style: GoogleFonts.rubik(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF1F1F1F),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Redeem Points Box
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFF8FAFC),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "REDEEM POINTS",
+                        style: GoogleFonts.rubik(
+                          fontSize: 9,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF94A3B8),
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        redeemPoints,
+                        style: GoogleFonts.rubik(
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF1F1F1F),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          // View Details Button
+          SizedBox(
+            width: double.infinity,
+            height: 40,
+            child: OutlinedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const BasketDetailsScreen(),
+                  ),
+                );
+              },
+              style: OutlinedButton.styleFrom(
+                side: const BorderSide(color: Color(0xFFFF5216), width: 0.8),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+              ),
+              child: Text(
+                "View Details",
+                style: GoogleFonts.rubik(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFFFF5216),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildReceivedPayoutsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Total Payout Balance Gradient Card
+        Container(
+          width: 350,
+          height: 110,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            gradient: const LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              colors: [
+                Color(0xFFFF4D26), // Bright Orange
+                Color(0xFFA62A00), // Dark brownish orange
+              ],
+            ),
+          ),
+          child: Center(
+            child: SizedBox(
+              width: 142,
+              height: 47,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(
+                    "Total Payout Balance",
+                    style: GoogleFonts.rubik(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.white,
+                    ),
+                  ),
+                  const SizedBox(height: 7), // Gap 7px
+                  Text(
+                    "0.00 MRU",
+                    style: GoogleFonts.rubik(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(height: 24),
+        Text(
+          "History",
+          style: GoogleFonts.rubik(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1F1F1F),
+          ),
+        ),
+        const SizedBox(height: 60),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // No Payouts Illustration
+              Container(
+                width: 140,
+                height: 140,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 241, 244, 247),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Container(
+                    width: 60,
+                    height: 46,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 206, 212, 220),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 36,
+                          height: 3,
+                          color: const Color.fromARGB(255, 219, 224, 230),
+                        ),
+                        Container(
+                          width: 36,
+                          height: 3,
+                          color: const Color.fromARGB(255, 219, 224, 230),
+                        ),
+                        Container(
+                          width: 20,
+                          height: 3,
+                          color: const Color.fromARGB(255, 219, 224, 230),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                "No Payouts Yet",
+                style: GoogleFonts.rubik(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xFF64748B),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildRestaurantReportsSection() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "Sales Report",
+          style: GoogleFonts.rubik(
+            fontSize: 14,
+            fontWeight: FontWeight.bold,
+            color: const Color(0xFF1F1F1F),
+          ),
+        ),
+        const SizedBox(height: 16),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [_buildDateInput("From Date"), _buildDateInput("To Date")],
+        ),
+        const SizedBox(height: 60),
+        Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // No Reports Illustration
+              Container(
+                width: 140,
+                height: 140,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 241, 244, 247),
+                  shape: BoxShape.circle,
+                ),
+                child: Center(
+                  child: Container(
+                    width: 60,
+                    height: 46,
+                    padding: const EdgeInsets.all(12),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: const Color.fromARGB(255, 206, 212, 220),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 36,
+                          height: 3,
+                          color: const Color.fromARGB(255, 219, 224, 230),
+                        ),
+                        Container(
+                          width: 36,
+                          height: 3,
+                          color: const Color.fromARGB(255, 219, 224, 230),
+                        ),
+                        Container(
+                          width: 20,
+                          height: 3,
+                          color: const Color.fromARGB(255, 219, 224, 230),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              Text(
+                "No Reports Yet",
+                style: GoogleFonts.rubik(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: const Color(0xFF64748B),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDateInput(String label) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.rubik(
+            fontSize: 10,
+            color: const Color(0xFF94A3B8),
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          width: 169,
+          height: 48,
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFF1F5F9)),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                "dd-mm-yyyy",
+                style: GoogleFonts.rubik(
+                  fontSize: 12,
+                  color: const Color(0xFF1F1F1F),
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
+              const Icon(
+                Icons.calendar_today_outlined,
+                size: 18,
+                color: Color(0xFF64748B),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }
