@@ -2,6 +2,10 @@ import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:saimpex_vendor/configs/ApiConfigs.dart';
+import 'package:saimpex_vendor/configs/Dioclient.dart';
+import 'package:saimpex_vendor/model/login_model.dart';
+import 'package:saimpex_vendor/view/home/home.dart';
 import '../Utils/Utils.dart';
 import '../view/otp/otp.dart';
 
@@ -46,6 +50,48 @@ class LoginController extends GetxController {
         showToast(context, error.toString());
       }
       debugPrint("Login Error: $error");
+    }
+  }
+
+  Future<void> Login(
+    BuildContext context,
+    String userName,
+    String password,
+  ) async {
+    try {
+      showLoadingDialog(context);
+      final response = await DioClient().post(
+        ApiEndPoints.login,
+        body: {"username": userName, "password": password},
+      );
+      LoginModel loginModel = LoginModel.fromJson(response.data);
+      Get.back();
+      update();
+      if (loginModel.status == true) {
+        final languageCode = localization.currentLocale?.languageCode;
+        final message = loginModel.message;
+        final toastMessage = languageCode == "fr"
+            ? (message?.messageFr?.isNotEmpty == true
+                  ? message!.messageFr!.first
+                  : null)
+            : languageCode == "ar"
+            ? (message?.messageAr?.isNotEmpty == true
+                  ? message!.messageAr!.first
+                  : null)
+            : (message?.messageEn?.isNotEmpty == true
+                  ? message!.messageEn!.first
+                  : null);
+
+        showToast(
+          context,
+          toastMessage ?? "Login successful",
+        );
+        Get.offAll(const Home());
+      }
+    } catch (error) {
+      Get.back();
+      print("Login Error: $error");
+      showToast(context, error.toString());
     }
   }
 }

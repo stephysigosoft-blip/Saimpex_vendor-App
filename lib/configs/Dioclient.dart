@@ -1,0 +1,207 @@
+import 'dart:developer';
+import 'package:dio/dio.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:saimpex_vendor/configs/ApiConfigs.dart';
+import 'package:saimpex_vendor/configs/RetryInterceptor.dart';
+
+class DioClient {
+  static final DioClient _instance = DioClient._internal();
+  factory DioClient() => _instance;
+  final FlutterLocalization localization = FlutterLocalization.instance;
+  Dio dio = Dio();
+
+  DioClient._internal() {
+    dio
+      ..options.baseUrl = ApiConfigs.BASE_URL
+      ..options.connectTimeout = Duration(seconds: 20)
+      ..options.receiveTimeout = Duration(seconds: 20)
+      ..options.headers = {
+        "Accept": "application/json",
+        "Content-Type": "application/json",
+      };
+
+    dio.interceptors.add(RetryInterceptor(dio: dio));
+    dio.interceptors.add(_loggingInterceptor());
+  }
+
+  /// Logger Interceptor
+  InterceptorsWrapper _loggingInterceptor() {
+    return InterceptorsWrapper(
+      onRequest: (options, handler) {
+        log("➡️ REQUEST: ${options.method} ${options.uri}");
+        log("Headers: ${options.headers}");
+        log("Data: ${options.data}");
+        return handler.next(options);
+      },
+      onResponse: (response, handler) {
+        log("⬅️ RESPONSE: ${response.statusCode} ${response.data}");
+        return handler.next(response);
+      },
+      onError: (DioException error, handler) {
+        log("❌ ERROR: ${error.error}");
+        return handler.next(error);
+      },
+    );
+  }
+
+  /// Common GET Method
+  Future<Response> get(String path, {Map<String, dynamic>? query}) async {
+    try {
+      return await dio.get(path, queryParameters: query);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  /// Common POST Method
+  Future<Response> post(
+    String path, {
+    dynamic body,
+    Map<String, dynamic>? query,
+  }) async {
+    try {
+      return await dio.post(path, data: body, queryParameters: query);
+    } on DioException catch (e) {
+      throw _handleError(e);
+    }
+  }
+
+  /// Add token dynamically
+  void updateToken(String token) {
+    dio.options.headers["Authorization"] = "Bearer $token";
+  }
+
+  // GLOBAL ERROR HANDLING
+  String _handleError(DioException e) {
+    if (e.response != null) {
+      final data = e.response!.data;
+      final statusCode = e.response!.statusCode;
+
+      if (statusCode == 422 && data is Map) {
+        final msg = data['message'];
+
+        if (msg is Map) {
+          final langCode = localization.currentLocale?.languageCode ?? 'en';
+          final langKey = langCode == 'ar'
+              ? 'message_ar'
+              : langCode == 'fr'
+              ? 'message_fr'
+              : 'message_en';
+          // Nested structure: message.request_id.message_en (or message_fr, message_ar)
+          for (final entry in msg.entries) {
+            final value = entry.value;
+            if (value is Map) {
+              final list = value[langKey];
+              if (list is List && list.isNotEmpty) {
+                return list.first.toString();
+              }
+              final en = value['message_en'];
+              if (en is List && en.isNotEmpty) return en.first.toString();
+            } else if (value is List && value.isNotEmpty) {
+              return value.first.toString();
+            }
+          }
+          // Fallback: first key's value as list
+          final keys = msg.keys.toList();
+          if (keys.isNotEmpty) {
+            final firstValue = msg[keys[0]];
+            if (firstValue is List && firstValue.isNotEmpty) {
+              return firstValue.first.toString();
+            }
+          }
+        }
+
+        if (msg is String) {
+          return msg;
+        }
+
+        return "Validation failed";
+      } else if (statusCode == 500) {
+        // Get.to(ServerDown());
+        return "Server error occurred";
+      } else if (statusCode == 401) {
+        return "Unauthorized";
+      } else {
+        // Log more details about the error
+        log("Error Status Code: $statusCode");
+        log("Error Data: $data");
+        if (data is Map && data['message'] != null) {
+          final msg = data['message'];
+          if (msg is String) return msg;
+          if (msg is Map) {
+            final langCode = localization.currentLocale?.languageCode ?? 'en';
+            final langKey = langCode == 'ar'
+                ? 'message_ar'
+                : langCode == 'fr'
+                ? 'message_fr'
+                : 'message_en';
+            for (final entry in msg.entries) {
+              final value = entry.value;
+              if (value is Map) {
+                final list = value[langKey];
+                if (list is List && list.isNotEmpty) {
+                  return list.first.toString();
+                }
+                final en = value['message_en'];
+                if (en is List && en.isNotEmpty) return en.first.toString();
+              } else if (value is List && value.isNotEmpty) {
+                return value.first.toString();
+              }
+            }
+            final keys = msg.keys.toList();
+            if (keys.isNotEmpty) {
+              final firstValue = msg[keys[0]];
+              if (firstValue is List && firstValue.isNotEmpty) {
+                return firstValue.first.toString();
+              }
+              if (firstValue is String) return firstValue;
+            }
+          }
+        }
+        return "Something went wrong. Code: $statusCode";
+      }
+
+      // if (data['message'] != null) {
+      //   if (data['message'] is String) return data['message'];
+      //
+      //   if (data['message'] is Map) {
+      //     final msg = data['message'] as Map;
+      //     final firstKey = msg.keys.first;
+      //     final firstValue = msg[firstKey];
+      //
+      //     if (firstValue is List && firstValue.isNotEmpty) {
+      //       return firstValue.first;
+      //     }
+      //   }
+      // }
+      //
+      // return "Something went wrong. Code: $statusCode";
+    }
+
+    if (e.type == DioExceptionType.connectionError) {
+      return "No Internet Connection";
+    }
+
+    if (e.type == DioExceptionType.connectionTimeout) {
+      return "Connection Timeout. Try again.";
+    }
+
+    if (e.type == DioExceptionType.receiveTimeout) {
+      return "Receive Timeout. Try again.";
+    }
+
+    if (e.type == DioExceptionType.sendTimeout) {
+      return "Send Timeout. Try again.";
+    }
+
+    // Log the error type and message for debugging
+    log("DioException Type: ${e.type}");
+    log("DioException Message: ${e.message}");
+    if (e.response != null) {
+      log("Response Status: ${e.response!.statusCode}");
+      log("Response Data: ${e.response!.data}");
+    }
+
+    return "Unexpected error occurred: ${e.message ?? e.type.toString()}";
+  }
+}

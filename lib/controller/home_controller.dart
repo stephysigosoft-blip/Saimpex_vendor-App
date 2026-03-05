@@ -1,6 +1,17 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:saimpex_vendor/configs/ApiConfigs.dart';
+import 'package:saimpex_vendor/configs/Dioclient.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
+import 'package:saimpex_vendor/model/settings_model.dart';
+import 'package:saimpex_vendor/view/login/login.dart';
+import 'package:saimpex_vendor/view/settings/maintenance.dart';
+import 'package:saimpex_vendor/view/settings/need_an_update.dart';
 
 import '../Utils/utils.dart';
 import '../model/home_model.dart';
@@ -291,6 +302,82 @@ class HomeController extends GetxController {
         Get.back();
         showToast(context, error.toString());
       }
+    }
+  }
+
+  Future<void> maintenance(BuildContext context) async {
+    try {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      String buildNumber = packageInfo.version;
+      final response = await DioClient().get(ApiEndPoints.settings);
+      SettingsModel model = SettingsModel.fromJson(response.data);
+      debugPrint("settings model: $response.data");
+      debugPrint("current version delivery: $buildNumber");
+      if (model.status == true) {
+        if (Platform.isAndroid &&
+            model.data?.settings?[0].maintenanceAndroidDelivery.toString() ==
+                "1") {
+          Get.offAll(
+            Maintenance(
+              serverDownReason: model
+                  .data
+                  ?.settings?[0]
+                  .maintenanceReasonAndroidDelivery
+                  .toString(),
+            ),
+          );
+        } else if (Platform.isIOS &&
+            model.data?.settings?[0].maintenanceIos.toString() == "1") {
+          Get.offAll(
+            Maintenance(
+              serverDownReason: model.data?.settings?[0].maintenanceReasonIos
+                  .toString(),
+            ),
+          );
+        } else if (Platform.isAndroid &&
+            (model.data?.settings?[0].playStoreUpdateDelivery.toString() ==
+                    "1" &&
+                versionToCode(
+                      model.data?.settings?[0].playStoreVersionDelivery
+                              .toString() ??
+                          "",
+                    ) >
+                    versionToCode(buildNumber.toString()))) {
+          Get.offAll(() => NeedAnUpdate());
+        } else if (Platform.isIOS &&
+            (model.data?.settings?[0].appStoreUpdate.toString() == "1" &&
+                versionToCode(
+                      model.data?.settings?[0].appStoreVersion.toString() ?? "",
+                    ) >
+                    versionToCode(buildNumber.toString()))) {
+          Get.offAll(() => NeedAnUpdate());
+        } else {
+          debugPrint("Getting orders");
+
+          update();
+        }
+      }
+    } catch (error, stackTrace) {
+      debugPrint("maintenance Error: $error");
+      debugPrint("maintenance StackTrace: $stackTrace");
+      if (error.toString() == "Unauthorized") {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        showToast(context, S.of(context).youAreLoggedOutSuccessfully);
+        Get.offAll(LoginScreen());
+      } else {
+        showToast(context, error.toString());
+      }
+    }
+  }
+
+  Future<void> fetchHome(BuildContext context, int status) async {
+    try {
+      final response = await DioClient().get(ApiEndPoints.home);
+      HomeModel model = HomeModel.fromJson(response.data);
+      debugPrint("home model: $response.data");
+    } catch (error) {
+      debugPrint("home Error: $error");
     }
   }
 }

@@ -1,0 +1,18 @@
+class ApiConfigs {
+  // //  // This is the Test Server URL
+  static String BASE_URL =
+      "https://ourworks.co.in/saimpex-backend/public/api/vendor/";
+
+  // // // // This is the Live Server URL
+  //   static String BASE_URL = "";
+
+  // This is the base Image URL
+  static String IMAGE_URL =
+      "https://ourworks.co.in/saimpex-backend/public/storage/";
+}
+
+class ApiEndPoints {
+  static String login = "login";
+  static String settings = "settings";
+  static String home = "home";
+}
