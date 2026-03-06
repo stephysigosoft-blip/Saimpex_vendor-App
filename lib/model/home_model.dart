@@ -1,338 +1,222 @@
 class HomeModel {
-  bool? status;
-  HomeData? data;
-  HomeMessage? message;
+  final bool? status;
+  final HomeData? data;
+  final Message? message;
 
-  HomeModel({this.status, this.data, this.message});
+  HomeModel({
+    this.status,
+    this.data,
+    this.message,
+  });
 
   factory HomeModel.fromJson(Map<String, dynamic>? json) {
     if (json == null) return HomeModel();
 
     return HomeModel(
-      status: json["status"] as bool?,
-      data: json["data"] is Map<String, dynamic>
-          ? HomeData.fromJson(json["data"])
-          : null,
-      message: json["message"] is Map<String, dynamic>
-          ? HomeMessage.fromJson(json["message"])
-          : null,
+      status: json['status']?.toString() == "true",
+      data: json['data'] != null ? HomeData.fromJson(json['data']) : null,
+      message: json['message'] != null ? Message.fromJson(json['message']) : null,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "status": status ?? false,
-      "data": data?.toJson() ?? {},
-      "message": message?.toJson() ?? {},
-    };
   }
 }
 
-// -----------------------------------------------------
-
 class HomeData {
-  List<SliderItem>? sliders;
-  RestaurantsData? restaurants;
+  final Membership? membership;
+  final Summary? summary;
+  final Orders? orders;
+  final Vendor? vendor;
 
-  HomeData({this.sliders, this.restaurants});
+  HomeData({
+    this.membership,
+    this.summary,
+    this.orders,
+    this.vendor,
+  });
 
   factory HomeData.fromJson(Map<String, dynamic>? json) {
     if (json == null) return HomeData();
 
     return HomeData(
-      sliders: json["sliders"] is List
-          ? (json["sliders"] as List)
-          .map((e) => SliderItem.fromJson(e))
-          .toList()
-          : [],
-      restaurants: json["restaurants"] is Map
-          ? RestaurantsData.fromJson(json["restaurants"])
+      membership: json['membership'] != null
+          ? Membership.fromJson(json['membership'])
           : null,
+      summary:
+          json['summary'] != null ? Summary.fromJson(json['summary']) : null,
+      orders: json['orders'] != null ? Orders.fromJson(json['orders']) : null,
+      vendor: json['vendor'] != null ? Vendor.fromJson(json['vendor']) : null,
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "sliders": sliders?.map((e) => e.toJson()).toList() ?? [],
-      "restaurants": restaurants?.toJson() ?? {},
-    };
   }
 }
 
-// -----------------------------------------------------
+class Membership {
+  final String? nameEn;
+  final String? nameFr;
+  final String? nameAr;
+  final int? expiresInDays;
+  final String? subscriptionEndDate;
 
-class SliderItem {
-  int? id;
-  String? image;
-  int? type;
-  int? status;
-  String? createdAt;
-  String? updatedAt;
-
-  SliderItem({
-    this.id,
-    this.image,
-    this.type,
-    this.status,
-    this.createdAt,
-    this.updatedAt,
+  Membership({
+    this.nameEn,
+    this.nameFr,
+    this.nameAr,
+    this.expiresInDays,
+    this.subscriptionEndDate,
   });
 
-  factory SliderItem.fromJson(Map<String, dynamic>? json) {
-    if (json == null) return SliderItem();
+  factory Membership.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return Membership();
 
-    return SliderItem(
-      id: json["id"] as int?,
-      image: json["image"]?.toString(),
-      type: json["type"] as int?,
-      status: json["status"] as int?,
-      createdAt: json["created_at"]?.toString(),
-      updatedAt: json["updated_at"]?.toString(),
+    return Membership(
+      nameEn: json['name_en']?.toString(),
+      nameFr: json['name_fr']?.toString(),
+      nameAr: json['name_ar']?.toString(),
+      expiresInDays: json['expires_in_days'],
+      subscriptionEndDate: json['subscription_end_date']?.toString(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id ?? 0,
-      "image": image ?? "",
-      "type": type ?? 0,
-      "status": status ?? 0,
-      "created_at": createdAt ?? "",
-      "updated_at": updatedAt ?? "",
-    };
   }
 }
 
-// -----------------------------------------------------
+class Summary {
+  final int? todayOrders;
+  final int? totalOrders;
+  final int? totalProducts;
 
-class RestaurantsData {
-  int? currentPage;
-  List<Restaurant>? data;
-  dynamic firstPageUrl;
-  int? from;
-  int? lastPage;
-  dynamic lastPageUrl;
-  List<PageLink>? links;
-  dynamic nextPageUrl;
-  dynamic path;
-  int? perPage;
-  dynamic prevPageUrl;
-  int? to;
-  int? total;
+  Summary({
+    this.todayOrders,
+    this.totalOrders,
+    this.totalProducts,
+  });
 
-  RestaurantsData({
+  factory Summary.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return Summary();
+
+    return Summary(
+      todayOrders: json['today_orders'],
+      totalOrders: json['total_orders'],
+      totalProducts: json['total_products'],
+    );
+  }
+}
+
+class Orders {
+  final int? currentPage;
+  final List<OrderData>? data;
+  final int? lastPage;
+  final dynamic total;
+
+  Orders({
     this.currentPage,
     this.data,
-    this.firstPageUrl,
-    this.from,
     this.lastPage,
-    this.lastPageUrl,
-    this.links,
-    this.nextPageUrl,
-    this.path,
-    this.perPage,
-    this.prevPageUrl,
-    this.to,
     this.total,
   });
 
-  factory RestaurantsData.fromJson(Map<String, dynamic>? json) {
-    if (json == null) return RestaurantsData();
+  factory Orders.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return Orders();
 
-    return RestaurantsData(
-      currentPage: json["current_page"] as int?,
-      data: json["data"] is List
-          ? (json["data"] as List)
-          .map((e) => Restaurant.fromJson(e))
-          .toList()
-          : [],
-      firstPageUrl: json["first_page_url"]?.toString(),
-      from: json["from"] as int?,
-      lastPage: json["last_page"] as int?,
-      lastPageUrl: json["last_page_url"]?.toString(),
-      links: json["links"] is List
-          ? (json["links"] as List)
-          .map((e) => PageLink.fromJson(e))
-          .toList()
-          : [],
-      nextPageUrl: json["next_page_url"]?.toString(),
-      path: json["path"]?.toString(),
-      perPage: json["per_page"] as int?,
-      prevPageUrl: json["prev_page_url"]?.toString(),
-      to: json["to"] as int?,
-      total: json["total"] as int?,
+    return Orders(
+      currentPage: json['current_page'],
+      lastPage: json['last_page'],
+      total: json['total'],
+      data: (json['data'] as List?)
+          ?.map((e) => OrderData.fromJson(e))
+          .toList(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "current_page": currentPage ?? 0,
-      "data": data?.map((e) => e.toJson()).toList() ?? [],
-      "first_page_url": firstPageUrl ?? "",
-      "from": from ?? 0,
-      "last_page": lastPage ?? 0,
-      "last_page_url": lastPageUrl ?? "",
-      "links": links?.map((e) => e.toJson()).toList() ?? [],
-      "next_page_url": nextPageUrl,
-      "path": path ?? "",
-      "per_page": perPage ?? 0,
-      "prev_page_url": prevPageUrl,
-      "to": to ?? 0,
-      "total": total ?? 0,
-    };
   }
 }
 
-// -----------------------------------------------------
+class OrderData {
+  final String? orderCode;
+  final int? status;
+  final String? placedAt;
+  final int? id;
+  final dynamic total;
+  final String? userName;
+  final String? userEmail;
+  final String? userMobile;
+  final int? orderItemsCount;
+  final String? placedAtFormatted;
 
-class Restaurant {
-  int? id;
-  int? userId;
-  String? name_en;
-  String? name_fr;
-  String? name_ar;
-  String? address;
-  String? latitude;
-  String? longitude;
-  int? restaurantType;
-  String? image;
-  String? rating;
-  int? ratingCount;
-  String? maxOfferPercentage;
-  String? avgPreparationMinutes;
-  double? distanceKm;
-  int? isOpen;
-  String? openingTime;
-  String? closingTime;
-
-  Restaurant({
+  OrderData({
+    this.orderCode,
+    this.status,
+    this.placedAt,
     this.id,
-    this.userId,
-    this.name_en,
-    this.name_ar,
-    this.name_fr,
-    this.address,
-    this.latitude,
-    this.longitude,
-    this.restaurantType,
-    this.image,
-    this.rating,
-    this.ratingCount,
-    this.maxOfferPercentage,
-    this.avgPreparationMinutes,
-    this.distanceKm,
-    this.isOpen,
-    this.openingTime,
-    this.closingTime,
+    this.total,
+    this.userName,
+    this.userEmail,
+    this.userMobile,
+    this.orderItemsCount,
+    this.placedAtFormatted,
   });
 
-  factory Restaurant.fromJson(Map<String, dynamic>? json) {
-    if (json == null) return Restaurant();
+  factory OrderData.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return OrderData();
 
-    return Restaurant(
-      id: json["id"] as int?,
-      userId: json["user_id"] as int?,
-      name_ar: json["name_ar"]?.toString(),
-      name_en: json["name_en"]?.toString(),
-      name_fr: json["name_fr"]?.toString(),
-      address: json["address"]?.toString(),
-      latitude: json["latitude"]?.toString(),
-      longitude: json["longitude"]?.toString(),
-      restaurantType: json["restaurant_type"] as int?,
-      image: json["image"]?.toString(),
-      rating: json["rating"]?.toString(),
-      ratingCount: json["rating_count"] as int?,
-      maxOfferPercentage: json["max_offer_percentage"]?.toString(),
-      avgPreparationMinutes: json["avg_preparation_minutes"]?.toString(),
-      distanceKm: (json["distance_km"] as num?)?.toDouble(),
-      isOpen: json["is_open"] as int?,
-      openingTime: json["opening_time"]?.toString(),
-      closingTime: json["closing_time"]?.toString(),
+    return OrderData(
+      orderCode: json['order_code']?.toString(),
+      status: json['status'],
+      placedAt: json['placed_at']?.toString(),
+      id: json['id'],
+      total: json['total']?.toString(),
+      userName: json['user_name']?.toString(),
+      userEmail: json['user_email']?.toString(),
+      userMobile: json['user_mobile']?.toString(),
+      orderItemsCount: json['order_items_count'],
+      placedAtFormatted: json['placed_at_formatted']?.toString(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "id": id ?? 0,
-      "user_id": userId ?? 0,
-      "name_fr": name_fr ?? "",
-      "name_ar": name_ar ?? "",
-      "name_en": name_en ?? "",
-      "address": address ?? "",
-      "latitude": latitude ?? "",
-      "longitude": longitude ?? "",
-      "restaurant_type": restaurantType ?? 0,
-      "image": image ?? "",
-      "rating": rating ?? "",
-      "rating_count": ratingCount ?? 0,
-      "max_offer_percentage": maxOfferPercentage ?? "",
-      "avg_preparation_minutes": avgPreparationMinutes ?? "",
-      "distance_km": distanceKm ?? 0.0,
-      "is_open": isOpen ?? 0,
-      "opening_time": openingTime ?? "",
-      "closing_time": closingTime ?? "",
-    };
   }
 }
 
-// -----------------------------------------------------
+class Vendor {
+  final int? id;
+  final String? nameEn;
+  final String? nameAr;
+  final String? nameFr;
+  final int? vendorType;
+  final String? image;
 
-class PageLink {
-  dynamic url;
-  dynamic label;
-  dynamic page;
-  bool? active;
+  Vendor({
+    this.id,
+    this.nameEn,
+    this.nameAr,
+    this.nameFr,
+    this.vendorType,
+    this.image,
+  });
 
-  PageLink({this.url, this.label, this.page, this.active});
+  factory Vendor.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return Vendor();
 
-  factory PageLink.fromJson(Map<String, dynamic>? json) {
-    if (json == null) return PageLink();
-
-    return PageLink(
-      url: json["url"]?.toString(),
-      label: json["label"]?.toString(),
-      page: json["page"] as int?,
-      active: json["active"] as bool?,
+    return Vendor(
+      id: json['id'],
+      nameEn: json['name_en']?.toString(),
+      nameAr: json['name_ar']?.toString(),
+      nameFr: json['name_fr']?.toString(),
+      vendorType: json['vendor_type'],
+      image: json['image']?.toString(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "url": url ?? "",
-      "label": label ?? "",
-      "page": page,
-      "active": active ?? false,
-    };
   }
 }
 
-// -----------------------------------------------------
+class Message {
+  final List<String>? messageEn;
+  final List<String>? messageFr;
+  final List<String>? messageAr;
 
-class HomeMessage {
-  List<String>? messageEn;
-  List<String>? messageFr;
-  List<String>? messageAr;
+  Message({
+    this.messageEn,
+    this.messageFr,
+    this.messageAr,
+  });
 
-  HomeMessage({this.messageEn, this.messageFr, this.messageAr});
+  factory Message.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return Message();
 
-  factory HomeMessage.fromJson(Map<String, dynamic>? json) {
-    if (json == null) return HomeMessage();
-
-    return HomeMessage(
-      messageEn:
-      (json["message_en"] as List?)?.map((e) => e.toString()).toList() ?? [],
-      messageFr:
-      (json["message_fr"] as List?)?.map((e) => e.toString()).toList() ?? [],
-      messageAr:
-      (json["message_ar"] as List?)?.map((e) => e.toString()).toList() ?? [],
+    return Message(
+      messageEn: (json['message_en'] as List?)?.map((e) => e.toString()).toList(),
+      messageFr: (json['message_fr'] as List?)?.map((e) => e.toString()).toList(),
+      messageAr: (json['message_ar'] as List?)?.map((e) => e.toString()).toList(),
     );
-  }
-
-  Map<String, dynamic> toJson() {
-    return {
-      "message_en": messageEn ?? [],
-      "message_fr": messageFr ?? [],
-      "message_ar": messageAr ?? [],
-    };
   }
 }

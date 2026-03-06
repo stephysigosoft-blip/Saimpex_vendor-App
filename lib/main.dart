@@ -9,8 +9,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
 import 'package:saimpex_vendor/utils/Utils.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:saimpex_vendor/view/Login/login.dart';
-import 'package:saimpex_vendor/view/chat/ChatListing.dart';
 import 'package:saimpex_vendor/view/splash/Splash.dart';
 
 import 'generated/l10n.dart';
@@ -135,7 +133,7 @@ class _MyAppState extends State<MyApp> {
             ),
             useMaterial3: true,
           ),
-          home: LoginScreen(),
+          home: Splash(),
         );
       },
     );

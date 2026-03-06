@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:saimpex_vendor/view/home/vendor_order_details.dart';
-import 'package:saimpex_vendor/view/home/widgets/vendor_order_card.dart';
-import 'package:saimpex_vendor/view/home/widgets/vendor_stat_card.dart';
-import 'package:saimpex_vendor/view/notifications/notifications.dart';
+import 'package:saimpex_vendor/controller/home_controller.dart';
+import 'package:saimpex_vendor/controller/vendor_home_controller.dart';
+import 'package:saimpex_vendor/model/home_model.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
-import 'package:saimpex_vendor/view/home/dashboard.dart';
+import 'package:saimpex_vendor/view/home/widgets/vendor_dashboard_button.dart';
+import 'package:saimpex_vendor/view/home/widgets/vendor_home_top_bar.dart';
+import 'package:saimpex_vendor/view/home/widgets/vendor_membership_card.dart';
+import 'package:saimpex_vendor/view/home/widgets/vendor_order_list_item.dart';
+import 'package:saimpex_vendor/view/home/widgets/vendor_orders_header.dart';
+import 'package:saimpex_vendor/view/home/widgets/vendor_stats_section.dart';
+import 'package:saimpex_vendor/view/home/widgets/vendor_status_tabs.dart';
+import 'package:saimpex_vendor/view/home/widgets/vendor_success_dialog.dart';
 
 class VendorHomeScreen extends StatefulWidget {
   const VendorHomeScreen({super.key});
@@ -17,7 +22,19 @@ class VendorHomeScreen extends StatefulWidget {
 }
 
 class _VendorHomeScreenState extends State<VendorHomeScreen> {
+  final VendorHomeController vendorHomeController =
+      const VendorHomeController();
+  final HomeController homeController = Get.find<HomeController>();
   String selectedTab = "Pending";
+  static const int _defaultLimit = 10;
+  final Map<String, int> _tabCounts = {
+    "Pending": 0,
+    "Accepted": 0,
+    "Preparing": 0,
+    "Ready": 0,
+    "Delivered": 0,
+    "Cancelled": 0,
+  };
   final List<String> tabs = [
     "Pending",
     "Accepted",
@@ -27,446 +44,209 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
     "Cancelled",
   ];
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _fetchOrders();
+    });
+  }
+
+  int _statusValue(String tab) {
+    switch (tab) {
+      case "Pending":
+        return 1;
+      case "Accepted":
+        return 2;
+      case "Preparing":
+        return 3;
+      case "Ready":
+        return 4;
+      case "Delivered":
+        return 9;
+      case "Cancelled":
+        return 10;
+      default:
+        return 1;
+    }
+  }
+
+  String _statusLabel(int? status) {
+    switch (status) {
+      case 1:
+        return "Pending";
+      case 2:
+        return "Accepted";
+      case 3:
+        return "Preparing";
+      case 4:
+        return "Ready";
+      case 9:
+        return "Delivered";
+      case 10:
+        return "Cancelled";
+      default:
+        return "Pending";
+    }
+  }
+
+  Future<void> _fetchOrders({String? keyword}) async {
+    await homeController.fetchHome(
+      context,
+      orderStatus: _statusValue(selectedTab),
+      keyword: keyword ?? homeController.searchController.text.trim(),
+      limit: _defaultLimit,
+    );
+    _refreshSelectedTabCount();
+  }
+
+  void _refreshSelectedTabCount() {
+    if (!mounted) return;
+    final totalCount =
+        homeController.homeData?.data?.orders?.total ??
+        homeController.homeData?.data?.orders?.data?.length ??
+        0;
+    setState(() {
+      _tabCounts[selectedTab] = totalCount;
+    });
+  }
+
   void _showSuccessDialog(BuildContext context) {
     showDialog(
       context: context,
-      builder: (context) => Dialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        child: Container(
-          width: 316,
-          height: 154.52,
-          padding: const EdgeInsets.all(16),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Align(
-                alignment: Alignment.topRight,
-                child: GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: const Icon(Icons.close, color: Colors.grey, size: 20),
-                ),
-              ),
-              const SizedBox(height: 8),
-              Image.asset(
-                'lib/assets/images/Success vendor.png',
-                width: 50,
-                height: 50,
-              ),
-              const SizedBox(height: 16),
-              Text(
-                "Order Accepted successfully",
-                style: GoogleFonts.rubik(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF1F2937),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      builder: (context) => const VendorSuccessDialog(),
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return CommonBackground(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 60),
-            // Top Bar / Welcome Box
-            Padding(
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset('lib/assets/images/logo.png', height: 50),
-                      const SizedBox(width: 12),
-                      Text(
-                        "Welcome to Saimpex Vendor!",
-                        style: GoogleFonts.rubik(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F1F1F),
-                        ),
-                      ),
-                    ],
-                  ),
-                  GestureDetector(
-                    onTap: () => Get.to(() => const Notifications()),
-                    child: Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: const BoxDecoration(
-                        color: Colors.white,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(color: Colors.black12, blurRadius: 4),
-                        ],
-                      ),
-                      child: const Icon(
-                        Icons.notifications_none,
-                        color: Colors.black87,
-                        size: 20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 28),
-            // Membership Card
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Container(
-                width: double.infinity,
-                height: 60.25,
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFE5E5E5), width: 1),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 10,
-                      offset: const Offset(0, 4),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    Image.asset(
-                      'lib/assets/images/Silver.png',
-                      width: 30,
-                      height: 30,
-                    ),
-                    const SizedBox(width: 12),
-                    Expanded(
-                      child: Text(
-                        "Silver Member",
-                        style: GoogleFonts.rubik(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w600,
-                          color: const Color(0xFF1F1F1F),
-                        ),
-                      ),
-                    ),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 6,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFE5E5),
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Text(
-                        "Expires in 7 days",
-                        style: GoogleFonts.rubik(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.red,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Stats
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  VendorStatCard(
-                    title: "Today's Orders",
-                    value: "69",
-                    icon: Icons.shopping_basket_outlined,
-                    backgroundColor: Color(0xFFE5E5FF),
-                    iconDecorationColor: Color(0xFF6B6BFF),
-                  ),
-                  VendorStatCard(
-                    title: "Total Orders",
-                    value: "100",
-                    icon: Icons.account_balance_wallet_outlined,
-                    backgroundColor: Color(0xFFD9F9E7),
-                    iconDecorationColor: Color(0xFF00D15D),
-                  ),
-                  VendorStatCard(
-                    title: "Products",
-                    value: "10",
-                    icon: Icons.shopping_bag_outlined,
-                    backgroundColor: Color(0xFFFFE5D9),
-                    iconDecorationColor: Color(0xFFFF5216),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Dashboard Button
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: SizedBox(
-                width: double.infinity,
-                height: 45,
-                child: OutlinedButton(
-                  onPressed: () {
-                    Get.to(() => const Dashboard());
-                  },
-                  style: OutlinedButton.styleFrom(
-                    side: const BorderSide(color: Color(0xFFFF5216)),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: Text(
-                    "Go to Dashboard",
-                    style: GoogleFonts.rubik(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFFFF5216),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            // Orders Header
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "ORDERS",
-                    style: GoogleFonts.rubik(
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFF1F1F1F),
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () {},
-                    child: Text(
-                      "View All",
-                      style: GoogleFonts.rubik(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFFFF5216),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 5),
-            // Search Bar
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: CustomSearchBox(
-                hintText: "Search by ID, name",
-                boxColor: Colors.white,
-                showSearchIcon: true,
-                width: 395,
-                height: 44,
-              ),
-            ),
-            const SizedBox(height: 16),
-            // Tabs
-            SizedBox(
-              height: 38,
-              child: ListView.builder(
-                padding: const EdgeInsets.only(left: 16),
-                scrollDirection: Axis.horizontal,
-                itemCount: tabs.length,
-                itemBuilder: (context, index) {
-                  bool isSelected = selectedTab == tabs[index];
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedTab = tabs[index];
-                      });
-                    },
-                    child: Stack(
-                      clipBehavior: Clip.none,
-                      children: [
-                        Container(
-                          width: 114,
-                          margin: const EdgeInsets.only(right: 10),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? (tabs[index] == "Pending"
-                                      ? const Color(0xFFF59E0B)
-                                      : tabs[index] == "Accepted" ||
-                                            tabs[index] == "Ready"
-                                      ? const Color(0xFF22C55E)
-                                      : tabs[index] == "Delivered"
-                                      ? const Color(0xFF15803D)
-                                      : tabs[index] == "Preparing"
-                                      ? const Color(0xFF60A5FA)
-                                      : tabs[index] == "Cancelled"
-                                      ? const Color(0xFFEF4444)
-                                      : const Color(0xFFFF5216))
-                                : Colors.white,
-                            borderRadius: BorderRadius.circular(9999),
-                            border: Border.all(
-                              color: isSelected
-                                  ? (tabs[index] == "Pending"
-                                        ? const Color(0xFFF59E0B)
-                                        : tabs[index] == "Accepted" ||
-                                              tabs[index] == "Ready"
-                                        ? const Color(0xFF22C55E)
-                                        : tabs[index] == "Delivered"
-                                        ? const Color(0xFF15803D)
-                                        : tabs[index] == "Preparing"
-                                        ? const Color(0xFF60A5FA)
-                                        : tabs[index] == "Cancelled"
-                                        ? const Color(0xFFEF4444)
-                                        : const Color(0xFFFF5216))
-                                  : const Color(0xFFE5E5E5),
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              tabs[index],
-                              style: GoogleFonts.rubik(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: isSelected
-                                    ? Colors.white
-                                    : const Color(0xFF6B7280),
-                              ),
-                            ),
-                          ),
-                        ),
-                        // Badge indicator shown when tab is selected
-                        if (isSelected)
-                          Positioned(
-                            top: -4,
-                            right: 0,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 2,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20),
-                                border: Border.all(
-                                  color: Colors.white,
-                                  width: 1.5,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.12),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Text(
-                                tabs[index] == "Pending"
-                                    ? "02"
-                                    : tabs[index] == "Accepted"
-                                    ? "03"
-                                    : tabs[index] == "Preparing"
-                                    ? "05"
-                                    : tabs[index] == "Ready"
-                                    ? "02"
-                                    : tabs[index] == "Delivered"
-                                    ? "01"
-                                    : "01",
-                                style: GoogleFonts.rubik(
-                                  color: tabs[index] == "Pending"
-                                      ? const Color(0xFFF59E0B)
-                                      : tabs[index] == "Accepted" ||
-                                            tabs[index] == "Ready"
-                                      ? const Color(0xFF22C55E)
-                                      : tabs[index] == "Delivered"
-                                      ? const Color(0xFF15803D)
-                                      : tabs[index] == "Preparing"
-                                      ? const Color(0xFF60A5FA)
-                                      : tabs[index] == "Cancelled"
-                                      ? const Color(0xFFEF4444)
-                                      : const Color(0xFFFF5216),
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1,
-                                ),
-                              ),
-                            ),
-                          ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(height: 24),
-            // Orders List
-            _orderCard(
-              orderId: "ORD-882111",
-              customerName: "Aicha Mint Ahmed",
-              itemsCount: 3,
-              price: 42.50,
-              dateTime: "Feb 07, 2026 10:45 AM, Today",
-              status: selectedTab,
-            ),
-            const SizedBox(height: 16),
-            _orderCard(
-              orderId: "ORD-882112",
-              customerName: "Mariem Mint Sidi",
-              itemsCount: 3,
-              price: 42.50,
-              dateTime: "Feb 07, 2026 10:50 AM, Today",
-              status: selectedTab,
-            ),
-            const SizedBox(height: 100),
-          ],
-        ),
-      ),
+    final mediaQuery = MediaQuery.of(context);
+    final size = mediaQuery.size;
+    final layout = vendorHomeController.getLayoutConfig(
+      screenWidth: size.width,
+      screenHeight: size.height,
+      topPadding: mediaQuery.padding.top,
     );
-  }
-
-  Widget _orderCard({
-    required String orderId,
-    required String customerName,
-    required int itemsCount,
-    required double price,
-    required String dateTime,
-    required String status,
-  }) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: VendorOrderCard(
-        orderId: orderId,
-        customerName: customerName,
-        itemsCount: itemsCount,
-        price: price,
-        dateTime: dateTime,
-        status: status,
-        onReject: () {},
-        onAccept: () {
-          _showSuccessDialog(context);
-        },
-        onTap: () {
-          Get.to(
-            () => VendorOrderDetails(
-              orderId: orderId.replaceAll("ORD-", ""),
-              customerName: customerName,
-              status: status,
-              dateTime: dateTime,
-              price: price,
+    return GetBuilder<HomeController>(
+      builder: (controller) {
+        final membership = controller.homeData?.data?.membership;
+        final summary = controller.homeData?.data?.summary;
+        final List<OrderData> orders =
+            controller.homeData?.data?.orders?.data ?? <OrderData>[];
+        final membershipName = membership?.nameEn?.trim().isNotEmpty == true
+            ? membership!.nameEn!.trim()
+            : "Membership";
+        final expiryText =
+            "Expires in ${membership?.expiresInDays?.toString() ?? "0"} days";
+        return CommonBackground(
+          resizeToAvoidBottomInset: false,
+          child: SizedBox.expand(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(height: layout.topOffset),
+                VendorHomeTopBar(horizontalPadding: layout.horizontalPadding),
+                const SizedBox(height: 28),
+                VendorMembershipCard(
+                  horizontalPadding: layout.horizontalPadding,
+                  width: size.width,
+                  height: layout.membershipCardHeight,
+                  membershipName: membershipName,
+                  expiryText: expiryText,
+                ),
+                const SizedBox(height: 24),
+                VendorStatsSection(
+                  horizontalPadding: layout.horizontalPadding,
+                  todayOrders: (summary?.todayOrders ?? 0).toString(),
+                  totalOrders: (summary?.totalOrders ?? 0).toString(),
+                  totalProducts: (summary?.totalProducts ?? 0).toString(),
+                ),
+                const SizedBox(height: 24),
+                VendorDashboardButton(
+                  horizontalPadding: layout.horizontalPadding,
+                  width: size.width,
+                  height: layout.dashboardButtonHeight,
+                ),
+                const SizedBox(height: 10),
+                VendorOrdersHeader(horizontalPadding: layout.horizontalPadding),
+                const SizedBox(height: 5),
+                Padding(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: layout.horizontalPadding,
+                  ),
+                  child: CustomSearchBox(
+                    hintText: "Search by ID, name",
+                    controller: controller.searchController,
+                    onChanged: (value) async {
+                      await controller.fetchHome(
+                        context,
+                        orderStatus: _statusValue(selectedTab),
+                        keyword: value.trim(),
+                        limit: _defaultLimit,
+                      );
+                      _refreshSelectedTabCount();
+                    },
+                    boxColor: Colors.white,
+                    showSearchIcon: true,
+                    width: layout.searchBoxWidth,
+                    height: 44,
+                  ),
+                ),
+                const SizedBox(height: 16),
+                VendorStatusTabs(
+                  height: layout.tabsHeight,
+                  leftPadding: layout.horizontalPadding,
+                  tabWidth: layout.tabWidth,
+                  tabs: tabs,
+                  tabCounts: _tabCounts,
+                  selectedTab: selectedTab,
+                  onTabChanged: (tab) {
+                    setState(() {
+                      selectedTab = tab;
+                    });
+                    _fetchOrders();
+                  },
+                ),
+                const SizedBox(height: 16),
+                Expanded(
+                  child: controller.isFirstLoadRunning
+                      ? const Center(child: CircularProgressIndicator())
+                      : orders.isEmpty
+                      ? Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: layout.horizontalPadding,
+                            vertical: 12,
+                          ),
+                          child: const Text("No orders found"),
+                        )
+                      : ListView.builder(
+                          padding: const EdgeInsets.only(top: 8, bottom: 100),
+                          itemCount: orders.length,
+                          itemBuilder: (context, index) {
+                            final order = orders[index];
+                            final price =
+                                double.tryParse(order.total ?? "0") ?? 0;
+                            return Padding(
+                              padding: const EdgeInsets.only(bottom: 16),
+                              child: VendorOrderListItem(
+                                horizontalPadding: layout.horizontalPadding,
+                                orderId: order.orderCode ?? "NA",
+                                customerName: order.userName ?? "Unknown",
+                                itemsCount: order.orderItemsCount ?? 0,
+                                price: price,
+                                dateTime: order.placedAtFormatted ?? "",
+                                status: _statusLabel(order.status),
+                                onAccept: () => _showSuccessDialog(context),
+                              ),
+                            );
+                          },
+                        ),
+                ),
+              ],
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }
