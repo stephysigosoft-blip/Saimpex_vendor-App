@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/dotted_line_painter.dart';
 import 'package:saimpex_vendor/utils/widgets/success_dialog.dart';
+
+import '../../generated/l10n.dart';
 
 class VendorOrderDetails extends StatelessWidget {
   final String orderId;
@@ -13,7 +16,7 @@ class VendorOrderDetails extends StatelessWidget {
   final String dateTime;
   final double price;
 
-  const VendorOrderDetails({
+   VendorOrderDetails({
     super.key,
     required this.orderId,
     required this.customerName,
@@ -21,10 +24,14 @@ class VendorOrderDetails extends StatelessWidget {
     required this.dateTime,
     required this.price,
   });
-
+  final FlutterLocalization localization = FlutterLocalization.instance;
   @override
   Widget build(BuildContext context) {
-    return CommonBackground(
+    return Directionality(
+        textDirection: localization.currentLocale!.languageCode.toString() == "ar"
+            ? TextDirection.rtl
+            : TextDirection.ltr,
+        child: CommonBackground(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -37,7 +44,7 @@ class VendorOrderDetails extends StatelessWidget {
           ),
         ),
         title: Text(
-          "Order Details",
+          S.of(context).orderDetails,
           style: GoogleFonts.rubik(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -82,7 +89,7 @@ class VendorOrderDetails extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(
-                              "ORDER #$orderId",
+                              S.of(context).order+"#"+orderId,
                               style: GoogleFonts.rubik(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w600,
@@ -151,16 +158,16 @@ class VendorOrderDetails extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             _infoCol(
-                              "ITEMS",
-                              "3 Items • ${price.toStringAsFixed(2)} MRU",
+                              S.of(context).items,
+                              "3"+" "+S.of(context).items+" • "+"${price.toStringAsFixed(2)} "+"MRU",
                               isPrice: true,
                             ),
-                            _infoCol("DATE & TIME", dateTime),
+                            _infoCol(S.of(context).dateTime, dateTime),
                           ],
                         ),
                         const SizedBox(height: 14), // Gap 14px
                         Text(
-                          "DELIVERY ADDRESS",
+                          S.of(context).deliveryAddress,
                           style: GoogleFonts.rubik(
                             fontSize: 10,
                             fontWeight: FontWeight.w600,
@@ -208,11 +215,11 @@ class VendorOrderDetails extends StatelessWidget {
                   if (status.toLowerCase() == 'ready' ||
                       status.toLowerCase() == 'delivered') ...[
                     const SizedBox(height: 24),
-                    _driverDetails(),
+                    _driverDetails(context),
                   ],
                   const SizedBox(height: 32),
                   Text(
-                    "ORDER ITEMS (3)",
+                    S.of(context).orderItems+" "+"(3)",
                     style: GoogleFonts.rubik(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -228,11 +235,11 @@ class VendorOrderDetails extends StatelessWidget {
                     separatorBuilder: (context, index) =>
                         const SizedBox(height: 12),
                     itemBuilder: (context, index) =>
-                        _itemTile("Double Cheeseburger", 14.16, 1),
+                        _itemTile("Double Cheeseburger", 14.16, 1,context),
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    "CUSTOMER NOTES",
+                    S.of(context).customerNotes,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -260,12 +267,12 @@ class VendorOrderDetails extends StatelessWidget {
                           width: 20,
                         ),
                         const SizedBox(width: 12),
-                        const Expanded(
+                         Expanded(
                           child: Text(
-                            "\"Please leave the package at the front door and ring the bell. Thank you!\"",
+                            S.of(context).pleaseLeaveThePackageAtTheFrontDoorAndRing,
                             style: TextStyle(
                               fontSize: 12,
-                              fontStyle: FontStyle.italic,
+                              fontStyle: FontStyle.normal,
                               color: Color(0xFF92400E),
                               height: 1.5,
                             ),
@@ -276,7 +283,7 @@ class VendorOrderDetails extends StatelessWidget {
                   ),
                   const SizedBox(height: 32),
                   Text(
-                    "PAYMENT SUMMARY",
+                    S.of(context).paymentSummary,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -299,19 +306,19 @@ class VendorOrderDetails extends StatelessWidget {
                     ),
                     child: Column(
                       children: [
-                        _summaryRow("Subtotal", "37.50 MRU"),
+                        _summaryRow(S.of(context).subtotal, "37.50 MRU"),
                         const SizedBox(height: 16), // Gap 16px as requested
-                        _summaryRow("Delivery Fee", "5.00 MRU"),
+                        _summaryRow(S.of(context).deliveryFee, "5.00 MRU"),
                         const SizedBox(height: 16), // Gap 16px
-                        _summaryRow("Tax", "5.00 MRU"),
+                        _summaryRow(S.of(context).tax, "5.00 MRU"),
                         const SizedBox(height: 16), // Gap 16px
                         _summaryRow(
-                          "Payment Type",
+                          S.of(context).paymentType,
                           "Online Payment",
                           isGreen: true,
                         ),
                         const SizedBox(height: 8),
-                        _summaryRow("Payment On", dateTime, isSmall: true),
+                        _summaryRow(S.of(context).paymentOn, dateTime, isSmall: true),
                         const SizedBox(height: 16), // Gap 16px
                         CustomPaint(
                           painter: DottedLinePainter(
@@ -323,7 +330,7 @@ class VendorOrderDetails extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(height: 16), // Gap 16px
-                        _summaryRow("Total Amount", "47.50 MRU", isTotal: true),
+                        _summaryRow(S.of(context).totalAmount, "47.50 MRU", isTotal: true),
                       ],
                     ),
                   ),
@@ -347,7 +354,7 @@ class VendorOrderDetails extends StatelessWidget {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Order Timeline",
+                                  S.of(context).orderTimeline,
                                   style: GoogleFonts.rubik(
                                     fontSize: 12,
                                     fontWeight: FontWeight.w600,
@@ -360,7 +367,7 @@ class VendorOrderDetails extends StatelessWidget {
                           Expanded(
                             child: Center(
                               child: Text(
-                                "Order Duration Breakdown",
+                                S.of(context).orderDurationBreakdown,
                                 style: GoogleFonts.rubik(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
@@ -531,7 +538,7 @@ class VendorOrderDetails extends StatelessWidget {
           ),
         ],
       ),
-    );
+    ));
   }
 
   Widget _infoCol(String label, String value, {bool isPrice = false}) {
@@ -571,7 +578,7 @@ class VendorOrderDetails extends StatelessWidget {
     );
   }
 
-  Widget _itemTile(String name, double price, int qty) {
+  Widget _itemTile(String name, double price, int qty,BuildContext context) {
     return Container(
       width: 350,
       height: 98,
@@ -629,7 +636,7 @@ class VendorOrderDetails extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              "Qty: $qty",
+              S.of(context).qty+": "+"$qty",
               style: GoogleFonts.rubik(
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
@@ -660,18 +667,21 @@ class VendorOrderDetails extends StatelessWidget {
             color: const Color(0xFF4B5563),
           ),
         ),
-        Text(
-          value,
-          style: GoogleFonts.rubik(
-            fontSize: isTotal ? 14 : (isSmall ? 11 : 13),
-            fontWeight: isTotal ? FontWeight.bold : FontWeight.w500,
-            color: isGreen
-                ? const Color(0xFF10B981)
-                : (isTotal
-                      ? colorPrimary
-                      : (isSmall
-                            ? const Color(0xFF9CA3AF)
-                            : const Color(0xFF1F2937))),
+        Expanded(
+          child: Text(
+            value,
+            textAlign: TextAlign.end,
+            style: GoogleFonts.rubik(
+              fontSize: isTotal ? 14 : (isSmall ? 11 : 13),
+              fontWeight: isTotal ? FontWeight.bold : FontWeight.w500,
+              color: isGreen
+                  ? const Color(0xFF10B981)
+                  : (isTotal
+                        ? colorPrimary
+                        : (isSmall
+                              ? const Color(0xFF9CA3AF)
+                              : const Color(0xFF1F2937))),
+            ),
           ),
         ),
       ],
@@ -752,11 +762,14 @@ class VendorOrderDetails extends StatelessWidget {
                         ),
                       ),
                       if (time.isNotEmpty)
-                        Text(
-                          time,
-                          style: GoogleFonts.rubik(
-                            fontSize: 10,
-                            color: const Color(0xFF94A3B8),
+                        Expanded(
+                          child: Text(
+                            time,
+                            textAlign: TextAlign.end,
+                            style: GoogleFonts.rubik(
+                              fontSize: 10,
+                              color: const Color(0xFF94A3B8),
+                            ),
                           ),
                         ),
                     ],
@@ -778,7 +791,7 @@ class VendorOrderDetails extends StatelessWidget {
     );
   }
 
-  Widget _driverDetails() {
+  Widget _driverDetails(BuildContext context) {
     return Container(
       width: 350,
       padding: const EdgeInsets.all(16),
@@ -807,7 +820,7 @@ class VendorOrderDetails extends StatelessWidget {
               ),
               const SizedBox(width: 8),
               Text(
-                "Driver Details",
+                S.of(context).driverDetails,
                 style: GoogleFonts.rubik(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
@@ -849,7 +862,7 @@ class VendorOrderDetails extends StatelessWidget {
                     ),
                     const SizedBox(height: 2),
                     Text(
-                      "Assigned Delivery Partner",
+                      S.of(context).assignedDeliveryPartner,
                       style: GoogleFonts.rubik(
                         fontSize: 11,
                         color: const Color(0xFF64748B),

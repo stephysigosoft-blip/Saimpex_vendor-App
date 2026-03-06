@@ -63,6 +63,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "areYouSureYouWantToPlaceThisOrder":
             MessageLookupByLibrary.simpleMessage(
                 "Are you sure you want to place this order?"),
+        "assignedDeliveryPartner":
+            MessageLookupByLibrary.simpleMessage("Assigned Delivery Partner"),
         "availableAt": MessageLookupByLibrary.simpleMessage("Available at"),
         "availablePoints":
             MessageLookupByLibrary.simpleMessage("Available Points"),
@@ -118,12 +120,16 @@ class MessageLookup extends MessageLookupByLibrary {
             "Currently no restaurants found"),
         "currentlyNoStoresFound":
             MessageLookupByLibrary.simpleMessage("Currently no stores found"),
+        "customerNotes": MessageLookupByLibrary.simpleMessage("CUSTOMER NOTES"),
         "dAgo": MessageLookupByLibrary.simpleMessage("d ago"),
+        "dateTime": MessageLookupByLibrary.simpleMessage("DATE & TIME"),
         "debit": MessageLookupByLibrary.simpleMessage("Debit"),
         "delete": MessageLookupByLibrary.simpleMessage("Delete"),
         "deleteAccount": MessageLookupByLibrary.simpleMessage("Delete Account"),
         "deleteCart": MessageLookupByLibrary.simpleMessage("Delete Cart"),
         "deleteChat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
+        "deliveryAddress":
+            MessageLookupByLibrary.simpleMessage("DELIVERY ADDRESS"),
         "deliveryFee": MessageLookupByLibrary.simpleMessage("Delivery Fee"),
         "deliveryLocation":
             MessageLookupByLibrary.simpleMessage("Delivery Location"),
@@ -235,9 +241,14 @@ class MessageLookup extends MessageLookupByLibrary {
         "now": MessageLookupByLibrary.simpleMessage("Now"),
         "off": MessageLookupByLibrary.simpleMessage("OFF"),
         "onlinePayment": MessageLookupByLibrary.simpleMessage("Online Payment"),
+        "order": MessageLookupByLibrary.simpleMessage("ORDER"),
         "orderDetails": MessageLookupByLibrary.simpleMessage("Order Details"),
+        "orderDurationBreakdown":
+            MessageLookupByLibrary.simpleMessage("Order Duration Breakdown"),
+        "orderItems": MessageLookupByLibrary.simpleMessage("ORDER ITEMS"),
         "orderPlacedSuccessfully":
             MessageLookupByLibrary.simpleMessage("Order placed successfully!"),
+        "orderTimeline": MessageLookupByLibrary.simpleMessage("Order Timeline"),
         "ordered": MessageLookupByLibrary.simpleMessage("Ordered"),
         "orderedItems": MessageLookupByLibrary.simpleMessage("Ordered Items"),
         "otpVerification":
@@ -246,6 +257,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "paymentDetails":
             MessageLookupByLibrary.simpleMessage("Payment Details"),
+        "paymentOn": MessageLookupByLibrary.simpleMessage("Payment On"),
+        "paymentSummary":
+            MessageLookupByLibrary.simpleMessage("PAYMENT SUMMARY"),
         "paymentType": MessageLookupByLibrary.simpleMessage("Payment Type"),
         "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
         "pickWhatYouWantAndFillYourBasket":
@@ -276,6 +290,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Please enter your name"),
         "pleaseEnterYourQuantity":
             MessageLookupByLibrary.simpleMessage("Please enter your quantity"),
+        "pleaseLeaveThePackageAtTheFrontDoorAndRing":
+            MessageLookupByLibrary.simpleMessage(
+                "Please leave the package at the front door and ring the bell. Thank you!"),
         "pleaseLogin": MessageLookupByLibrary.simpleMessage("Please login"),
         "pleaseLoginToUseThisFeature": MessageLookupByLibrary.simpleMessage(
             "Please login to use this feature"),
@@ -287,6 +304,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "proceed": MessageLookupByLibrary.simpleMessage("Proceed"),
         "productOutOfStock":
             MessageLookupByLibrary.simpleMessage("Product out of stock"),
+        "qty": MessageLookupByLibrary.simpleMessage("Qty"),
         "quantity": MessageLookupByLibrary.simpleMessage("Quantity"),
         "rateOrder": MessageLookupByLibrary.simpleMessage("Rate Order"),
         "rateOrderedItems":
@@ -341,6 +359,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "startTypingToSearch":
             MessageLookupByLibrary.simpleMessage("Start typing to search"),
         "submitRating": MessageLookupByLibrary.simpleMessage("Submit Rating"),
+        "subtotal": MessageLookupByLibrary.simpleMessage("Subtotal"),
         "tax": MessageLookupByLibrary.simpleMessage("Tax"),
         "termsConditions":
             MessageLookupByLibrary.simpleMessage("Terms & Conditions"),
@@ -350,6 +369,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "today": MessageLookupByLibrary.simpleMessage("Today"),
         "topSellingDishes":
             MessageLookupByLibrary.simpleMessage("Top Selling Dishes"),
+        "totalAmount": MessageLookupByLibrary.simpleMessage("Total Amount"),
         "totalBill": MessageLookupByLibrary.simpleMessage("Total Bill"),
         "trackOrder": MessageLookupByLibrary.simpleMessage("Track Order"),
         "trackYourOrder":

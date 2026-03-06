@@ -480,5 +480,19 @@
   "yourTrustedFoodGroceryDeliveryPartner": "Your trusted food & grocery delivery partner",
   "@yourTrustedFoodGroceryDeliveryPartner": {},
   "youSaved": "You saved",
-  "@youSaved": {}
+  "@youSaved": {},
+  "order": "ORDER",
+  "dateTime": "DATE & TIME",
+  "deliveryAddress": "DELIVERY ADDRESS",
+  "orderItems": "ORDER ITEMS",
+  "customerNotes": "CUSTOMER NOTES",
+  "paymentSummary": "PAYMENT SUMMARY",
+  "pleaseLeaveThePackageAtTheFrontDoorAndRing": "Please leave the package at the front door and ring the bell. Thank you!",
+  "subtotal": "Subtotal",
+  "paymentOn": "Payment On",
+  "totalAmount": "Total Amount",
+  "orderTimeline": "Order Timeline",
+  "orderDurationBreakdown": "Order Duration Breakdown",
+  "qty": "Qty",
+  "assignedDeliveryPartner": "Assigned Delivery Partner"
 }

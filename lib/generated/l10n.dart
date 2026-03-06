@@ -2459,6 +2459,146 @@ class S {
       args: [],
     );
   }
+
+  /// `ORDER`
+  String get order {
+    return Intl.message(
+      'ORDER',
+      name: 'order',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DATE & TIME`
+  String get dateTime {
+    return Intl.message(
+      'DATE & TIME',
+      name: 'dateTime',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DELIVERY ADDRESS`
+  String get deliveryAddress {
+    return Intl.message(
+      'DELIVERY ADDRESS',
+      name: 'deliveryAddress',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `ORDER ITEMS`
+  String get orderItems {
+    return Intl.message(
+      'ORDER ITEMS',
+      name: 'orderItems',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `CUSTOMER NOTES`
+  String get customerNotes {
+    return Intl.message(
+      'CUSTOMER NOTES',
+      name: 'customerNotes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PAYMENT SUMMARY`
+  String get paymentSummary {
+    return Intl.message(
+      'PAYMENT SUMMARY',
+      name: 'paymentSummary',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please leave the package at the front door and ring the bell. Thank you!`
+  String get pleaseLeaveThePackageAtTheFrontDoorAndRing {
+    return Intl.message(
+      'Please leave the package at the front door and ring the bell. Thank you!',
+      name: 'pleaseLeaveThePackageAtTheFrontDoorAndRing',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Subtotal`
+  String get subtotal {
+    return Intl.message(
+      'Subtotal',
+      name: 'subtotal',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Payment On`
+  String get paymentOn {
+    return Intl.message(
+      'Payment On',
+      name: 'paymentOn',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Total Amount`
+  String get totalAmount {
+    return Intl.message(
+      'Total Amount',
+      name: 'totalAmount',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Timeline`
+  String get orderTimeline {
+    return Intl.message(
+      'Order Timeline',
+      name: 'orderTimeline',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Duration Breakdown`
+  String get orderDurationBreakdown {
+    return Intl.message(
+      'Order Duration Breakdown',
+      name: 'orderDurationBreakdown',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Qty`
+  String get qty {
+    return Intl.message(
+      'Qty',
+      name: 'qty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Assigned Delivery Partner`
+  String get assignedDeliveryPartner {
+    return Intl.message(
+      'Assigned Delivery Partner',
+      name: 'assignedDeliveryPartner',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
