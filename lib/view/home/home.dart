@@ -23,7 +23,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _screens = [
     const VendorHomeScreen(),
     const VendorRestaurantScreen(),
-    const SizedBox.shrink(), // Placeholder for ChatListing
+    const SizedBox.shrink(),
     const Settings(),
   ];
 
@@ -61,13 +61,16 @@ class _HomeState extends State<Home> {
             child: SafeArea(
               top: false,
               child: Scaffold(
+                resizeToAvoidBottomInset: false,
                 backgroundColor: const Color(0xFFFDFDFD),
                 body: IndexedStack(
                   index: controller.selectedcurrentIndex,
                   children: _screens,
                 ),
                 bottomNavigationBar: Container(
-                  height: MediaQuery.of(context).size.height * 0.08,
+                  height:
+                      kBottomNavigationBarHeight +
+                      MediaQuery.of(context).padding.bottom,
                   decoration: BoxDecoration(
                     color: Colors.transparent,
                     boxShadow: [

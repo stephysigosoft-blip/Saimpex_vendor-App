@@ -25,12 +25,17 @@ class _SplashState extends State<Splash> {
     super.initState();
   }
 
-  Future<void> isNameAdded(BuildContext context, String token) async {
+  Future<void> isNameAdded(BuildContext context, String? token) async {
     try {
-      // Always navigate to home skipping location selection as requested
-      Get.offAll(const Home());
+      if (token == null || token.trim().isEmpty) {
+        debugPrint("token is null or empty");
+        Get.offAll(() => LoginScreen());
+        return;
+      }
+      debugPrint("token is not null or empty");
+      Get.offAll(() => const Home());
     } catch (error) {
-      Get.offAll(Home());
+      Get.offAll(() => Home());
       debugPrint("name validation Error: $error");
     }
   }
@@ -39,15 +44,16 @@ class _SplashState extends State<Splash> {
     isFirstLaunch = await getSavedObject("@isFirstLaunch");
     Timer(const Duration(seconds: 3), () async {
       if (isFirstLaunch == null) {
-        //Get.offAll(OnBoardingScreen());
         await savename("@isFirstLaunch", "true");
       } else {
         var loginStatus = await getSavedObject("loginStatus");
         var token = await getSavedObject("token");
+        debugPrint("loginStatus: $loginStatus");
+        debugPrint("token: $token");
         if (loginStatus != null && loginStatus == "true") {
-          isNameAdded(context, token);
+          isNameAdded(context, token?.toString());
         } else {
-          Get.offAll(LoginScreen());
+          Get.offAll(() => LoginScreen());
         }
       }
     });

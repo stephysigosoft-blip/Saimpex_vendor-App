@@ -21,7 +21,7 @@ class VendorStatCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 105,
-      height: 102,
+      constraints: const BoxConstraints(minHeight: 102),
       padding: const EdgeInsets.only(top: 8, right: 13, bottom: 8, left: 13),
       decoration: BoxDecoration(
         color: backgroundColor,

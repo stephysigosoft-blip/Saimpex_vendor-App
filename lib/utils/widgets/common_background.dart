@@ -8,6 +8,7 @@ class CommonBackground extends StatelessWidget {
   final double gradientHeight;
   final Color? backgroundColor;
   final Widget? bottomNavigationBar;
+  final bool resizeToAvoidBottomInset;
 
   const CommonBackground({
     super.key,
@@ -18,11 +19,13 @@ class CommonBackground extends StatelessWidget {
     this.bottomNavigationBar,
     this.gradientHeight = 300,
     this.backgroundColor = const Color(0xFFFDFDFD),
+    this.resizeToAvoidBottomInset = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: resizeToAvoidBottomInset,
       backgroundColor: backgroundColor,
       appBar: appBar,
       bottomSheet: bottomSheet,

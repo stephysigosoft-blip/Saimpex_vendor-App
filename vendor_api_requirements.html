@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vendor App API Requirements (Revised)</title>
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 36px;
+      color: #111;
+      line-height: 1.45;
+      font-size: 12.5px;
+    }
+    h1 {
+      font-size: 20px;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 15px;
+      margin-top: 18px;
+      margin-bottom: 6px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 3px;
+    }
+    ol {
+      margin-top: 6px;
+      margin-bottom: 10px;
+      padding-left: 20px;
+    }
+    li { margin-bottom: 6px; }
+    ul {
+      margin-top: 4px;
+      margin-bottom: 4px;
+      padding-left: 18px;
+    }
+    code {
+      background: #f2f2f2;
+      padding: 1px 4px;
+      border-radius: 3px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Vendor App API Requirements (Revised)</h1>
+
+  <h2>General Clarifications</h2>
+  <ol>
+    <li>
+      Confirm whether <code>restaurantOrderDetail?order_id={id}</code> is shared for both restaurant and grocery orders, or if separate endpoints are required.
+    </li>
+    <li>
+      Clearly identify which APIs are shared and which must be separate for restaurant and grocery modules.
+    </li>
+  </ol>
+
+  <h2>Order Module</h2>
+  <ol start="3">
+    <li>Accept Order API is missing.</li>
+    <li>Reject Order API is missing.</li>
+    <li>Order Preparation Started API is missing.</li>
+    <li>Mark as Ready API is missing.</li>
+    <li>
+      Order View All API is missing. Required query parameters:
+      <code>status</code>, <code>limit</code>, <code>page</code>, <code>keyword</code> (search).
+    </li>
+    <li>
+      Update Order Details response:
+      <ul>
+        <li>Add user address latitude and longitude.</li>
+        <li>Include delivery boy image.</li>
+        <li>Refactor <code>order_items</code> to <code>name</code>, <code>quantity</code>, <code>price</code>, <code>image</code>.</li>
+        <li>Remove unnecessary keys from the response.</li>
+      </ul>
+    </li>
+    <li>
+      Simplify order status timeline response; use explicit booleans (<code>true</code>/<code>false</code>) per stage.
+    </li>
+  </ol>
+
+  <h2>Dashboard and Notifications</h2>
+  <ol start="10">
+    <li>Notification listing API is missing.</li>
+    <li>
+      Dashboard API update required for <code>{{local}}dashboard?vendor_type=1&amp;revenue_year=2025</code>:
+      <ul>
+        <li>Today’s orders are missing.</li>
+        <li>Remove unnecessary keys from the response.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h2>Account, Session, and Profile</h2>
+  <ol start="12">
+    <li>Restaurant account details API is missing.</li>
+    <li><code>fetchUserData</code> response needs additional fields to match UI requirements.</li>
+    <li>Delete account API is missing.</li>
+    <li>Logout API is missing.</li>
+  </ol>
+
+  <h2>Leave and Staff</h2>
+  <ol start="16">
+    <li>Mark leave API is missing.</li>
+    <li>Cancel leave API is missing.</li>
+    <li>Delivery boy listing API is missing.</li>
+  </ol>
+
+  <h2>Ratings, Reviews, and Customers</h2>
+  <ol start="19">
+    <li>Ratings and reviews API (View All) is missing.</li>
+    <li>Redeemed customers listing API is missing.</li>
+    <li>Received payout listing API is missing.</li>
+  </ol>
+
+  <h2>Menu and Item Management</h2>
+  <ol start="22">
+    <li>Restaurant menu item listing API must support <code>sort</code>, <code>filter</code>, and <code>keyword</code> (search).</li>
+    <li>
+      Menu APIs are missing:
+      <ul>
+        <li>Add menu item</li>
+        <li>Edit menu item</li>
+        <li>Delete menu item</li>
+      </ul>
+    </li>
+    <li>Menu view details API is missing.</li>
+    <li>
+      Item APIs are missing:
+      <ul>
+        <li>Add item</li>
+        <li>Edit item</li>
+        <li>Item listing</li>
+        <li>Item details</li>
+      </ul>
+    </li>
+    <li>Menu bulk import API is missing.</li>
+    <li>
+      Basket APIs are missing:
+      <ul>
+        <li>Basket listing</li>
+        <li>Basket detail view</li>
+      </ul>
+    </li>
+  </ol>
+
+  <h2>Communication</h2>
+  <ol start="28">
+    <li>Chat module APIs are missing.</li>
+  </ol>
+</body>
+</html>

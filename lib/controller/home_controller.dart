@@ -28,9 +28,6 @@ class HomeController extends GetxController {
   String userName = '';
   TextEditingController searchController = TextEditingController();
 
-  // Home API data
-  List<SliderItem> sliderList = [];
-  List<Restaurant> restaurantList = [];
   HomeModel? homeData;
   bool _hasNextPage = true;
   bool isFirstLoadRunning = true;
@@ -79,7 +76,7 @@ class HomeController extends GetxController {
     try {
       switch (index) {
         case 0: // Home tab
-          await getHome();
+          await fetchHome(context, orderStatus: 0);
           break;
         case 1: // My Restaurant tab
           // Reload restaurant data if needed
@@ -272,10 +269,6 @@ class HomeController extends GetxController {
 
       await Future.delayed(const Duration(seconds: 1));
 
-      // Mock data setup
-      sliderList = []; // Add mock items if needed for UI testing
-      restaurantList = []; // Add mock items if needed for UI testing
-
       debugPrint("Mock home data loaded");
     } catch (e) {
       debugPrint('Mock Home Error: $e');
@@ -371,13 +364,36 @@ class HomeController extends GetxController {
     }
   }
 
-  Future<void> fetchHome(BuildContext context, int status) async {
+  Future<void> fetchHome(
+    BuildContext context, {
+    required int orderStatus,
+    String keyword = "",
+    int limit = 10,
+  }) async {
     try {
-      final response = await DioClient().get(ApiEndPoints.home);
-      HomeModel model = HomeModel.fromJson(response.data);
-      debugPrint("home model: $response.data");
+      isFirstLoadRunning = true;
+      update();
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      } else {
+        DioClient().updateToken("");
+      }
+      final response = await DioClient().get(
+        ApiEndPoints.home,
+        query: {
+          "order_status": orderStatus,
+          "keyword": keyword,
+          "limit": limit,
+        },
+      );
+      homeData = HomeModel.fromJson(response.data as Map<String, dynamic>?);
+      debugPrint("home model: ${response.data}");
     } catch (error) {
       debugPrint("home Error: $error");
+    } finally {
+      isFirstLoadRunning = false;
+      update();
     }
   }
 }

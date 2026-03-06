@@ -68,6 +68,12 @@ class LoginController extends GetxController {
       Get.back();
       update();
       if (loginModel.status == true) {
+        await savename("token", loginModel.data?.details?.token ?? "");
+        await savename("loginStatus", loginModel.status?.toString() ?? "false");
+        await savename("name", loginModel.data?.details?.name ?? "");
+        await savename("roleId", loginModel.data?.details?.roleId ?? 0);
+        await savename("vendorType", loginModel.data?.details?.vendorType ?? 0);
+        await savename("vendorId", loginModel.data?.details?.vendorId ?? 0);
         final languageCode = localization.currentLocale?.languageCode;
         final message = loginModel.message;
         final toastMessage = languageCode == "fr"
@@ -82,10 +88,7 @@ class LoginController extends GetxController {
                   ? message!.messageEn!.first
                   : null);
 
-        showToast(
-          context,
-          toastMessage ?? "Login successful",
-        );
+        showToast(context, toastMessage ?? "Login successful");
         Get.offAll(const Home());
       }
     } catch (error) {
