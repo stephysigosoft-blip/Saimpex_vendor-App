@@ -251,6 +251,20 @@ String convertToAmPm(String time24) {
   }
 }
 
+/// Formats order placed_at (ISO or DateTime) for display.
+/// Returns "Feb 07, 2026 10:45 AM" or "Today, 10:45 AM" when same day.
+String formatOrderPlacedAt(DateTime? dateTime) {
+  if (dateTime == null) return '';
+  final now = DateTime.now();
+  final isToday = dateTime.year == now.year &&
+      dateTime.month == now.month &&
+      dateTime.day == now.day;
+  if (isToday) {
+    return 'Today, ${DateFormat('hh:mm a').format(dateTime)}';
+  }
+  return DateFormat('MMM dd, yyyy hh:mm a').format(dateTime);
+}
+
 String formatRatingCount(int? value) {
   if (value == null) return "0";
 

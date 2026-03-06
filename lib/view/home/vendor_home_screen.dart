@@ -230,7 +230,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                               padding: const EdgeInsets.only(bottom: 16),
                               child: VendorOrderListItem(
                                 horizontalPadding: layout.horizontalPadding,
-                                orderId: order.orderCode ?? "NA",
+                                orderId: order.id.toString() ?? "NA",
                                 customerName: order.userName ?? "Unknown",
                                 itemsCount: order.orderItemsCount ?? 0,
                                 price: price,

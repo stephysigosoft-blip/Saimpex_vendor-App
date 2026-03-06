@@ -6,539 +6,825 @@ import 'package:saimpex_vendor/resources/colors.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/dotted_line_painter.dart';
 import 'package:saimpex_vendor/utils/widgets/success_dialog.dart';
+import 'package:saimpex_vendor/view/shimmer_loading/shimmer_text_content.dart';
 
+import '../../controller/order_details_controller.dart';
 import '../../generated/l10n.dart';
+import '../../utils/Widgets/custom_app_bar.dart';
+import '../../utils/utils.dart';
+import '../../utils/widgets/no_data_widget.dart';
 
-class VendorOrderDetails extends StatelessWidget {
+class VendorOrderDetails extends StatefulWidget {
   final String orderId;
-  final String customerName;
-  final String status;
-  final String dateTime;
-  final double price;
 
-   VendorOrderDetails({
-    super.key,
-    required this.orderId,
-    required this.customerName,
-    required this.status,
-    required this.dateTime,
-    required this.price,
-  });
+  const VendorOrderDetails({super.key, required this.orderId});
+
+  @override
+  State<VendorOrderDetails> createState() => _VendorOrderDetailsState();
+}
+
+class _VendorOrderDetailsState extends State<VendorOrderDetails> {
   final FlutterLocalization localization = FlutterLocalization.instance;
+
   @override
   Widget build(BuildContext context) {
     return Directionality(
-        textDirection: localization.currentLocale!.languageCode.toString() == "ar"
-            ? TextDirection.rtl
-            : TextDirection.ltr,
-        child: CommonBackground(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Get.back(),
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-            size: 20,
-          ),
-        ),
-        title: Text(
-          S.of(context).orderDetails,
-          style: GoogleFonts.rubik(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F1F1F),
-          ),
-        ),
-        centerTitle: true,
-      ),
-      child: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 14),
-                  // Order Summary Card
-                  Container(
-                    width: 350,
-                    constraints: const BoxConstraints(minHeight: 220),
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(
-                        color: const Color(0xFFE5E7EB),
-                        width: 1,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.04),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              S.of(context).order+"#"+orderId,
-                              style: GoogleFonts.rubik(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w600,
-                                color: colorPrimary,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 12,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: status.toLowerCase() == 'pending'
-                                    ? const Color(0xFFF59E0B)
-                                    : status.toLowerCase() == 'accepted' ||
-                                          status.toLowerCase() == 'ready'
-                                    ? const Color(0xFF22C55E)
-                                    : status.toLowerCase() == 'delivered'
-                                    ? const Color(0xFF15803D)
-                                    : status.toLowerCase() == 'preparing'
-                                    ? const Color(0xFF60A5FA)
-                                    : status.toLowerCase() == 'cancelled'
-                                    ? const Color(0xFFEF4444)
-                                    : const Color(0xFFFFB800),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                status.toUpperCase(),
-                                style: GoogleFonts.rubik(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
+      textDirection: localization.currentLocale!.languageCode.toString() == "ar"
+          ? TextDirection.rtl
+          : TextDirection.ltr,
+      child: GetBuilder<OrderDetailsController>(
+        init: OrderDetailsController(),
+        didChangeDependencies: (state) async {
+          String vendorType = await getSavedObject("vendorType");
+          if (vendorType == "1") {
+            state.controller?.getRestaurantOrderDetails(
+              state.context,
+              widget.orderId,
+            );
+          } else {
+            state.controller?.getGroceryOrderDetails(
+              state.context,
+              widget.orderId,
+            );
+          }
+        },
+        builder: (controller) {
+          if (!controller.isLoading && controller.orderData == null) {
+            return Scaffold(
+              backgroundColor: Colors.white,
+              appBar: CustomAppBar(
+                title: S.of(context).orderDetails,
+                onTap: () {
+                  Get.back();
+                },
+              ),
+              body: Center(
+                child: NoDataWidget(
+                  context,
+                  S.of(context).orderDetails,
+                  S.of(context).orderDetailsNotFound,
+                  "lib/assets/images/nodata.png",
+                ),
+              ),
+            );
+          }
+
+          return CommonBackground(
+            appBar: AppBar(
+              backgroundColor: Colors.transparent,
+              elevation: 0,
+              leading: GestureDetector(
+                onTap: () => Get.back(),
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.black,
+                  size: 20,
+                ),
+              ),
+              title: Text(
+                S.of(context).orderDetails,
+                style: GoogleFonts.rubik(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFF1F1F1F),
+                ),
+              ),
+              centerTitle: true,
+            ),
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                  child: controller.isLoading && controller.orderData == null
+                      ? ShimmerTextContent()
+                      : Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const SizedBox(height: 14),
+                              // Order Summary Card
+                              Container(
+                                width: 350,
+                                constraints: const BoxConstraints(
+                                  minHeight: 220,
+                                ),
+                                padding: const EdgeInsets.all(16),
+                                decoration: BoxDecoration(
                                   color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: const Color(0xFFE5E7EB),
+                                    width: 1,
+                                  ),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.04),
+                                      blurRadius: 10,
+                                      offset: const Offset(0, 4),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          controller.orderData!.orderCode
+                                              .toString(),
+                                          style: GoogleFonts.rubik(
+                                            fontSize: 12,
+                                            fontWeight: FontWeight.w600,
+                                            color: colorPrimary,
+                                          ),
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                            horizontal: 12,
+                                            vertical: 4,
+                                          ),
+
+                                          //     pending =1
+                                          //     accepted  =2
+                                          // preparing =3
+                                          // Ready=4
+                                          // delivered = 9
+                                          // cancelled = 10
+                                          decoration: BoxDecoration(
+                                            color:
+                                                controller.orderData?.status
+                                                        .toString() ==
+                                                    '1'
+                                                ? const Color(0xFFF59E0B)
+                                                : controller.orderData?.status
+                                                          .toString() ==
+                                                      '2'
+                                                ? const Color(0xFF22C55E)
+                                                : controller.orderData?.status
+                                                          .toString() ==
+                                                      '3'
+                                                ? const Color(0xFF60A5FA)
+                                                : controller.orderData?.status
+                                                          .toString() ==
+                                                      '4'
+                                                ? const Color(0xFF15803D)
+                                                : controller.orderData?.status
+                                                          .toString() ==
+                                                      '10'
+                                                ? const Color(0xFFEF4444)
+                                                : const Color(0xFF0F552A),
+                                            borderRadius: BorderRadius.circular(
+                                              8,
+                                            ),
+                                          ),
+                                          child: Text(
+                                            controller.orderData?.status
+                                                        .toString() ==
+                                                    '1'
+                                                ? "PENDING"
+                                                : controller.orderData?.status
+                                                          .toString() ==
+                                                      '2'
+                                                ? "ACCEPTED"
+                                                : controller.orderData?.status
+                                                          .toString() ==
+                                                      '3'
+                                                ? "PREPARING"
+                                                : controller.orderData?.status
+                                                          .toString() ==
+                                                      '4'
+                                                ? "READY"
+                                                : controller.orderData?.status
+                                                          .toString() ==
+                                                      '10'
+                                                ? "CANCELLED"
+                                                : "DELIVERED",
+                                            style: GoogleFonts.rubik(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 8), // Reduced gap
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            controller.orderData?.userName ??
+                                                "",
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.rubik(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w600,
+                                              color: const Color(0xFF1F2937),
+                                            ),
+                                          ),
+                                        ),
+                                        if (controller.orderData?.status
+                                                .toString() ==
+                                            '3')
+                                          Text(
+                                            "00:05:00 min",
+                                            style: GoogleFonts.rubik(
+                                              fontSize: 10,
+                                              color: const Color(0xFF64748B),
+                                            ),
+                                          ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 14), // Gap 14px
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        _infoCol(
+                                          S.of(context).items,
+                                          controller
+                                                  .orderData!
+                                                  .orderItems!
+                                                  .length
+                                                  .toString() +
+                                              " " +
+                                              S.of(context).items +
+                                              " • " +
+                                              "${controller.orderData?.total} " +
+                                              "MRU",
+                                          isPrice: true,
+                                        ),
+                                        _infoCol(
+                                          S.of(context).dateTime,
+                                          formatOrderPlacedAt(
+                                            controller.orderData?.placedAt,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 14), // Gap 14px
+                                    Text(
+                                      S.of(context).deliveryAddress,
+                                      style: GoogleFonts.rubik(
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.w600,
+                                        color: const Color(0xFF9CA3AF),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8),
+                                    Row(
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            controller.orderData!.location
+                                                .toString(),
+                                            style: GoogleFonts.rubik(
+                                              fontSize: 11,
+                                              color: const Color(0xFF4B5563),
+                                              height: 1.4,
+                                            ),
+                                          ),
+                                        ),
+                                        const SizedBox(width: 12),
+                                        ClipRRect(
+                                          borderRadius: BorderRadius.circular(
+                                            8,
+                                          ),
+                                          child: Image.asset(
+                                            "lib/assets/images/Map Icon.png",
+                                            // Using existing marker as placeholder or similar
+                                            width: 78,
+                                            height: 48,
+                                            fit: BoxFit.cover,
+                                            errorBuilder: (c, e, s) =>
+                                                Container(
+                                                  width: 48,
+                                                  height: 48,
+                                                  color: Colors.grey[200],
+                                                  child: const Icon(
+                                                    Icons.map,
+                                                    size: 20,
+                                                    color: Colors.grey,
+                                                  ),
+                                                ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 8), // Reduced gap
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                customerName,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.rubik(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w600,
-                                  color: const Color(0xFF1F2937),
-                                ),
-                              ),
-                            ),
-                            if (status.toLowerCase() == 'preparing')
+                              if (controller.orderData!.status! > 3) ...[
+                                const SizedBox(height: 24),
+                                _driverDetails(context),
+                              ],
+                              const SizedBox(height: 32),
                               Text(
-                                "00:05:00 min",
+                                S.of(context).orderItems +
+                                    " " +
+                                    "(" +
+                                    controller.orderData!.orderItems!.length
+                                        .toString() +
+                                    ")",
                                 style: GoogleFonts.rubik(
-                                  fontSize: 10,
-                                  color: const Color(0xFF64748B),
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF9CA3AF),
                                 ),
                               ),
-                          ],
-                        ),
-                        const SizedBox(height: 14), // Gap 14px
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _infoCol(
-                              S.of(context).items,
-                              "3"+" "+S.of(context).items+" • "+"${price.toStringAsFixed(2)} "+"MRU",
-                              isPrice: true,
-                            ),
-                            _infoCol(S.of(context).dateTime, dateTime),
-                          ],
-                        ),
-                        const SizedBox(height: 14), // Gap 14px
-                        Text(
-                          S.of(context).deliveryAddress,
-                          style: GoogleFonts.rubik(
-                            fontSize: 10,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFF9CA3AF),
+                              const SizedBox(height: 8),
+                              // Order Items List
+                              ListView.separated(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount:
+                                    controller.orderData!.orderItems!.length,
+                                separatorBuilder: (context, index) =>
+                                    const SizedBox(height: 12),
+                                itemBuilder: (context, index) => _itemTile(
+                                  localization.currentLocale!.languageCode
+                                              .toString() ==
+                                          "ar"
+                                      ? controller
+                                            .orderData!
+                                            .orderItems![index]
+                                            .orderItem!
+                                            .nameAr
+                                            .toString()
+                                      : localization.currentLocale!.languageCode
+                                                .toString() ==
+                                            "fr"
+                                      ? controller
+                                            .orderData!
+                                            .orderItems![index]
+                                            .orderItem!
+                                            .nameFr
+                                            .toString()
+                                      : controller
+                                            .orderData!
+                                            .orderItems![index]
+                                            .orderItem!
+                                            .nameEn
+                                            .toString(),
+                                  double.parse(
+                                    controller
+                                        .orderData!
+                                        .orderItems![index]
+                                        .unitPrice
+                                        .toString(),
+                                  ),
+                                  controller
+                                      .orderData!
+                                      .orderItems![index]
+                                      .quantity!,
+                                  context,
+                                ),
+                              ),
+                              const SizedBox(height: 32),
+                              Text(
+                                S.of(context).customerNotes,
+                                style: GoogleFonts.rubik(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF9CA3AF),
+                                ),
+                              ),
+                              const SizedBox(height: 12),
+                              controller.orderData!.customerNote.toString() ==
+                                          "null" ||
+                                      controller.orderData!.customerNote
+                                              .toString() ==
+                                          ""
+                                  ? Container()
+                                  : Container(
+                                      width: 350,
+                                      padding: const EdgeInsets.all(16),
+                                      decoration: BoxDecoration(
+                                        color: const Color(0xFFFFFBEB),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: const Color(0xFFFEF3C7),
+                                          width: 1,
+                                        ),
+                                      ),
+                                      child: Row(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Image.asset(
+                                            "lib/assets/images/Customer note.png",
+                                            height: 20,
+                                            width: 20,
+                                          ),
+                                          const SizedBox(width: 12),
+                                          Expanded(
+                                            child: Text(
+                                              controller.orderData!.customerNote
+                                                  .toString(),
+                                              style: TextStyle(
+                                                fontSize: 12,
+                                                fontStyle: FontStyle.normal,
+                                                color: Color(0xFF92400E),
+                                                height: 1.5,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                              const SizedBox(height: 32),
+                              Text(
+                                S.of(context).paymentSummary,
+                                style: GoogleFonts.rubik(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w600,
+                                  color: const Color(0xFF9CA3AF),
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              // Payment Summary Card
+                              Container(
+                                width: 350,
+                                height:
+                                    MediaQuery.of(context).size.height * 0.32,
+                                padding: const EdgeInsets.all(20),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(24),
+                                  border: Border.all(
+                                    color: const Color(0xFFE5E7EB),
+                                    width: 1,
+                                  ),
+                                ),
+                                child: Column(
+                                  children: [
+                                    _summaryRow(
+                                      S.of(context).subtotal,
+                                      controller.orderData!.subtotal
+                                              .toString() +
+                                          " MRU",
+                                    ),
+                                    const SizedBox(height: 16),
+                                    // Gap 16px as requested
+                                    _summaryRow(
+                                      S.of(context).deliveryFee,
+                                      controller.orderData!.deliveryFee
+                                              .toString() +
+                                          " MRU",
+                                    ),
+                                    const SizedBox(height: 16),
+                                    // Gap 16px
+                                    _summaryRow(
+                                      S.of(context).tax,
+                                      controller.orderData!.tax.toString() +
+                                          " MRU",
+                                    ),
+                                    const SizedBox(height: 16),
+                                    // Gap 16px
+                                    _summaryRow(
+                                      S.of(context).paymentType,
+                                      controller.orderData!.paymentType
+                                                  .toString() ==
+                                              "1"
+                                          ? "Cash on delivery"
+                                          : "Online Payment",
+                                      isGreen: true,
+                                    ),
+                                    const SizedBox(height: 8),
+                                    _summaryRow(
+                                      S.of(context).paymentOn,
+                                      formatOrderPlacedAt(
+                                        controller.orderData?.placedAt,
+                                      ),
+                                      isSmall: true,
+                                    ),
+                                    const SizedBox(height: 16),
+                                    // Gap 16px
+                                    CustomPaint(
+                                      painter: DottedLinePainter(
+                                        color: Colors.grey.withOpacity(0.3),
+                                      ),
+                                      child: const SizedBox(
+                                        width: double.infinity,
+                                        height: 1,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 16),
+                                    // Gap 16px
+                                    _summaryRow(
+                                      S.of(context).totalAmount,
+                                      controller.orderData!.total.toString() +
+                                          " MRU",
+                                      isTotal: true,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              if (controller.orderData!.status.toString() !=
+                                  '1') ...[
+                                const SizedBox(height: 32),
+                                // Order Overview / Order Duration Breakdown tabs
+                                Container(
+                                  width: 350,
+                                  height: 40,
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFF1F5F9),
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            controller.selectedOrderTabIndex =
+                                                0;
+                                            controller.update();
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.all(0),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  controller
+                                                          .selectedOrderTabIndex ==
+                                                      0
+                                                  ? colorPrimary
+                                                  : Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                S.of(context).orderTimeline,
+                                                style: GoogleFonts.rubik(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
+                                                  color:
+                                                      controller
+                                                              .selectedOrderTabIndex ==
+                                                          0
+                                                      ? Colors.white
+                                                      : const Color(0xFF64748B),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        child: GestureDetector(
+                                          onTap: () {
+                                            controller.selectedOrderTabIndex =
+                                                1;
+                                            controller.update();
+                                          },
+                                          child: Container(
+                                            margin: const EdgeInsets.all(0),
+                                            decoration: BoxDecoration(
+                                              color:
+                                                  controller
+                                                          .selectedOrderTabIndex ==
+                                                      1
+                                                  ? colorPrimary
+                                                  : Colors.transparent,
+                                              borderRadius:
+                                                  BorderRadius.circular(16),
+                                            ),
+                                            child: Center(
+                                              child: Text(
+                                                S
+                                                    .of(context)
+                                                    .orderDurationBreakdown,
+                                                style: GoogleFonts.rubik(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w600,
+                                                  color:
+                                                      controller
+                                                              .selectedOrderTabIndex ==
+                                                          1
+                                                      ? Colors.white
+                                                      : const Color(0xFF64748B),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const SizedBox(height: 16),
+                                if (controller.selectedOrderTabIndex == 0) ...[
+                                  // Timeline items (Order Overview)
+                                  _timelineItem(
+                                    "Order Placed",
+                                    "Order successfully placed by Aicha Mint Ahmed",
+                                    "Feb 07, 2026 10:45 AM",
+                                    isCompleted: true,
+                                    isFirst: true,
+                                  ),
+                                  _timelineItem(
+                                    "Order Accepted",
+                                    "Restaurant has accepted your order and will start cooking soon.",
+                                    "Feb 07, 2026 10:50 AM",
+                                    isCompleted: true,
+                                  ),
+                                  _timelineItem(
+                                    "Preparing Food",
+                                    "The chef is preparing your food",
+                                    controller.orderData!.status.toString() ==
+                                                'ready' ||
+                                            controller.orderData!.status
+                                                    .toString() ==
+                                                'delivered'
+                                        ? "Feb 07, 2026 10:53 AM"
+                                        : "",
+                                    isCompleted:
+                                        controller.orderData!.status
+                                                .toString() ==
+                                            'ready' ||
+                                        controller.orderData!.status
+                                                .toString() ==
+                                            'delivered',
+                                    asset:
+                                        "lib/assets/images/Preparing food.png",
+                                  ),
+                                  _timelineItem(
+                                    "Delivery Boy Accepted",
+                                    "Your order will be picked up shortly",
+                                    controller.orderData!.status.toString() ==
+                                                'ready' ||
+                                            controller.orderData!.status
+                                                    .toString() ==
+                                                'delivered'
+                                        ? "Feb 07, 2026 10:55 AM"
+                                        : "",
+                                    isCompleted:
+                                        controller.orderData!.status
+                                                .toString() ==
+                                            'ready' ||
+                                        controller.orderData!.status
+                                                .toString() ==
+                                            'delivered',
+                                    asset: "lib/assets/images/Delivery.png",
+                                  ),
+                                  _timelineItem(
+                                    "Reached Restaurant",
+                                    "Your delivery partner has arrived at the restaurant",
+                                    controller.orderData!.status.toString() ==
+                                                'ready' ||
+                                            controller.orderData!.status
+                                                    .toString() ==
+                                                'delivered'
+                                        ? "Feb 07, 2026 10:57 AM"
+                                        : "",
+                                    isCompleted:
+                                        controller.orderData!.status
+                                                .toString() ==
+                                            'ready' ||
+                                        controller.orderData!.status
+                                                .toString() ==
+                                            'delivered',
+                                    asset:
+                                        "lib/assets/images/Reached Restaurant.png",
+                                  ),
+                                  _timelineItem(
+                                    "Order Delivered",
+                                    "Final step of the journey.",
+                                    controller.orderData!.status.toString() ==
+                                            'delivered'
+                                        ? "Feb 07, 2026 11:15 AM"
+                                        : "",
+                                    asset:
+                                        "lib/assets/images/Order delivered.png",
+                                    isCompleted:
+                                        controller.orderData!.status
+                                            .toString() ==
+                                        'delivered',
+                                    isLast: true,
+                                  ),
+                                ],
+                                if (controller.selectedOrderTabIndex == 1) ...[
+                                  _buildOrderDurationBreakdown(context),
+                                ],
+                              ],
+                              const SizedBox(height: 120),
+                              // Spacing for bottom buttons
+                            ],
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        Row(
+                ),
+                // Bottom Buttons
+                controller.orderData==null?Container():
+                Positioned(
+                  bottom: 30,
+                  left: 20,
+                  right: 20,
+                  child: controller.orderData!.status.toString() == '1'
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: Text(
-                                "Sahara View Home, Near Marhaba Supermarket, Nouakchott, Mauritania",
-                                style: GoogleFonts.rubik(
-                                  fontSize: 11,
-                                  color: const Color(0xFF4B5563),
-                                  height: 1.4,
+                              child: Container(
+                                height: 40,
+                                child: ElevatedButton(
+                                  onPressed: () => Get.back(),
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFF1F5F9),
+                                    foregroundColor: const Color(0xFFEF4444),
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    S.of(context).reject,
+                                    style: GoogleFonts.rubik(
+                                      fontWeight: FontWeight.w500,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
                             const SizedBox(width: 12),
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(8),
-                              child: Image.asset(
-                                "lib/assets/images/Map Icon.png", // Using existing marker as placeholder or similar
-                                width: 78,
-                                height: 48,
-                                fit: BoxFit.cover,
-                                errorBuilder: (c, e, s) => Container(
-                                  width: 48,
-                                  height: 48,
-                                  color: Colors.grey[200],
-                                  child: const Icon(
-                                    Icons.map,
-                                    size: 20,
-                                    color: Colors.grey,
+                            Expanded(
+                              child: Container(
+                                height: 40,
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    backgroundColor: const Color(0xFFFF5216),
+                                    foregroundColor: Colors.white,
+                                    elevation: 0,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                      vertical: 10,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    S.of(context).acceptOrder,
+                                    style: GoogleFonts.rubik(
+                                      fontWeight: FontWeight.w500,
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
                           ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  if (status.toLowerCase() == 'ready' ||
-                      status.toLowerCase() == 'delivered') ...[
-                    const SizedBox(height: 24),
-                    _driverDetails(context),
-                  ],
-                  const SizedBox(height: 32),
-                  Text(
-                    S.of(context).orderItems+" "+"(3)",
-                    style: GoogleFonts.rubik(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF9CA3AF),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  // Order Items List
-                  ListView.separated(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 3,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(height: 12),
-                    itemBuilder: (context, index) =>
-                        _itemTile("Double Cheeseburger", 14.16, 1,context),
-                  ),
-                  const SizedBox(height: 32),
-                  Text(
-                    S.of(context).customerNotes,
-                    style: GoogleFonts.rubik(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF9CA3AF),
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-                  Container(
-                    width: 350,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFFBEB),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: const Color(0xFFFEF3C7),
-                        width: 1,
-                      ),
-                    ),
-                    child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Image.asset(
-                          "lib/assets/images/Customer note.png",
-                          height: 20,
-                          width: 20,
-                        ),
-                        const SizedBox(width: 12),
-                         Expanded(
-                          child: Text(
-                            S.of(context).pleaseLeaveThePackageAtTheFrontDoorAndRing,
-                            style: TextStyle(
-                              fontSize: 12,
-                              fontStyle: FontStyle.normal,
-                              color: Color(0xFF92400E),
-                              height: 1.5,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-                  Text(
-                    S.of(context).paymentSummary,
-                    style: GoogleFonts.rubik(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF9CA3AF),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  // Payment Summary Card
-                  Container(
-                    width: 350,
-                    height: 240,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
-                      border: Border.all(
-                        color: const Color(0xFFE5E7EB),
-                        width: 1,
-                      ),
-                    ),
-                    child: Column(
-                      children: [
-                        _summaryRow(S.of(context).subtotal, "37.50 MRU"),
-                        const SizedBox(height: 16), // Gap 16px as requested
-                        _summaryRow(S.of(context).deliveryFee, "5.00 MRU"),
-                        const SizedBox(height: 16), // Gap 16px
-                        _summaryRow(S.of(context).tax, "5.00 MRU"),
-                        const SizedBox(height: 16), // Gap 16px
-                        _summaryRow(
-                          S.of(context).paymentType,
-                          "Online Payment",
-                          isGreen: true,
-                        ),
-                        const SizedBox(height: 8),
-                        _summaryRow(S.of(context).paymentOn, dateTime, isSmall: true),
-                        const SizedBox(height: 16), // Gap 16px
-                        CustomPaint(
-                          painter: DottedLinePainter(
-                            color: Colors.grey.withOpacity(0.3),
-                          ),
-                          child: const SizedBox(
-                            width: double.infinity,
-                            height: 1,
-                          ),
-                        ),
-                        const SizedBox(height: 16), // Gap 16px
-                        _summaryRow(S.of(context).totalAmount, "47.50 MRU", isTotal: true),
-                      ],
-                    ),
-                  ),
-                  if (status.toLowerCase() != 'pending') ...[
-                    const SizedBox(height: 32),
-                    // Order Timeline Tabs
-                    Container(
-                      width: 350,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF1F5F9),
-                        borderRadius: BorderRadius.circular(39),
-                      ),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFFF5216),
-                                borderRadius: BorderRadius.circular(39),
+                        )
+                      : (controller.orderData!.status.toString() ==
+                                'accepted' ||
+                            controller.orderData!.status.toString() ==
+                                'preparing')
+                      ? SizedBox(
+                          width: double.infinity,
+                          height: 40,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (controller.orderData!.status.toString() ==
+                                  'accepted') {
+                                showSuccessDialog(
+                                  "Order preparation started successfully",
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFFFF5216),
+                              foregroundColor: Colors.white,
+                              elevation: 0,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
                               ),
-                              child: Center(
-                                child: Text(
-                                  S.of(context).orderTimeline,
-                                  style: GoogleFonts.rubik(
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w600,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                            ),
+                            child: Text(
+                              controller.orderData!.status.toString() ==
+                                      'preparing'
+                                  ? S.of(context).markAsReady
+                                  : S.of(context).prepareOrder,
+                              style: GoogleFonts.rubik(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Center(
-                              child: Text(
-                                S.of(context).orderDurationBreakdown,
-                                style: GoogleFonts.rubik(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                  color: const Color(0xFF64748B),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 32),
-                    // Timeline items
-                    _timelineItem(
-                      "Order Placed",
-                      "Order successfully placed by Aicha Mint Ahmed",
-                      "Feb 07, 2026 10:45 AM",
-                      isCompleted: true,
-                      isFirst: true,
-                    ),
-                    _timelineItem(
-                      "Order Accepted",
-                      "Restaurant has accepted your order and will start cooking soon.",
-                      "Feb 07, 2026 10:50 AM",
-                      isCompleted: true,
-                    ),
-                    _timelineItem(
-                      "Preparing Food",
-                      "The chef is preparing your food",
-                      status.toLowerCase() == 'ready' ||
-                              status.toLowerCase() == 'delivered'
-                          ? "Feb 07, 2026 10:53 AM"
-                          : "",
-                      isCompleted:
-                          status.toLowerCase() == 'ready' ||
-                          status.toLowerCase() == 'delivered',
-                      asset: "lib/assets/images/Preparing food.png",
-                    ),
-                    _timelineItem(
-                      "Delivery Boy Accepted",
-                      "Your order will be picked up shortly",
-                      status.toLowerCase() == 'ready' ||
-                              status.toLowerCase() == 'delivered'
-                          ? "Feb 07, 2026 10:55 AM"
-                          : "",
-                      isCompleted:
-                          status.toLowerCase() == 'ready' ||
-                          status.toLowerCase() == 'delivered',
-                      asset: "lib/assets/images/Delivery.png",
-                    ),
-                    _timelineItem(
-                      "Reached Restaurant",
-                      "Your delivery partner has arrived at the restaurant",
-                      status.toLowerCase() == 'ready' ||
-                              status.toLowerCase() == 'delivered'
-                          ? "Feb 07, 2026 10:57 AM"
-                          : "",
-                      isCompleted:
-                          status.toLowerCase() == 'ready' ||
-                          status.toLowerCase() == 'delivered',
-                      asset: "lib/assets/images/Reached Restaurant.png",
-                    ),
-                    _timelineItem(
-                      "Order Delivered",
-                      "Final step of the journey.",
-                      status.toLowerCase() == 'delivered'
-                          ? "Feb 07, 2026 11:15 AM"
-                          : "",
-                      asset: "lib/assets/images/Order delivered.png",
-                      isCompleted: status.toLowerCase() == 'delivered',
-                      isLast: true,
-                    ),
-                  ],
-                  const SizedBox(height: 120), // Spacing for bottom buttons
-                ],
-              ),
+                        )
+                      : const SizedBox.shrink(),
+                ),
+              ],
             ),
-          ),
-          // Bottom Buttons
-          Positioned(
-            bottom: 30,
-            left: 20,
-            right: 20,
-            child: status.toLowerCase() == 'pending'
-                ? Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Container(
-                        width: 119,
-                        height: 40,
-                        child: ElevatedButton(
-                          onPressed: () => Get.back(),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFF1F5F9),
-                            foregroundColor: const Color(0xFFEF4444),
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                          ),
-                          child: Text(
-                            "Reject",
-                            style: GoogleFonts.rubik(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Container(
-                        width: 189,
-                        height: 40,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color(0xFFFF5216),
-                            foregroundColor: Colors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            padding: const EdgeInsets.symmetric(vertical: 10),
-                          ),
-                          child: Text(
-                            "Accept Order",
-                            style: GoogleFonts.rubik(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  )
-                : (status.toLowerCase() == 'accepted' ||
-                      status.toLowerCase() == 'preparing')
-                ? SizedBox(
-                    width: double.infinity,
-                    height: 48,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        if (status.toLowerCase() == 'accepted') {
-                          showSuccessDialog(
-                            "Order preparation started successfully",
-                          );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFF5216),
-                        foregroundColor: Colors.white,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                      child: Text(
-                        status.toLowerCase() == 'preparing'
-                            ? "Mark as Ready"
-                            : "Prepare Order",
-                        style: GoogleFonts.rubik(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  )
-                : const SizedBox.shrink(),
-          ),
-        ],
+          );
+        },
       ),
-    ));
+    );
   }
 
   Widget _infoCol(String label, String value, {bool isPrice = false}) {
@@ -578,7 +864,7 @@ class VendorOrderDetails extends StatelessWidget {
     );
   }
 
-  Widget _itemTile(String name, double price, int qty,BuildContext context) {
+  Widget _itemTile(String name, double price, int qty, BuildContext context) {
     return Container(
       width: 350,
       height: 98,
@@ -636,7 +922,7 @@ class VendorOrderDetails extends StatelessWidget {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(
-              S.of(context).qty+": "+"$qty",
+              S.of(context).qty + ": " + "$qty",
               style: GoogleFonts.rubik(
                 fontSize: 11,
                 fontWeight: FontWeight.w500,
@@ -787,6 +1073,72 @@ class VendorOrderDetails extends StatelessWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  static const List<({String label, String value})> _durationBreakdownItems = [
+    (label: 'Restaurant acceptance time', value: '0 minute'),
+    (label: 'Prepare food Duration', value: '15 minutes'),
+    (label: 'Delivery/Pickup to Restaurant', value: '0 minutes'),
+    (label: 'Pickup/Wait Duration', value: '0 minutes'),
+    (label: 'Restaurant to Customer Duration', value: '10 minutes'),
+  ];
+
+  Widget _buildOrderDurationBreakdown(BuildContext context) {
+    return Container(
+      width: 350,
+      padding: const EdgeInsets.symmetric(vertical: 4),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFE5E7EB), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.04),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: ListView.separated(
+        shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
+        itemCount: _durationBreakdownItems.length,
+        separatorBuilder: (context, index) => Divider(
+          height: 1,
+          thickness: 1,
+          color: Colors.grey.withOpacity(0.2),
+        ),
+        itemBuilder: (context, index) {
+          final item = _durationBreakdownItems[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    item.label,
+                    style: GoogleFonts.rubik(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: const Color(0xFF4B5563),
+                    ),
+                  ),
+                ),
+                Text(
+                  item.value,
+                  style: GoogleFonts.rubik(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF1F2937),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }

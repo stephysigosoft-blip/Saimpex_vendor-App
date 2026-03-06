@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "A new update is available for this app. Please download the latest version to continue using the app."),
         "aboutUs": MessageLookupByLibrary.simpleMessage("About Us"),
+        "acceptOrder": MessageLookupByLibrary.simpleMessage("Accept Order"),
         "add": MessageLookupByLibrary.simpleMessage("Add"),
         "addDeliveryNotesOptional": MessageLookupByLibrary.simpleMessage(
             "Add delivery notes (optional)"),
@@ -176,6 +177,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Login or Sign up"),
         "logout": MessageLookupByLibrary.simpleMessage("Logout"),
         "mAgo": MessageLookupByLibrary.simpleMessage("m ago"),
+        "markAsReady": MessageLookupByLibrary.simpleMessage("Mark as Ready"),
         "mins": MessageLookupByLibrary.simpleMessage("Mins"),
         "missedSomething":
             MessageLookupByLibrary.simpleMessage("Missed Something?"),
@@ -243,6 +245,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "onlinePayment": MessageLookupByLibrary.simpleMessage("Online Payment"),
         "order": MessageLookupByLibrary.simpleMessage("ORDER"),
         "orderDetails": MessageLookupByLibrary.simpleMessage("Order Details"),
+        "orderDetailsNotFound":
+            MessageLookupByLibrary.simpleMessage("Order details not found"),
         "orderDurationBreakdown":
             MessageLookupByLibrary.simpleMessage("Order Duration Breakdown"),
         "orderItems": MessageLookupByLibrary.simpleMessage("ORDER ITEMS"),
@@ -300,6 +304,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "positionTheBarcodeWithinTheFrame":
             MessageLookupByLibrary.simpleMessage(
                 "Position the barcode within the frame"),
+        "prepareOrder": MessageLookupByLibrary.simpleMessage("Prepare Order"),
         "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
         "proceed": MessageLookupByLibrary.simpleMessage("Proceed"),
         "productOutOfStock":
@@ -325,6 +330,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Redeemed Amount"),
         "redeemedPoints":
             MessageLookupByLibrary.simpleMessage("Redeemed Points"),
+        "reject": MessageLookupByLibrary.simpleMessage("Reject"),
         "remove": MessageLookupByLibrary.simpleMessage("Remove"),
         "replace": MessageLookupByLibrary.simpleMessage("Replace"),
         "replaceCartItem":

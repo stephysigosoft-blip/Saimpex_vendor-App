@@ -41,11 +41,7 @@ class VendorOrderListItem extends StatelessWidget {
         onTap: () {
           Get.to(
             () => VendorOrderDetails(
-              orderId: orderId.replaceAll("ORD-", ""),
-              customerName: customerName,
-              status: status,
-              dateTime: dateTime,
-              price: price,
+              orderId: orderId.toString(),
             ),
           );
         },

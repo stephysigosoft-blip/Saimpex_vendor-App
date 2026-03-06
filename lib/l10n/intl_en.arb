@@ -494,5 +494,10 @@
   "orderTimeline": "Order Timeline",
   "orderDurationBreakdown": "Order Duration Breakdown",
   "qty": "Qty",
-  "assignedDeliveryPartner": "Assigned Delivery Partner"
+  "assignedDeliveryPartner": "Assigned Delivery Partner",
+  "reject": "Reject",
+  "acceptOrder": "Accept Order",
+  "markAsReady": "Mark as Ready",
+  "prepareOrder": "Prepare Order",
+  "orderDetailsNotFound": "Order details not found"
 }
