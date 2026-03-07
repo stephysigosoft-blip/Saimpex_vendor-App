@@ -5,6 +5,7 @@ import 'package:get/route_manager.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/model/profile_model.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
+import 'package:saimpex_vendor/utils/localization_service.dart';
 import 'package:saimpex_vendor/utils/utils.dart';
 import 'package:saimpex_vendor/view/profile/widgets/language_selection_widget.dart';
 import 'package:saimpex_vendor/view/profile/widgets/menu_item.dart';
@@ -40,9 +41,7 @@ class _ProfileState extends State<Profile> {
   Widget build(BuildContext context) {
     final media = MediaQuery.of(context);
     return Directionality(
-      textDirection: localization.currentLocale!.languageCode.toString() == "ar"
-          ? TextDirection.rtl
-          : TextDirection.ltr,
+      textDirection: LocalizationService().getTextDirection(),
       child: CommonBackground(
         appBar: CustomAppBar(
           title: S.of(context).profile,
@@ -98,22 +97,7 @@ class _ProfileState extends State<Profile> {
                     LanguageSelectionWidget(
                       selectedLanguage: selectedLanguage,
                       onLanguageChanged: (language) async {
-                        if (language == "English") {
-                          localization.translate('en');
-                          var locale = const Locale('en');
-                          await savename("selected_locale", "en");
-                          Get.updateLocale(locale);
-                        } else if (language == "French") {
-                          localization.translate('fr');
-                          var locale = const Locale('fr');
-                          await savename("selected_locale", "fr");
-                          Get.updateLocale(locale);
-                        } else {
-                          localization.translate('ar');
-                          var locale = const Locale('ar');
-                          await savename("selected_locale", "ar");
-                          Get.updateLocale(locale);
-                        }
+                        await LocalizationService().updateLocale(language);
                         setState(() => selectedLanguage = language);
                       },
                     ),

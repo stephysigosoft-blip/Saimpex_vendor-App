@@ -14,8 +14,7 @@ import 'package:saimpex_vendor/view/settings/terms_and_conditions.dart';
 import 'package:saimpex_vendor/view/settings/about_us.dart';
 import 'package:saimpex_vendor/view/settings/app_settings.dart';
 import 'package:saimpex_vendor/view/settings/delivery_boys.dart';
-// import 'package:saimpex_vendor/utils/widgets/common_background.dart';
-
+import 'package:saimpex_vendor/utils/localization_service.dart';
 import 'package:saimpex_vendor/controller/home_controller.dart';
 import '../../generated/l10n.dart';
 
@@ -52,9 +51,7 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Directionality(
-      textDirection: localization.currentLocale!.languageCode.toString() == "ar"
-          ? TextDirection.rtl
-          : TextDirection.ltr,
+      textDirection: LocalizationService().getTextDirection(),
       child: Scaffold(
         backgroundColor: Colors.white,
         body: GetBuilder<ProfileController>(
@@ -496,10 +493,7 @@ class _SettingsState extends State<Settings> {
     bool isSelected = selectedLanguage == title;
     return InkWell(
       onTap: () async {
-        localization.translate(langCode);
-        var locale = Locale(langCode);
-        await savename("selected_locale", langCode);
-        Get.updateLocale(locale);
+        await LocalizationService().updateLocale(langCode);
         setState(() => selectedLanguage = title);
       },
       child: Container(

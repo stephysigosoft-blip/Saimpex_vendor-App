@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
+import 'package:saimpex_vendor/utils/localization_service.dart';
 import 'package:saimpex_vendor/utils/utils.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/view/login/widgets/login_form_card.dart';
@@ -28,10 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
         init: LoginController(),
         builder: (loginController) {
           return Directionality(
-            textDirection:
-                localization.currentLocale!.languageCode.toString() == "ar"
-                ? TextDirection.rtl
-                : TextDirection.ltr,
+            textDirection: LocalizationService().getTextDirection(),
             child: SizedBox.expand(
               child: Stack(
                 children: [
@@ -40,22 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     currentLanguageCode:
                         localization.currentLocale!.languageCode,
                     onLanguageChanged: (val) async {
-                      if (val == "English") {
-                        localization.translate('en');
-                        var locale = const Locale('en');
-                        await savename("selected_locale", "en");
-                        Get.updateLocale(locale);
-                      } else if (val == "French") {
-                        localization.translate('fr');
-                        var locale = const Locale('fr');
-                        await savename("selected_locale", "fr");
-                        Get.updateLocale(locale);
-                      } else {
-                        localization.translate('ar');
-                        var locale = const Locale('ar');
-                        await savename("selected_locale", "ar");
-                        Get.updateLocale(locale);
-                      }
+                      await LocalizationService().updateLocale(val);
                       if (mounted) {
                         setState(() {});
                       }
