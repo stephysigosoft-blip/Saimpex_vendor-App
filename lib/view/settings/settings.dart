@@ -1,19 +1,22 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/configs/ApiConfigs.dart';
 import 'package:saimpex_vendor/controller/profile_controller.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
 import 'package:saimpex_vendor/utils/utils.dart';
-import 'package:saimpex_vendor/view/home/home.dart';
 // import 'package:saimpex_vendor/view/settings/about_us.dart';
 import 'package:saimpex_vendor/view/settings/help_and_support.dart';
 import 'package:saimpex_vendor/view/settings/privacy_policy.dart';
 import 'package:saimpex_vendor/view/settings/terms_and_conditions.dart';
 import 'package:saimpex_vendor/view/settings/about_us.dart';
 import 'package:saimpex_vendor/view/settings/app_settings.dart';
+import 'package:saimpex_vendor/view/settings/delivery_boys.dart';
 // import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 
+import 'package:saimpex_vendor/controller/home_controller.dart';
 import '../../generated/l10n.dart';
 
 class Settings extends StatefulWidget {
@@ -90,22 +93,42 @@ class _SettingsState extends State<Settings> {
                           color: const Color(0xFFE8EEFF),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        child: const Center(
-                          child: Text(
-                            "R1",
-                            style: TextStyle(
-                              color: colorPrimary,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: controller.profilePicture.isNotEmpty
+                              ? (controller.profilePicture.startsWith('http') ||
+                                        controller.profilePicture.startsWith(
+                                          'user/',
+                                        ))
+                                    ? Image.network(
+                                        controller.profilePicture.startsWith(
+                                              'http',
+                                            )
+                                            ? controller.profilePicture
+                                            : ApiConfigs.IMAGE_URL +
+                                                  controller.profilePicture,
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) => _initials(
+                                          controller.profileData?.name,
+                                        ),
+                                      )
+                                    : controller.profilePicture.contains('/')
+                                    ? Image.file(
+                                        File(controller.profilePicture),
+                                        fit: BoxFit.cover,
+                                        errorBuilder: (_, __, ___) => _initials(
+                                          controller.profileData?.name,
+                                        ),
+                                      )
+                                    : _initials(controller.profileData?.name)
+                              : _initials(controller.profileData?.name),
                         ),
                       ),
                     ),
                     const SizedBox(height: 12),
                     // Restaurant Name
                     Text(
-                      controller.profileData?.name ?? "Restaurant 1",
+                      controller.profileData?.name ?? "",
                       style: GoogleFonts.rubik(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
@@ -129,35 +152,47 @@ class _SettingsState extends State<Settings> {
                             _buildDetailRow(
                               context,
                               S.of(context).name,
-                              controller.profileData?.name ?? "Restaurant 1",
-                            ),
-                            const SizedBox(height: 10),
-                            _buildDetailRow(context, "Owner", "Salman"),
-                            const SizedBox(height: 10),
-                            _buildDetailRow(
-                              context,
-                              "ID",
-                              controller.profileData?.id?.toString() ?? "1",
+                              controller.profileData?.name ?? "",
                             ),
                             const SizedBox(height: 10),
                             _buildDetailRow(
                               context,
-                              "Contact",
-                              "${controller.profileData?.countryCode ?? '+222'}${controller.profileData?.mobile ?? '41518211'}",
+                              S.of(context).owner,
+                              controller.profileData?.owner ?? "",
                             ),
                             const SizedBox(height: 10),
                             _buildDetailRow(
                               context,
-                              "Email",
-                              "rest1@saimpex.com",
+                              S.of(context).idNumber,
+                              controller.profileData?.id?.toString() ?? "",
                             ),
-                            const SizedBox(height: 10),
-                            _buildStatusRow(context, "Status", "ACTIVE"),
                             const SizedBox(height: 10),
                             _buildDetailRow(
                               context,
-                              "Address",
-                              "Restaurant Block 5, Mauritania",
+                              S.of(context).contact,
+                              (controller.profileData?.countryCode != null ||
+                                      controller.profileData?.mobile != null)
+                                  ? "${controller.profileData?.countryCode ?? ''}${controller.profileData?.mobile ?? ''}"
+                                  : "",
+                            ),
+                            const SizedBox(height: 10),
+                            _buildDetailRow(
+                              context,
+                              S.of(context).email,
+                              controller.profileData?.email ?? "",
+                            ),
+                            const SizedBox(height: 10),
+                            _buildStatusRow(
+                              context,
+                              S.of(context).status,
+                              controller.profileData?.status ?? "",
+                            ),
+                            const SizedBox(height: 10),
+                            _buildDetailRow(
+                              context,
+                              S.of(context).address,
+                              controller.profileData?.address ?? "",
+                              maxLines: 2,
                             ),
                           ],
                         ),
@@ -170,7 +205,7 @@ class _SettingsState extends State<Settings> {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Language",
+                          S.of(context).language,
                           style: GoogleFonts.rubik(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
@@ -230,9 +265,19 @@ class _SettingsState extends State<Settings> {
                           children: [
                             _buildMenuItem(
                               context,
-                              "Settings",
+                              S.of(context).deliveryBoys,
                               const AssetImage(
-                                "lib/assets/images/Settings vendor.png",
+                                "lib/assets/images/DeliveryBoys.png",
+                              ),
+                              () {
+                                Get.to(() => const DeliveryBoysScreen());
+                              },
+                            ),
+                            _buildMenuItem(
+                              context,
+                              S.of(context).settings,
+                              const AssetImage(
+                                "lib/assets/images/SettingsVendor.png",
                               ),
                               () {
                                 Get.to(() => const AppSettings());
@@ -240,7 +285,7 @@ class _SettingsState extends State<Settings> {
                             ),
                             _buildMenuItem(
                               context,
-                              "About Us",
+                              S.of(context).aboutUs,
                               const AssetImage(
                                 "lib/assets/images/about_us_icon.png",
                               ),
@@ -251,7 +296,7 @@ class _SettingsState extends State<Settings> {
                             // const Divider(height: 1),
                             _buildMenuItem(
                               context,
-                              "Help & Support",
+                              S.of(context).helpSupport,
                               AssetImage("lib/assets/images/Help&Support.png"),
                               () {
                                 Get.to(() => HelpAndSupport());
@@ -260,7 +305,7 @@ class _SettingsState extends State<Settings> {
                             // const Divider(height: 1),
                             _buildMenuItem(
                               context,
-                              "Terms & Conditions",
+                              S.of(context).termsConditions,
                               AssetImage(
                                 "lib/assets/images/Terms&Conditions.png",
                               ),
@@ -271,7 +316,7 @@ class _SettingsState extends State<Settings> {
                             // const Divider(height: 1),
                             _buildMenuItem(
                               context,
-                              "Privacy Policy",
+                              S.of(context).privacyPolicy,
                               AssetImage(
                                 "lib/assets/images/Privacy policy.png",
                               ),
@@ -317,7 +362,7 @@ class _SettingsState extends State<Settings> {
                     const SizedBox(height: 40),
                     // Version
                     Text(
-                      "V${controller.version}",
+                      "${S.of(context).version} ${controller.version}",
                       style: GoogleFonts.rubik(
                         fontSize: 12,
                         color: Colors.grey,
@@ -340,7 +385,13 @@ class _SettingsState extends State<Settings> {
                 top: 50,
                 left: 20,
                 child: InkWell(
-                  onTap: () => Get.back(),
+                  onTap: () {
+                    if (Navigator.canPop(context)) {
+                      Get.back();
+                    } else {
+                      Get.find<HomeController>().onTabTapped(0, context);
+                    }
+                  },
                   child: const Padding(
                     padding: EdgeInsets.all(8.0),
                     child: Icon(
@@ -364,17 +415,25 @@ class _SettingsState extends State<Settings> {
   ) {
     showConfirmationBottomSheet(
       context: context,
-      title: "Logout",
-      message: "Are you sure you want to logout?",
-      leftButtonText: "No",
-      rightButtonText: "Logout",
+      title: S.of(context).logout,
+      message: S.of(context).areYouSureYouWantToLogout,
+      leftButtonText: S.of(context).no,
+      rightButtonText: S.of(context).logout,
       onConfirm: () => controller.logout(context),
     );
   }
 
-  Widget _buildDetailRow(BuildContext context, String label, String value) {
+  Widget _buildDetailRow(
+    BuildContext context,
+    String label,
+    String value, {
+    int maxLines = 1,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      crossAxisAlignment: maxLines > 1
+          ? CrossAxisAlignment.start
+          : CrossAxisAlignment.center,
       children: [
         Text(
           label,
@@ -384,10 +443,13 @@ class _SettingsState extends State<Settings> {
             fontWeight: FontWeight.w400,
           ),
         ),
-        Flexible(
+        const SizedBox(width: 8),
+        Expanded(
           child: Text(
             value,
             textAlign: TextAlign.end,
+            maxLines: maxLines,
+            overflow: TextOverflow.ellipsis,
             style: GoogleFonts.rubik(
               fontSize: 13,
               color: const Color(0xFF333E63),
@@ -439,7 +501,6 @@ class _SettingsState extends State<Settings> {
         await savename("selected_locale", langCode);
         Get.updateLocale(locale);
         setState(() => selectedLanguage = title);
-        Get.offAll(const Home());
       },
       child: Container(
         width: 99,
@@ -486,6 +547,21 @@ class _SettingsState extends State<Settings> {
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(horizontal: 8),
       visualDensity: VisualDensity.compact,
+    );
+  }
+
+  Widget _initials(String? name) {
+    return Center(
+      child: Text(
+        name != null && name.length >= 2
+            ? name.substring(0, 2).toUpperCase()
+            : (name?.isNotEmpty == true ? name![0].toUpperCase() : "R1"),
+        style: TextStyle(
+          color: colorPrimary,
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 }

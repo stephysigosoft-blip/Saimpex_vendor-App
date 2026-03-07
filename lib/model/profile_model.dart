@@ -9,9 +9,12 @@ class ProfileModel {
     if (json == null) return ProfileModel();
 
     return ProfileModel(
-      status: json['status'] as bool?,
+      status: json['status'] == true || json['status']?.toString() == "true",
       data: json['data'] != null
-          ? ProfileData.fromJson(json['data'] as Map<String, dynamic>?)
+          ? ProfileData.fromJson(
+              (json['data']['vendor'] as Map<String, dynamic>?) ??
+                  json['data'] as Map<String, dynamic>?,
+            )
           : null,
       message: json['message'] != null
           ? ProfileMessage.fromJson(json['message'] as Map<String, dynamic>?)
@@ -39,6 +42,10 @@ class ProfileData {
   final String? twitterUrl;
   final String? whatsappUrl;
   final bool? hasBasketOrders;
+  final String? email;
+  final String? address;
+  final String? owner;
+  final String? status;
 
   ProfileData({
     this.id,
@@ -51,6 +58,10 @@ class ProfileData {
     this.twitterUrl,
     this.whatsappUrl,
     this.hasBasketOrders,
+    this.email,
+    this.address,
+    this.owner,
+    this.status,
   });
 
   factory ProfileData.fromJson(Map<String, dynamic>? json) {
@@ -67,6 +78,14 @@ class ProfileData {
       twitterUrl: json['twitter_url'] as String?,
       whatsappUrl: json['whatsapp_url'] as String?,
       hasBasketOrders: json['has_basket_orders'] as bool?,
+      email: json['email']?.toString(),
+      address: json['address']?.toString(),
+      owner: json['owner_name']?.toString() ?? json['owner']?.toString(),
+      status: json['status']?.toString() == '1'
+          ? 'ACTIVE'
+          : (json['status']?.toString() == '0'
+                ? 'INACTIVE'
+                : json['status']?.toString()),
     );
   }
 

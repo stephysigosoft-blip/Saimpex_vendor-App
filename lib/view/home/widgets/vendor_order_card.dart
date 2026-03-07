@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
 
 class VendorOrderCard extends StatelessWidget {
@@ -55,7 +56,7 @@ class VendorOrderCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  "ORDER #$orderId",
+                  S.of(context).orderIdLabel(orderId),
                   style: GoogleFonts.rubik(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -127,7 +128,7 @@ class VendorOrderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "ITEMS",
+                      S.of(context).items.toUpperCase(),
                       style: GoogleFonts.rubik(
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
@@ -142,7 +143,9 @@ class VendorOrderCard extends StatelessWidget {
                           color: Colors.grey[700],
                         ),
                         children: [
-                          TextSpan(text: "$itemsCount Items • "),
+                          TextSpan(
+                            text: "$itemsCount ${S.of(context).items} • ",
+                          ),
                           TextSpan(
                             text: "${price.toStringAsFixed(2)} MRU",
                             style: const TextStyle(
@@ -159,7 +162,7 @@ class VendorOrderCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      "DATE & TIME",
+                      S.of(context).dateTime,
                       style: GoogleFonts.rubik(
                         fontSize: 10,
                         fontWeight: FontWeight.w500,
@@ -182,7 +185,7 @@ class VendorOrderCard extends StatelessWidget {
                 status.toLowerCase() == 'delivered') ...[
               const SizedBox(height: 12),
               Text(
-                "DRIVER",
+                S.of(context).driver.toUpperCase(),
                 style: GoogleFonts.rubik(
                   fontSize: 10,
                   fontWeight: FontWeight.w500,
@@ -194,14 +197,14 @@ class VendorOrderCard extends StatelessWidget {
                 TextSpan(
                   style: GoogleFonts.rubik(fontSize: 11),
                   children: [
-                    const TextSpan(
-                      text: "Assigned ",
-                      style: TextStyle(
+                    TextSpan(
+                      text: "${S.of(context).assignedStatus} ",
+                      style: const TextStyle(
                         color: Color(0xFFFF5216),
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    TextSpan(
+                    const TextSpan(
                       text: "[Abdallahi Ould Ahmed]",
                       style: TextStyle(color: Color(0xFF6B7280), fontSize: 11),
                     ),
@@ -222,7 +225,7 @@ class VendorOrderCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
-                    "Cancelled On  $dateTime",
+                    S.of(context).cancelledOnLabel(dateTime),
                     style: GoogleFonts.rubik(
                       fontSize: 11,
                       fontWeight: FontWeight.w500,
@@ -233,7 +236,7 @@ class VendorOrderCard extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                "Reason: Changed mind",
+                S.of(context).reasonColonLabel("Changed mind"),
                 style: GoogleFonts.rubik(
                   fontSize: 11,
                   fontWeight: FontWeight.w400,
@@ -258,7 +261,7 @@ class VendorOrderCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
                       child: Text(
-                        "Reject",
+                        S.of(context).reject,
                         style: GoogleFonts.rubik(fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -277,7 +280,7 @@ class VendorOrderCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
                       child: Text(
-                        "Accept Order",
+                        S.of(context).acceptOrder,
                         style: GoogleFonts.rubik(fontWeight: FontWeight.w500),
                       ),
                     ),
@@ -298,7 +301,7 @@ class VendorOrderCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
                       child: Text(
-                        "View Details",
+                        S.of(context).viewDetails,
                         style: GoogleFonts.rubik(
                           fontWeight: FontWeight.w600,
                           color: const Color(0xFFFF5216),
@@ -320,7 +323,7 @@ class VendorOrderCard extends StatelessWidget {
                         padding: const EdgeInsets.symmetric(vertical: 10),
                       ),
                       child: Text(
-                        "Mark as Ready",
+                        S.of(context).markAsReady,
                         style: GoogleFonts.rubik(fontWeight: FontWeight.w600),
                       ),
                     ),
@@ -342,7 +345,7 @@ class VendorOrderCard extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    "View Details",
+                    S.of(context).viewDetails,
                     style: GoogleFonts.rubik(
                       fontSize: 14,
                       fontWeight: FontWeight.w600,

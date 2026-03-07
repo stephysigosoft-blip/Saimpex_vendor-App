@@ -23,7 +23,6 @@ import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_app_bar.dart';
 
 import '../../controller/profile_controller.dart';
-import '../home/home.dart';
 import '../settings/terms_and_conditions.dart';
 
 class Profile extends StatefulWidget {
@@ -45,10 +44,10 @@ class _ProfileState extends State<Profile> {
           ? TextDirection.rtl
           : TextDirection.ltr,
       child: CommonBackground(
-        // appBar: CustomAppBar(
-        //   // title: S.of(context).profile,
-        //   onTap: () => Get.back(),
-        // ),
+        appBar: CustomAppBar(
+          title: S.of(context).profile,
+          onTap: () => Get.back(),
+        ),
         child: GetBuilder<ProfileController>(
           init: ProfileController(),
           didChangeDependencies: (state) {
@@ -116,7 +115,6 @@ class _ProfileState extends State<Profile> {
                           Get.updateLocale(locale);
                         }
                         setState(() => selectedLanguage = language);
-                        Get.offAll(const Home());
                       },
                     ),
                     SizedBox(height: media.size.height * 0.04),
@@ -313,7 +311,7 @@ class _ProfileState extends State<Profile> {
                     ),
                     SizedBox(height: media.size.height * 0.02),
                     BoldTextRubik(
-                      text: "Version : ${controller.version}",
+                      text: "${S.of(context).version} : ${controller.version}",
                       fontSize: 15,
                       fontWeight: FontWeight.w300,
                       color: Colors.black,

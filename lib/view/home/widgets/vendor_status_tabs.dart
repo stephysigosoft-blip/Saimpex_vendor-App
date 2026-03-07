@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 
 class VendorStatusTabs extends StatelessWidget {
   const VendorStatusTabs({
@@ -35,6 +36,16 @@ class VendorStatusTabs extends StatelessWidget {
     return count.toString().padLeft(2, '0');
   }
 
+  String _tabLabel(BuildContext context, String tab) {
+    if (tab == "Pending") return S.of(context).pending;
+    if (tab == "Accepted") return S.of(context).accepted;
+    if (tab == "Preparing") return S.of(context).preparing;
+    if (tab == "Ready") return S.of(context).ready;
+    if (tab == "Delivered") return S.of(context).delivered;
+    if (tab == "Cancelled") return S.of(context).cancelled;
+    return tab;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -64,11 +75,13 @@ class VendorStatusTabs extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      tab,
+                      _tabLabel(context, tab),
                       style: GoogleFonts.rubik(
                         fontSize: 13,
                         fontWeight: FontWeight.w500,
-                        color: isSelected ? Colors.white : const Color(0xFF6B7280),
+                        color: isSelected
+                            ? Colors.white
+                            : const Color(0xFF6B7280),
                       ),
                     ),
                   ),
@@ -85,10 +98,7 @@ class VendorStatusTabs extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(20),
-                        border: Border.all(
-                          color: Colors.white,
-                          width: 1.5,
-                        ),
+                        border: Border.all(color: Colors.white, width: 1.5),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withOpacity(0.12),

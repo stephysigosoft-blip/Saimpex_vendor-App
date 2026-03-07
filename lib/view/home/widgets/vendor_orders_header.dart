@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 
 class VendorOrdersHeader extends StatelessWidget {
   const VendorOrdersHeader({super.key, required this.horizontalPadding});
@@ -14,7 +15,7 @@ class VendorOrdersHeader extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            "ORDERS",
+            S.of(context).ordersHeader,
             style: GoogleFonts.rubik(
               fontSize: 14,
               fontWeight: FontWeight.bold,
@@ -24,7 +25,7 @@ class VendorOrdersHeader extends StatelessWidget {
           TextButton(
             onPressed: () {},
             child: Text(
-              "View All",
+              S.of(context).viewAll,
               style: GoogleFonts.rubik(
                 fontSize: 12,
                 fontWeight: FontWeight.w600,

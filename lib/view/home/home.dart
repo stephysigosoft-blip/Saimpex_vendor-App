@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/controller/home_controller.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
 import 'package:saimpex_vendor/view/home/vendor_home_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/vendor_restaurant_screen.dart';
 import 'package:saimpex_vendor/view/settings/settings.dart';
+import 'package:saimpex_vendor/view/chat/ChatListing.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, this.isGuest = false, this.initialIndex});
@@ -23,7 +25,7 @@ class _HomeState extends State<Home> {
   final List<Widget> _screens = [
     const VendorHomeScreen(),
     const VendorRestaurantScreen(),
-    const SizedBox.shrink(),
+    const ChatListing(),
     const Settings(),
   ];
 
@@ -127,7 +129,7 @@ class _HomeState extends State<Home> {
                               height: 24,
                               color: colorPrimary,
                             ),
-                            label: "Home",
+                            label: S.of(context).home,
                           ),
                           BottomNavigationBarItem(
                             icon: Image.asset(
@@ -140,7 +142,7 @@ class _HomeState extends State<Home> {
                               height: 24,
                               color: colorPrimary,
                             ),
-                            label: "My Restaurant",
+                            label: S.of(context).myRestaurant,
                           ),
                           BottomNavigationBarItem(
                             icon: Image.asset(
@@ -153,7 +155,7 @@ class _HomeState extends State<Home> {
                               height: 24,
                               color: colorPrimary,
                             ),
-                            label: "Chat",
+                            label: S.of(context).chat,
                           ),
                           BottomNavigationBarItem(
                             icon: Image.asset(
@@ -166,7 +168,7 @@ class _HomeState extends State<Home> {
                               height: 24,
                               color: colorPrimary,
                             ),
-                            label: "Settings",
+                            label: S.of(context).settings,
                           ),
                         ],
                       ),

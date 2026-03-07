@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_stat_card.dart';
 
 class VendorStatsSection extends StatelessWidget {
@@ -23,21 +24,21 @@ class VendorStatsSection extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           VendorStatCard(
-            title: "Today's Orders",
+            title: S.of(context).todaysOrders,
             value: todayOrders,
             icon: Icons.shopping_basket_outlined,
             backgroundColor: Color(0xFFE5E5FF),
             iconDecorationColor: Color(0xFF6B6BFF),
           ),
           VendorStatCard(
-            title: "Total Orders",
+            title: S.of(context).totalOrdersStat,
             value: totalOrders,
             icon: Icons.account_balance_wallet_outlined,
             backgroundColor: Color(0xFFD9F9E7),
             iconDecorationColor: Color(0xFF00D15D),
           ),
           VendorStatCard(
-            title: "Products",
+            title: S.of(context).products,
             value: totalProducts,
             icon: Icons.shopping_bag_outlined,
             backgroundColor: Color(0xFFFFE5D9),

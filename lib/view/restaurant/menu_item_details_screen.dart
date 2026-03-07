@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 
 class MenuItemDetailsScreen extends StatelessWidget {
@@ -22,7 +23,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
           ),
         ),
         title: Text(
-          'Details',
+          S.of(context).basketDetailsTitle,
           style: GoogleFonts.rubik(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -63,39 +64,48 @@ class MenuItemDetailsScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Zesty Chicken Burger',
+                  S.of(context).grilledChicken,
                   style: GoogleFonts.rubik(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
                     color: const Color(0xFF1F1F1F),
                   ),
                 ),
-                _statusBadge('Available', true),
+                _statusBadge(context, S.of(context).availableStatus, true),
               ],
             ),
             const SizedBox(height: 20),
 
             // ── Property List ───────────────────────────────────────
-            _propertyRow('Item Id', '# 33'),
-            _propertyRow('Price', '39.00 MRU', isPrice: true),
-            _propertyRow('Serial No', '788'),
-            _propertyRow('Preparation Time', '7 minutes'),
-            _propertyRow('Category', 'Juice'),
-            _tagRow('Tags', 'Organic'),
+            _propertyRow(context, S.of(context).itemIdLabel, '# $itemId'),
+            _propertyRow(
+              context,
+              S.of(context).priceLabel.toLowerCase(),
+              '39.00 MRU',
+              isPrice: true,
+            ),
+            _propertyRow(context, S.of(context).serialNoLabel, '788'),
+            _propertyRow(
+              context,
+              S.of(context).preparationTimeLabel,
+              '7 ${S.of(context).mins}',
+            ),
+            _propertyRow(context, S.of(context).categoryLabel, 'Juice'),
+            _tagRow(context, S.of(context).tagsLabel, 'Organic'),
 
             const SizedBox(height: 32),
 
             // ── AVAILABLE TIME ──────────────────────────────────────
-            _sectionHeader('AVAILABLE TIME'),
+            _sectionHeader(context, S.of(context).availableTimeHeader),
             const SizedBox(height: 12),
-            _buildAvailableTimeCard(),
+            _buildAvailableTimeCard(context),
 
             const SizedBox(height: 32),
 
             // ── SALES & PERFORMANCE ─────────────────────────────────
-            _sectionHeader('SALES & PERFORMANCE'),
+            _sectionHeader(context, S.of(context).salesPerformanceHeader),
             const SizedBox(height: 12),
-            _buildSalesPerformanceCard(),
+            _buildSalesPerformanceCard(context),
 
             const SizedBox(height: 32),
 
@@ -103,9 +113,9 @@ class MenuItemDetailsScreen extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                _sectionHeader('ITEM ORDERS'),
+                _sectionHeader(context, S.of(context).itemOrdersHeader),
                 Text(
-                  'View All',
+                  S.of(context).viewAll,
                   style: GoogleFonts.rubik(
                     fontSize: 12,
                     fontWeight: FontWeight.w500,
@@ -115,7 +125,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            _buildOrderCard(),
+            _buildOrderCard(context),
 
             const SizedBox(height: 100), // Spacing for bottom button
           ],
@@ -138,7 +148,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
               ),
             ),
             child: Text(
-              'Update Details',
+              S.of(context).updateDetailsButton,
               style: GoogleFonts.rubik(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -151,7 +161,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _statusBadge(String text, bool isAvailable) {
+  Widget _statusBadge(BuildContext context, String text, bool isAvailable) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
@@ -183,7 +193,12 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _propertyRow(String label, String value, {bool isPrice = false}) {
+  Widget _propertyRow(
+    BuildContext context,
+    String label,
+    String value, {
+    bool isPrice = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -212,7 +227,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _tagRow(String label, String tag) {
+  Widget _tagRow(BuildContext context, String label, String tag) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -246,7 +261,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _sectionHeader(String title) {
+  Widget _sectionHeader(BuildContext context, String title) {
     return Text(
       title,
       style: GoogleFonts.rubik(
@@ -257,15 +272,15 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAvailableTimeCard() {
+  Widget _buildAvailableTimeCard(BuildContext context) {
     final List<String> days = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
+      S.of(context).monday,
+      S.of(context).tuesday,
+      S.of(context).wednesday,
+      S.of(context).thursday,
+      S.of(context).friday,
+      S.of(context).saturday,
+      S.of(context).sunday,
     ];
 
     return Container(
@@ -295,7 +310,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     Text(
-                      '[By Hotel]',
+                      S.of(context).byHotelLabel,
                       style: GoogleFonts.rubik(
                         fontSize: 10,
                         color: const Color(0xFF94A3B8),
@@ -305,7 +320,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  '24 Hr',
+                  S.of(context).hr24,
                   style: GoogleFonts.rubik(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
@@ -320,7 +335,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSalesPerformanceCard() {
+  Widget _buildSalesPerformanceCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -332,26 +347,43 @@ class MenuItemDetailsScreen extends StatelessWidget {
         children: [
           Row(
             children: [
-              Expanded(child: _buildStatMiniCard('Total Orders', '124')),
+              Expanded(
+                child: _buildStatMiniCard(
+                  context,
+                  S.of(context).totalOrdersStat,
+                  '124',
+                ),
+              ),
               const SizedBox(width: 12),
-              Expanded(child: _buildStatMiniCard('Revenue', '4.8k')),
+              Expanded(
+                child: _buildStatMiniCard(
+                  context,
+                  S.of(context).revenueLabel,
+                  '4.8k',
+                ),
+              ),
             ],
           ),
           const SizedBox(height: 20),
           _propertyRowWithIcon(
-            'Average Rating',
+            context,
+            S.of(context).averageRatingLabel,
             '4.8',
             Icons.star,
             const Color(0xFFF59E0B),
           ),
-          _propertyRowSimple('Total Reviews', '12'),
-          _propertyRowSimple('Last Purchase', '2 hours ago'),
+          _propertyRowSimple(context, S.of(context).totalReviewsStat, '12'),
+          _propertyRowSimple(
+            context,
+            S.of(context).lastPurchaseLabel,
+            '2 ${S.of(context).hAgo}',
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildStatMiniCard(String label, String value) {
+  Widget _buildStatMiniCard(BuildContext context, String label, String value) {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -384,6 +416,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
   }
 
   Widget _propertyRowWithIcon(
+    BuildContext context,
     String label,
     String value,
     IconData icon,
@@ -421,7 +454,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _propertyRowSimple(String label, String value) {
+  Widget _propertyRowSimple(BuildContext context, String label, String value) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 12),
       child: Row(
@@ -448,7 +481,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderCard() {
+  Widget _buildOrderCard(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -463,14 +496,14 @@ class MenuItemDetailsScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                'ORDER #ORD-882111',
+                S.of(context).orderIdLabel('ORD-882111'),
                 style: GoogleFonts.rubik(
                   fontSize: 10,
                   fontWeight: FontWeight.bold,
                   color: const Color(0xFFFF5216),
                 ),
               ),
-              _buildDeliverBadge(),
+              _buildDeliverBadge(context),
             ],
           ),
           const SizedBox(height: 8),
@@ -492,7 +525,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'ITEMS TOTAL',
+                    S.of(context).itemsTotalLabel,
                     style: GoogleFonts.rubik(
                       fontSize: 10,
                       color: const Color(0xFF94A3B8),
@@ -501,7 +534,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    '3 Items • 42.50 MRU',
+                    '3 ${S.of(context).items} • 42.50 MRU',
                     style: GoogleFonts.rubik(
                       fontSize: 11,
                       fontWeight: FontWeight.bold,
@@ -514,7 +547,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   Text(
-                    'DATE & TIME',
+                    S.of(context).dateTimeLabel,
                     style: GoogleFonts.rubik(
                       fontSize: 10,
                       color: const Color(0xFF94A3B8),
@@ -523,7 +556,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    'Feb 07, 2026 10:45 A.M, Today',
+                    'Feb 07, 2026 10:45 A.M, ${S.of(context).today}',
                     style: GoogleFonts.rubik(
                       fontSize: 10,
                       color: const Color(0xFF94A3B8),
@@ -539,7 +572,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDeliverBadge() {
+  Widget _buildDeliverBadge(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
@@ -547,7 +580,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
-        'DELIVERED',
+        S.of(context).delivered.toUpperCase(),
         style: GoogleFonts.rubik(
           fontSize: 10,
           fontWeight: FontWeight.bold,

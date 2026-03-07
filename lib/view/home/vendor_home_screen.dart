@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:saimpex_vendor/controller/home_controller.dart';
 import 'package:saimpex_vendor/controller/vendor_home_controller.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/model/home_model.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
@@ -74,19 +75,19 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
   String _statusLabel(int? status) {
     switch (status) {
       case 1:
-        return "Pending";
+        return S.current.pending;
       case 2:
-        return "Accepted";
+        return S.current.accepted;
       case 3:
-        return "Preparing";
+        return S.current.preparing;
       case 4:
-        return "Ready";
+        return S.current.ready;
       case 9:
-        return "Delivered";
+        return S.current.delivered;
       case 10:
-        return "Cancelled";
+        return S.current.cancelled;
       default:
-        return "Pending";
+        return S.current.pending;
     }
   }
 
@@ -135,9 +136,10 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
             controller.homeData?.data?.orders?.data ?? <OrderData>[];
         final membershipName = membership?.nameEn?.trim().isNotEmpty == true
             ? membership!.nameEn!.trim()
-            : "Membership";
-        final expiryText =
-            "Expires in ${membership?.expiresInDays?.toString() ?? "0"} days";
+            : S.of(context).membership;
+        final expiryText = S
+            .of(context)
+            .expiresInDays(membership?.expiresInDays?.toString() ?? "0");
         return CommonBackground(
           resizeToAvoidBottomInset: false,
           child: SizedBox.expand(
@@ -175,7 +177,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                     horizontal: layout.horizontalPadding,
                   ),
                   child: CustomSearchBox(
-                    hintText: "Search by ID, name",
+                    hintText: S.of(context).searchByIdName,
                     controller: controller.searchController,
                     onChanged: (value) async {
                       await controller.fetchHome(
@@ -217,7 +219,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                             horizontal: layout.horizontalPadding,
                             vertical: 12,
                           ),
-                          child: const Text("No orders found"),
+                          child: Text(S.of(context).noOrdersFound),
                         )
                       : ListView.builder(
                           padding: const EdgeInsets.only(top: 8, bottom: 100),
@@ -230,8 +232,9 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                               padding: const EdgeInsets.only(bottom: 16),
                               child: VendorOrderListItem(
                                 horizontalPadding: layout.horizontalPadding,
-                                orderId: order.id.toString() ?? "NA",
-                                customerName: order.userName ?? "Unknown",
+                                orderId: order.id?.toString() ?? "NA",
+                                customerName:
+                                    order.userName ?? S.of(context).unknown,
                                 itemsCount: order.orderItemsCount ?? 0,
                                 price: price,
                                 dateTime: order.placedAtFormatted ?? "",

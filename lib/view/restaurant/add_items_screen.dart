@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 
 class AddItemsScreen extends StatefulWidget {
@@ -66,7 +67,7 @@ class _AddItemsScreenState extends State<AddItemsScreen> {
           ),
         ),
         title: Text(
-          'Add Items',
+          S.of(context).addItemsTitle,
           style: GoogleFonts.rubik(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -80,61 +81,61 @@ class _AddItemsScreenState extends State<AddItemsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _fieldLabel('Item Type'),
+            _fieldLabel(S.of(context).itemTypeLabel),
             const SizedBox(height: 8),
             _dropdownField(
               value: _selectedType,
-              hint: 'Select type',
+              hint: S.of(context).selectTypeHint,
               items: _types,
               onChanged: (v) => setState(() => _selectedType = v),
               fullWidth: true,
             ),
             const SizedBox(height: 20),
 
-            _fieldLabel('Preparation Time (minutes)'),
+            _fieldLabel(S.of(context).preparationTimeMinutesLabel),
             const SizedBox(height: 8),
             _textField(
               controller: _prepTimeCtrl,
-              hint: 'Enter minutes',
+              hint: S.of(context).enterMinutesHint,
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 20),
 
-            _fieldLabel('Tags'),
+            _fieldLabel(S.of(context).tagsLabel),
             const SizedBox(height: 8),
             _dropdownField(
               value: _selectedTag,
-              hint: 'Select tag',
+              hint: S.of(context).selectTagHint,
               items: _tags,
               onChanged: (v) => setState(() => _selectedTag = v),
               fullWidth: true,
             ),
             const SizedBox(height: 20),
 
-            _fieldLabel('Attribute'),
+            _fieldLabel(S.of(context).attributeLabel),
             const SizedBox(height: 8),
             _dropdownField(
               value: _selectedAttribute,
-              hint: 'Select attribute',
+              hint: S.of(context).selectAttributeHint,
               items: _attributes,
               onChanged: (v) => setState(() => _selectedAttribute = v),
               fullWidth: true,
             ),
             const SizedBox(height: 20),
 
-            _fieldLabel('Serial Number'),
+            _fieldLabel(S.of(context).serialNoLabel), // serialNumberLabel
             const SizedBox(height: 8),
             _textField(
               controller: _serialNumberCtrl,
-              hint: 'Enter serial number',
+              hint: S.of(context).enterSerialNumberHint,
             ),
             const SizedBox(height: 20),
 
-            _fieldLabel('Maximum Allowed Quantity'),
+            _fieldLabel(S.of(context).maxAllowedQuantityLabel),
             const SizedBox(height: 8),
             _textField(
               controller: _maxQuantityCtrl,
-              hint: 'Enter maximum allowed quantity',
+              hint: S.of(context).enterMaxQuantityHint,
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 20),
@@ -145,11 +146,11 @@ class _AddItemsScreenState extends State<AddItemsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _fieldLabel('Price'),
+                      _fieldLabel(S.of(context).priceLabel),
                       const SizedBox(height: 8),
                       _textField(
                         controller: _priceCtrl,
-                        hint: 'Enter Price',
+                        hint: S.of(context).enterPriceHint,
                         keyboardType: TextInputType.number,
                         fullWidth: true,
                       ),
@@ -161,11 +162,11 @@ class _AddItemsScreenState extends State<AddItemsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _fieldLabel('Discount Price'),
+                      _fieldLabel(S.of(context).discountPriceLabel),
                       const SizedBox(height: 8),
                       _textField(
                         controller: _discountPriceCtrl,
-                        hint: 'Enter Discount Price',
+                        hint: S.of(context).enterDiscountPriceHint,
                         keyboardType: TextInputType.number,
                         fullWidth: true,
                       ),
@@ -198,7 +199,7 @@ class _AddItemsScreenState extends State<AddItemsScreen> {
                     ),
                   ),
                   child: Text(
-                    'Reset',
+                    S.of(context).resetButton,
                     style: GoogleFonts.rubik(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
@@ -225,7 +226,7 @@ class _AddItemsScreenState extends State<AddItemsScreen> {
                     ),
                   ),
                   child: Text(
-                    'Submit',
+                    S.of(context).submitButton,
                     style: GoogleFonts.rubik(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,

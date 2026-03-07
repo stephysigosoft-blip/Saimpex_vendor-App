@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 
 class AddMenuScreen extends StatefulWidget {
@@ -28,7 +29,6 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
     'Soups',
     'Desserts',
   ];
-  final List<String> _vegOptions = ['Yes', 'No'];
   final List<String> _tags = [
     'New Arrival',
     'Best Seller',
@@ -87,7 +87,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
           ),
         ),
         title: Text(
-          'Add Menu',
+          S.of(context).addMenuTitle,
           style: GoogleFonts.rubik(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -102,9 +102,12 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // ── Item Name (English) ──────────────────────────────
-            _fieldLabel('Item Name (English)'),
+            _fieldLabel(S.of(context).itemNameEnglishLabel),
             const SizedBox(height: 6),
-            _textField(controller: _nameEnCtrl, hint: 'Enter item name'),
+            _textField(
+              controller: _nameEnCtrl,
+              hint: S.of(context).enterItemNameHint,
+            ),
             const SizedBox(height: 16),
 
             // ── Category + Is Veg ────────────────────────────────
@@ -114,11 +117,11 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _fieldLabel('Category'),
+                      _fieldLabel(S.of(context).categoryLabel),
                       const SizedBox(height: 6),
                       _dropdownField(
                         value: _selectedCategory,
-                        hint: 'Select Category',
+                        hint: S.of(context).selectCategoryHint,
                         items: _categories,
                         onChanged: (v) => setState(() => _selectedCategory = v),
                         height: 46,
@@ -131,13 +134,18 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _fieldLabel('Is Veg'),
+                      _fieldLabel(S.of(context).isVegLabel),
                       const SizedBox(height: 6),
                       _dropdownField(
-                        value: _selectedIsVeg,
-                        items: _vegOptions,
-                        onChanged: (v) =>
-                            setState(() => _selectedIsVeg = v ?? 'No'),
+                        value: _selectedIsVeg == 'Yes'
+                            ? S.of(context).yesLabel
+                            : S.of(context).noLabel,
+                        items: [S.of(context).yesLabel, S.of(context).noLabel],
+                        onChanged: (v) => setState(
+                          () => _selectedIsVeg = (v == S.of(context).yesLabel)
+                              ? 'Yes'
+                              : 'No',
+                        ),
                         height: 46,
                       ),
                     ],
@@ -148,17 +156,20 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
             const SizedBox(height: 16),
 
             // ── Description (English) ────────────────────────────
-            _fieldLabel('Description (English)'),
+            _fieldLabel(S.of(context).descriptionEnglishLabel),
             const SizedBox(height: 6),
-            _textAreaField(controller: _descEnCtrl, hint: 'Enter description'),
+            _textAreaField(
+              controller: _descEnCtrl,
+              hint: S.of(context).enterDescriptionHint,
+            ),
             const SizedBox(height: 16),
 
             // ── Tags ─────────────────────────────────────────────
-            _fieldLabel('Tags'),
+            _fieldLabel(S.of(context).tagsLabel),
             const SizedBox(height: 6),
             _dropdownField(
               value: _selectedTag,
-              hint: 'Select tags',
+              hint: S.of(context).selectTagHint,
               items: _tags,
               onChanged: (v) => setState(() => _selectedTag = v),
               height: 46,
@@ -167,11 +178,11 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
             const SizedBox(height: 16),
 
             // ── Preparation Time ─────────────────────────────────
-            _fieldLabel('Preparation Time (minutes)'),
+            _fieldLabel(S.of(context).preparationTimeMinutesLabel),
             const SizedBox(height: 6),
             _textField(
               controller: _prepTimeCtrl,
-              hint: 'Enter minutes',
+              hint: S.of(context).enterMinutesHint,
               keyboardType: TextInputType.number,
             ),
             const SizedBox(height: 16),
@@ -183,11 +194,11 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _fieldLabel('Price'),
+                      _fieldLabel(S.of(context).priceLabel),
                       const SizedBox(height: 6),
                       _textField(
                         controller: _priceCtrl,
-                        hint: 'Enter Price',
+                        hint: S.of(context).enterPriceHint,
                         keyboardType: TextInputType.number,
                       ),
                     ],
@@ -198,11 +209,11 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _fieldLabel('Discount Price'),
+                      _fieldLabel(S.of(context).discountPriceLabel),
                       const SizedBox(height: 6),
                       _textField(
                         controller: _discountPriceCtrl,
-                        hint: 'Enter Discount Price',
+                        hint: S.of(context).enterDiscountPriceHint,
                         keyboardType: TextInputType.number,
                       ),
                     ],
@@ -213,7 +224,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
             const SizedBox(height: 16),
 
             // ── Item Image ───────────────────────────────────────
-            _fieldLabel('Item Image'),
+            _fieldLabel(S.of(context).itemImageLabel),
             const SizedBox(height: 6),
             GestureDetector(
               onTap: _pickImages,
@@ -236,7 +247,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Upload image here',
+                      S.of(context).uploadImageHint,
                       style: GoogleFonts.rubik(
                         fontSize: 12,
                         color: const Color(0xFF94A3B8),
@@ -335,7 +346,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
                       backgroundColor: Colors.white,
                     ),
                     child: Text(
-                      'Reset',
+                      S.of(context).resetButton,
                       style: GoogleFonts.rubik(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -361,7 +372,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
                       ),
                     ),
                     child: Text(
-                      'Submit',
+                      S.of(context).submitButton,
                       style: GoogleFonts.rubik(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,

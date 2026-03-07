@@ -17,5 +17,9 @@ class ApiEndPoints {
   static String home = "home";
   static String restaurantOrderDetails = "restaurantOrderDetail";
   static String groceryOrderDetails = "groceryOrderDetail";
-
+  static String profile = "profile";
+  static String deliveryBoys = "deliveryBoys";
+  static String logout = "logout";
+  static String dashboard = "dashboard";
+  static String deleteAccount = "deleteAccount";
 }

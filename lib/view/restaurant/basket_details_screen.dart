@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 
 class BasketDetailsScreen extends StatelessWidget {
@@ -17,7 +18,7 @@ class BasketDetailsScreen extends StatelessWidget {
           onPressed: () => Navigator.pop(context),
         ),
         title: Text(
-          "Details",
+          S.of(context).basketDetailsTitle,
           style: GoogleFonts.rubik(
             fontSize: 18,
             fontWeight: FontWeight.bold,
@@ -82,7 +83,7 @@ class BasketDetailsScreen extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    "Restaurant Basket 1",
+                                    S.of(context).restaurantOne,
                                     style: GoogleFonts.rubik(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
@@ -99,7 +100,7 @@ class BasketDetailsScreen extends StatelessWidget {
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Text(
-                                      "ACTIVE",
+                                      S.of(context).active.toUpperCase(),
                                       style: GoogleFonts.rubik(
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,
@@ -111,7 +112,7 @@ class BasketDetailsScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 4),
                               Text(
-                                "Basket ID: 12 • Created Nov 25, 2025",
+                                "${S.of(context).basketIdLabel("12")} • ${S.of(context).createdLabel("Nov 25, 2025")}",
                                 style: GoogleFonts.rubik(
                                   fontSize: 10,
                                   color: const Color(0xFF94A3B8),
@@ -130,32 +131,57 @@ class BasketDetailsScreen extends StatelessWidget {
                         children: [
                           Row(
                             children: [
-                              _infoBox("VENDOR", "Restaurant 1"),
+                              _infoBox(
+                                context,
+                                S.of(context).vendor.toUpperCase(),
+                                S.of(context).restaurantOne,
+                              ),
                               const SizedBox(width: 12),
-                              _infoBox("PRICE", "2000 Pts"),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              _infoBox("REDEEM POINTS", "2000"),
-                              const SizedBox(width: 12),
-                              _infoBox("QUANTITY", "10"),
-                            ],
-                          ),
-                          const SizedBox(height: 12),
-                          Row(
-                            children: [
-                              _infoBox("ITEMS COUNT", "3 Items"),
-                              const SizedBox(width: 12),
-                              _infoBox("ORDERS COUNT", "3"),
+                              _infoBox(
+                                context,
+                                S.of(context).priceLabel,
+                                "2000 Pts",
+                              ),
                             ],
                           ),
                           const SizedBox(height: 12),
                           Row(
                             children: [
                               _infoBox(
-                                "ADDRESS",
+                                context,
+                                S.of(context).redeemPointsLabel,
+                                "2000",
+                              ),
+                              const SizedBox(width: 12),
+                              _infoBox(
+                                context,
+                                S.of(context).quantity.toUpperCase(),
+                                "10",
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              _infoBox(
+                                context,
+                                S.of(context).itemsCountLabel,
+                                "3 ${S.of(context).items}",
+                              ),
+                              const SizedBox(width: 12),
+                              _infoBox(
+                                context,
+                                S.of(context).ordersCountLabel,
+                                "3",
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              _infoBox(
+                                context,
+                                S.of(context).address.toUpperCase(),
                                 "Restaurant Block 5, Mauritania",
                                 isFullWidth: true,
                               ),
@@ -171,7 +197,7 @@ class BasketDetailsScreen extends StatelessWidget {
               Row(
                 children: [
                   Text(
-                    "BASKET ITEMS ",
+                    "${S.of(context).basketItemsHeader} ",
                     style: GoogleFonts.rubik(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -190,34 +216,37 @@ class BasketDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _buildBasketItemTile(
+                context,
                 "Chicken Fried Rice",
-                "Chinese style fried rice",
+                S.of(context).aboutDescription, // Mock localized description
                 "lib/assets/images/Chicken Fried Rice.png",
                 "13",
-                "Qty: 2",
+                S.of(context).qtyLabel("2"),
               ),
               const SizedBox(height: 12),
               _buildBasketItemTile(
+                context,
                 "Dry fruit falooda",
-                "Rich and creamy dessert",
+                S.of(context).aboutDescription,
                 "lib/assets/images/Dry fruit falooda.png",
                 "14",
-                "Qty: 2",
+                S.of(context).qtyLabel("2"),
               ),
               const SizedBox(height: 12),
               _buildBasketItemTile(
+                context,
                 "Chicken Soup",
-                "Chinese spicy chicken soup",
+                S.of(context).aboutDescription,
                 "lib/assets/images/Chicken Soupe.png",
                 "15",
-                "Qty: 1",
+                S.of(context).qtyLabel("1"),
               ),
               const SizedBox(height: 32),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    "REDEEMED CUSTOMERS",
+                    S.of(context).redeemedCustomersHeader,
                     style: GoogleFonts.rubik(
                       fontSize: 14,
                       fontWeight: FontWeight.bold,
@@ -225,7 +254,7 @@ class BasketDetailsScreen extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    "View All",
+                    S.of(context).viewAll,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
@@ -236,6 +265,7 @@ class BasketDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _buildCustomerTile(
+                context,
                 "Aicha Mint Ahmed",
                 "+222 62345678",
                 "2000",
@@ -243,6 +273,7 @@ class BasketDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               _buildCustomerTile(
+                context,
                 "Aicha Mint Ahmed",
                 "+222 62345678",
                 "2000",
@@ -256,7 +287,12 @@ class BasketDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoBox(String label, String value, {bool isFullWidth = false}) {
+  Widget _infoBox(
+    BuildContext context,
+    String label,
+    String value, {
+    bool isFullWidth = false,
+  }) {
     return Expanded(
       flex: isFullWidth ? 2 : 1,
       child: Container(
@@ -296,6 +332,7 @@ class BasketDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildBasketItemTile(
+    BuildContext context,
     String name,
     String desc,
     String image,
@@ -346,6 +383,8 @@ class BasketDetailsScreen extends StatelessWidget {
                     fontSize: 11,
                     color: const Color(0xFF94A3B8),
                   ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
                 const SizedBox(height: 8),
                 Container(
@@ -375,6 +414,7 @@ class BasketDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildCustomerTile(
+    BuildContext context,
     String name,
     String phone,
     String points,
@@ -438,7 +478,7 @@ class BasketDetailsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(6),
                 ),
                 child: Text(
-                  "REDEEMED",
+                  S.of(context).redeemedStatus,
                   style: GoogleFonts.rubik(
                     fontSize: 10,
                     fontWeight: FontWeight.bold,
@@ -456,7 +496,7 @@ class BasketDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "POINTS",
+                      S.of(context).pointsLabel,
                       style: GoogleFonts.rubik(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,
@@ -480,7 +520,7 @@ class BasketDetailsScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "DATE",
+                      S.of(context).dateLabel,
                       style: GoogleFonts.rubik(
                         fontSize: 10,
                         fontWeight: FontWeight.bold,

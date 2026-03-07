@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
 import 'package:saimpex_vendor/view/restaurant/add_menu_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/add_items_screen.dart';
-import 'package:saimpex_vendor/view/restaurant/edit_items_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/menu_item_details_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/basket_details_screen.dart';
 
@@ -18,6 +18,19 @@ class VendorRestaurantScreen extends StatefulWidget {
 class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   String selectedMenu = "Account";
   bool isInstructionsExpanded = false;
+
+  String _getLocalizedMenuTitle(String title) {
+    if (title == "Account") return S.of(context).home;
+    if (title == "Working Hours") return S.of(context).workingHours;
+    if (title == "Leaves") return S.of(context).leaves;
+    if (title == "Menu") return S.of(context).menu;
+    if (title == "Items") return S.of(context).items;
+    if (title == "Menu Bulk Import") return S.of(context).menuBulkImport;
+    if (title == "Basket") return S.of(context).basket;
+    if (title == "Received Payouts") return S.of(context).receivedPayouts;
+    if (title == "Restaurant Reports") return S.of(context).restaurantReports;
+    return title;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -68,7 +81,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                   const SizedBox(height: 10),
                   Text(
-                    "Restaurant 1",
+                    S.of(context).restaurantOne,
                     style: GoogleFonts.rubik(
                       fontSize: 18,
                       fontWeight: FontWeight.w600,
@@ -141,16 +154,19 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               _sectionHeader("RESTAURANT DETAILS"),
               const SizedBox(height: 12),
               _buildDetailCard(
-                height: 231,
+                height: 480,
                 child: Column(
                   children: [
-                    _detailRow("Name", "Restaurant 1"),
-                    _detailRow("Owner", "Salman"),
-                    _detailRow("ID", "1"),
-                    _detailRow("Contact", "+22241518211"),
-                    _detailRow("Email", "rest1@saimpex.com"),
-                    _detailRow("Status", "ACTIVE", isStatus: true),
-                    _detailRow("Address", "Restaurant Block 5, Mauritania"),
+                    _detailRow("Joined on", "Feb 23, 2025, 11:30 AM"),
+                    _detailRow("Status", "Approved", isStatus: true),
+                    _detailRow("Vendor Type", "Individual"),
+                    _detailRow("Zone", "Main Zone"),
+                    _detailRow("Username", "Vendor_Admin"),
+                    _detailRow("Address", "123 Business Rd, Suite 4B"),
+                    _detailRow("Coordinates", "25.276987, 55.296249"),
+                    _detailRow("Owner Name", "John Doe"),
+                    _detailRow("Owner Email", "john.doe@example.com"),
+                    _detailRow("Owner Phone", "+1 234 567 8900"),
                   ],
                 ),
               ),
@@ -158,12 +174,16 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               _sectionHeader("BANK DETAILS"),
               const SizedBox(height: 12),
               _buildDetailCard(
-                height: 124,
+                height: 140,
                 child: Column(
                   children: [
-                    _detailRow("Holder Name", "Salman H"),
-                    _detailRow("IBAN Number", "121236218936189111"),
-                    _detailRow("SWIFT Code", "TESTMRMR001"),
+                    _detailRow("Bank Name", "Emirates NBD"),
+                    _detailRow("Account Name", "Restaurant One LLC"),
+                    _detailRow(
+                      "Account Number",
+                      "12345678901234567",
+                      isBoldValue: true,
+                    ),
                   ],
                 ),
               ),
@@ -171,19 +191,26 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               _sectionHeader("ABOUT THE RESTAURANT"),
               const SizedBox(height: 12),
               _buildDetailCard(
-                height: 69,
-                child: Column(children: [_detailRow("Category", "Non-Veg")]),
+                height: 120,
+                child: Text(
+                  S.of(context).aboutDescription,
+                  style: GoogleFonts.rubik(
+                    fontSize: 14,
+                    color: const Color(0xFF6B7280),
+                  ),
+                ),
               ),
               const SizedBox(height: 24),
               _sectionHeader("REGISTRATION DETAILS"),
               const SizedBox(height: 12),
               _buildDetailCard(
-                height: 124,
+                height: 180,
                 child: Column(
                   children: [
-                    _detailRow("Reg. Number", "REST11MAUR13"),
-                    _detailRow("Reg. Date", "Dec 7, 2025"),
-                    _detailRow("GST Number", "GSTRMAU127444"),
+                    _detailRow("Trade License No", "TL-2025-001"),
+                    _detailRow("Vat/Gst Number", "VAT-987654321"),
+                    _detailRow("National Id Type", "Emirates ID"),
+                    _detailRow("National Id Number", "784-1980-1234567-1"),
                   ],
                 ),
               ),
@@ -191,102 +218,124 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               _sectionHeader("PAYMENT DETAILS"),
               const SizedBox(height: 12),
               _buildDetailCard(
-                height: 96,
+                height: 180,
                 child: Column(
                   children: [
-                    _detailRow("Commission %", "5.00%"),
-                    _detailRow("Total Profit", "0 MRU", isBoldValue: true),
+                    _detailRow("Service Delivery Charge", "\$10.00"),
+                    _detailRow(
+                      "Restaurant Commission Percentage per Order",
+                      "15%",
+                    ),
+                    _detailRow("Gst/Vat", "5%"),
+                    _detailRow("Packaging Cost", "\$2.50"),
                   ],
                 ),
               ),
               const SizedBox(height: 24),
               _sectionHeader("OWNER IDENTITY PROOF"),
               const SizedBox(height: 12),
-              _buildDetailCard(height: 98, child: const SizedBox.shrink()),
+              _buildImageCard(S.of(context).identityProofDocument),
               const SizedBox(height: 24),
               _sectionHeader("CERTIFICATES"),
               const SizedBox(height: 12),
-              _buildDetailCard(height: 98, child: const SizedBox.shrink()),
-              const SizedBox(height: 24),
               Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _sectionHeader("RATING & REVIEWS"),
-                  Text(
-                    "View All",
-                    style: GoogleFonts.rubik(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFFFF5216),
+                  Expanded(
+                    child: _buildImageCard(
+                      S.of(context).tradeLicense,
+                      width: double.infinity,
+                    ),
+                  ),
+                  const SizedBox(width: 20),
+                  Expanded(
+                    child: _buildImageCard(
+                      S.of(context).foodPermit,
+                      width: double.infinity,
                     ),
                   ),
                 ],
               ),
+              const SizedBox(height: 24),
+              _sectionHeader("RATING & REVIEWS"),
               const SizedBox(height: 12),
-              _buildReviewCard(),
-              const SizedBox(height: 12),
-              _buildReviewCard(),
-            ] else if (selectedMenu == "Working Hours") ...[
-              _buildWorkingHours(),
+              _buildRatingCard(),
+              const SizedBox(height: 20),
             ] else if (selectedMenu == "Leaves") ...[
-              _buildLeaves(),
+              const SizedBox(height: 20),
+              _sectionHeader("MARK LEAVE"),
+              const SizedBox(height: 12),
+              _buildLeaveForm(),
+              const SizedBox(height: 24),
+              _sectionHeader("LEAVES HISTORY"),
+              const SizedBox(height: 12),
+              _buildLeaveHistory(),
+              const SizedBox(height: 20),
+            ] else if (selectedMenu == "Working Hours") ...[
+              const SizedBox(height: 20),
+              _sectionHeader("WORKING HOURS"),
+              const SizedBox(height: 12),
+              _buildWorkingHoursList(),
+              const SizedBox(height: 20),
             ] else if (selectedMenu == "Menu") ...[
-              _buildMenuSection(),
+              const SizedBox(height: 20),
+              _sectionHeader("ALL MENUS"),
+              const SizedBox(height: 12),
+              _buildMenuList(),
+              const SizedBox(height: 20),
             ] else if (selectedMenu == "Items") ...[
-              _buildItemsSection(),
-            ] else if (selectedMenu == "Menu Bulk Import") ...[
-              _buildMenuBulkImportSection(),
-            ] else if (selectedMenu == "Basket") ...[
-              _buildBasketSection(),
-            ] else if (selectedMenu == "Received Payouts") ...[
-              _buildReceivedPayoutsSection(),
-            ] else if (selectedMenu == "Restaurant Reports") ...[
-              _buildRestaurantReportsSection(),
-            ] else ...[
-              const SizedBox(
-                height: 200,
-                child: Center(child: Text("Coming Soon")),
+              const SizedBox(height: 20),
+              CustomSearchBox(
+                hintText: S.of(context).searchByIdName,
+                boxColor: Colors.white,
               ),
+              const SizedBox(height: 20),
+              _sectionHeader("ALL ITEMS"),
+              const SizedBox(height: 12),
+              _buildItemsList(),
+              const SizedBox(height: 20),
+            ] else if (selectedMenu == "Menu Bulk Import") ...[
+              const SizedBox(height: 20),
+              _sectionHeader("MENU BULK IMPORT"),
+              const SizedBox(height: 24),
+              _buildBulkImportInstructions(),
+              const SizedBox(height: 24),
+              _buildImportSteps(),
+              const SizedBox(height: 40),
+            ] else if (selectedMenu == "Basket") ...[
+              const SizedBox(height: 20),
+              _sectionHeader("BASKETS"),
+              const SizedBox(height: 12),
+              _buildBasketList(),
+              const SizedBox(height: 20),
+            ] else if (selectedMenu == "Received Payouts") ...[
+              const SizedBox(height: 20),
+              _sectionHeader("RECEIVED PAYOUTS"),
+              const SizedBox(height: 12),
+              _buildPayoutsList(),
+              const SizedBox(height: 20),
             ],
-
-            const SizedBox(height: 100),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildWorkingHours() {
-    final List<String> days = [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
+  Widget _buildWorkingHoursList() {
+    final days = [
+      S.of(context).monday,
+      S.of(context).tuesday,
+      S.of(context).wednesday,
+      S.of(context).thursday,
+      S.of(context).friday,
+      S.of(context).saturday,
+      S.of(context).sunday,
     ];
-
-    return Container(
-      width: 350,
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9), width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: days.map((day) {
-          bool isLast = day == days.last;
-          return Padding(
-            padding: EdgeInsets.only(bottom: isLast ? 0 : 24.0),
+    return Column(
+      children: days.map((day) {
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: _buildDetailCard(
+            height: 60,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -295,7 +344,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   style: GoogleFonts.rubik(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: const Color(0xFF1F2937),
+                    color: const Color(0xFF1F1F1F),
                   ),
                 ),
                 Container(
@@ -308,7 +357,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
-                    "24 Hr",
+                    S.of(context).hr24,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
                       fontWeight: FontWeight.w700,
@@ -318,9 +367,9 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                 ),
               ],
             ),
-          );
-        }).toList(),
-      ),
+          ),
+        );
+      }).toList(),
     );
   }
 
@@ -347,7 +396,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         ),
         child: Center(
           child: Text(
-            title,
+            _getLocalizedMenuTitle(title),
             style: GoogleFonts.rubik(
               fontSize: 12,
               fontWeight: FontWeight.w500,
@@ -360,8 +409,45 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   }
 
   Widget _sectionHeader(String title) {
+    String localizedTitle = title;
+    if (title == "RESTAURANT DETAILS") {
+      localizedTitle = S.of(context).restaurantDetails;
+    } else if (title == "BANK DETAILS") {
+      localizedTitle = S.of(context).bankDetails;
+    } else if (title == "ABOUT THE RESTAURANT") {
+      localizedTitle = S.of(context).aboutTheRestaurant;
+    } else if (title == "REGISTRATION DETAILS") {
+      localizedTitle = S.of(context).registrationDetails;
+    } else if (title == "PAYMENT DETAILS") {
+      localizedTitle = S.of(context).paymentSummaryDetails;
+    } else if (title == "OWNER IDENTITY PROOF") {
+      localizedTitle = S.of(context).ownerIdentityProof;
+    } else if (title == "CERTIFICATES") {
+      localizedTitle = S.of(context).certificates;
+    } else if (title == "RATING & REVIEWS") {
+      localizedTitle = S.of(context).ratingReviews;
+    } else if (title == "MARK LEAVE") {
+      localizedTitle = S.of(context).markLeave;
+    } else if (title == "LEAVES HISTORY") {
+      localizedTitle = S.of(context).leavesHistory;
+    } else if (title == "WORKING HOURS") {
+      localizedTitle = S.of(context).workingHours;
+    } else if (title == "ALL MENUS") {
+      localizedTitle = S.of(context).allMenus;
+    } else if (title == "ALL ITEMS") {
+      localizedTitle = S.of(context).allItems;
+    } else if (title == "MENU BULK IMPORT") {
+      localizedTitle = S.of(context).menuBulkImport;
+    } else if (title == "BASKETS") {
+      localizedTitle = S.of(context).basket;
+    } else if (title == "RECEIVED PAYOUTS") {
+      localizedTitle = S.of(context).receivedPayouts;
+    } else if (title == "RESTAURANT REPORTS") {
+      localizedTitle = S.of(context).restaurantReports;
+    }
+
     return Text(
-      title,
+      localizedTitle,
       style: GoogleFonts.rubik(
         fontSize: 12,
         fontWeight: FontWeight.bold,
@@ -390,26 +476,61 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     bool isStatus = false,
     bool isBoldValue = false,
   }) {
+    String localizedLabel = label;
+    if (label == "Joined on") localizedLabel = S.of(context).joinedOn;
+    if (label == "Status") localizedLabel = S.of(context).status;
+    if (label == "Vendor Type") localizedLabel = S.of(context).vendorType;
+    if (label == "Zone") localizedLabel = S.of(context).zone;
+    if (label == "Username") localizedLabel = S.of(context).username;
+    if (label == "Address") localizedLabel = S.of(context).address;
+    if (label == "Coordinates") localizedLabel = S.of(context).coordinates;
+    if (label == "Owner Name") localizedLabel = S.of(context).ownerName;
+    if (label == "Owner Email") localizedLabel = S.of(context).ownerEmail;
+    if (label == "Owner Phone") localizedLabel = S.of(context).ownerPhone;
+    if (label == "Bank Name") localizedLabel = S.of(context).bankName;
+    if (label == "Account Name") localizedLabel = S.of(context).accountName;
+    if (label == "Account Number") localizedLabel = S.of(context).accountNumber;
+    if (label == "Trade License No")
+      localizedLabel = S.of(context).tradeLicenseNo;
+    if (label == "Vat/Gst Number") localizedLabel = S.of(context).vatGstNumber;
+    if (label == "National Id Type")
+      localizedLabel = S.of(context).nationalIdType;
+    if (label == "National Id Number")
+      localizedLabel = S.of(context).nationalIdNumber;
+    if (label == "Service Delivery Charge")
+      localizedLabel = S.of(context).serviceDeliveryCharge;
+    if (label == "Restaurant Commission Percentage per Order")
+      localizedLabel = S.of(context).restaurantCommission;
+    if (label == "Gst/Vat") localizedLabel = S.of(context).gstVat;
+    if (label == "Packaging Cost") localizedLabel = S.of(context).packagingCost;
+
     return Padding(
       padding: const EdgeInsets.only(bottom: 12.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            label,
+            localizedLabel,
             style: GoogleFonts.rubik(
-              fontSize: 12,
-              color: const Color(0xFF94A3B8),
-              fontWeight: FontWeight.w400,
+              fontSize: 14,
+              color: const Color(0xFF6B7280),
             ),
           ),
           if (isStatus)
-            Text(
-              value,
-              style: GoogleFonts.rubik(
-                fontSize: 12,
-                color: const Color(0xFF22C55E),
-                fontWeight: FontWeight.bold,
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+              decoration: BoxDecoration(
+                color: const Color(0xFFF0FDF4),
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(color: const Color(0xFFDCFCE7)),
+              ),
+              child: Text(
+                value,
+                style: GoogleFonts.rubik(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF166534),
+                ),
               ),
             )
           else
@@ -418,9 +539,9 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                 value,
                 textAlign: TextAlign.right,
                 style: GoogleFonts.rubik(
-                  fontSize: 12,
-                  color: const Color(0xFF1F1F1F),
+                  fontSize: 14,
                   fontWeight: isBoldValue ? FontWeight.bold : FontWeight.w500,
+                  color: const Color(0xFF1F1F1F),
                 ),
               ),
             ),
@@ -429,27 +550,29 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     );
   }
 
-  Widget _buildReviewCard() {
+  Widget _buildImageCard(String label, {double width = 350}) {
     return Container(
-      width: 350,
-      padding: const EdgeInsets.all(16),
+      width: width,
+      constraints: const BoxConstraints(minHeight: 180),
+      padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(20),
         border: Border.all(color: const Color(0xFFE5E5E5), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Placeholder Image Area
           Row(
             children: [
               CircleAvatar(
                 radius: 20,
-                backgroundColor: const Color(0xFFDCFCE7),
+                backgroundColor: const Color(0xFFEEF2FF),
                 child: Text(
-                  "S",
+                  "R1",
                   style: GoogleFonts.rubik(
-                    color: const Color(0xFF22C55E),
+                    color: const Color(0xFFFF5216),
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -462,39 +585,52 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          "Aicha Mint Ahmed",
-                          style: GoogleFonts.rubik(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: const Color(0xFF1F1F1F),
-                          ),
-                        ),
-                        Text(
-                          "12 Jan 2026, 07:13 am",
-                          style: GoogleFonts.rubik(
-                            fontSize: 10,
-                            color: const Color(0xFF94A3B8),
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        ...List.generate(
-                          5,
-                          (index) => Icon(
-                            index < 1 ? Icons.star : Icons.star_border,
-                            color: const Color(0xFFF59E0B),
-                            size: 14,
+                        Expanded(
+                          child: Text(
+                            S.of(context).restaurantOne,
+                            style: GoogleFonts.rubik(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w600,
+                              color: const Color(0xFF1F1F1F),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                         const SizedBox(width: 4),
                         Text(
-                          "1.0",
+                          "4.6",
                           style: GoogleFonts.rubik(
-                            fontSize: 12,
-                            color: const Color(0xFF94A3B8),
+                            color: const Color(0xFFF59E0B),
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      "Continental & Oriental",
+                      style: GoogleFonts.rubik(
+                        fontSize: 12,
+                        color: const Color(0xFF6B7280),
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on,
+                          size: 14,
+                          color: Color(0xFF6B7280),
+                        ),
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: Text(
+                            "Business Bay, Dubai",
+                            style: GoogleFonts.rubik(
+                              fontSize: 12,
+                              color: const Color(0xFF6B7280),
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ],
@@ -506,141 +642,87 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
           ),
           const SizedBox(height: 12),
           Text(
-            "Price was too high, Quality not as expected.",
+            label,
             style: GoogleFonts.rubik(
               fontSize: 12,
-              color: const Color(0xFF475569),
+              color: const Color(0xFF6B7280),
             ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 8),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            height: 60,
             decoration: BoxDecoration(
-              color: const Color(0xFFF8FAFC),
-              borderRadius: BorderRadius.circular(8),
+              color: const Color(0xFFF3F4F6),
+              borderRadius: BorderRadius.circular(10),
             ),
-            child: Row(
-              children: [
-                Text(
-                  "Order: ",
-                  style: GoogleFonts.rubik(
-                    fontSize: 11,
-                    color: const Color(0xFF94A3B8),
-                  ),
+            child: Center(
+              child: Text(
+                S.of(context).clickToView,
+                style: GoogleFonts.rubik(
+                  color: const Color(0xFF6B7280),
+                  fontSize: 12,
                 ),
-                Text(
-                  "ORD-000091",
-                  style: GoogleFonts.rubik(
-                    fontSize: 11,
-                    color: const Color(0xFF111827),
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLeaves() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _sectionHeader("MARK LEAVE"),
-        const SizedBox(height: 12),
-        _buildMarkLeaveCard(),
-        const SizedBox(height: 24),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _sectionHeader("LEAVES HISTORY"),
-            Text(
-              "View All",
-              style: GoogleFonts.rubik(
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFFFF5216),
               ),
             ),
-          ],
-        ),
-        const SizedBox(height: 12),
-        _subtitleLabel("Upcoming Leaves", color: const Color(0xFF3B82F6)),
-        const SizedBox(height: 12),
-        _buildLeaveHistoryCard(
-          date: "Feb 20 - Feb 25, 2026",
-          status: "SCHEDULED",
-          reason: "Renovation Work",
-          isScheduled: true,
-        ),
-        const SizedBox(height: 12),
-        _buildLeaveHistoryCard(
-          date: "Feb 20 - Feb 25, 2026",
-          status: "SCHEDULED",
-          reason: "Renovation Work",
-          isScheduled: true,
-        ),
-        const SizedBox(height: 24),
-        _subtitleLabel("Completed Leaves", color: const Color(0xFF22C55E)),
-        const SizedBox(height: 12),
-        _buildLeaveHistoryCard(
-          date: "Jan 20 - Jan 25, 2025",
-          status: "COMPLETED",
-          reason: "Renovation Work",
-          isScheduled: false,
-        ),
-        const SizedBox(height: 12),
-        _buildLeaveHistoryCard(
-          date: "Jan 20 - Jan 25, 2025",
-          status: "COMPLETED",
-          reason: "Renovation Work",
-          isScheduled: false,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMarkLeaveCard() {
-    return Container(
-      width: 350,
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: const Color(0xFFF1F5F9), width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+
+  Widget _buildRatingCard() {
+    return _buildDetailCard(
+      height: 120,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
+          Text(
+            "4.6",
+            style: GoogleFonts.rubik(
+              fontSize: 48,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFFFF5216),
+            ),
+          ),
+          const SizedBox(width: 20),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Expanded(child: _buildInputFieldLabel("From Date")),
-              const SizedBox(width: 15),
-              Expanded(child: _buildInputFieldLabel("To Date")),
+              Row(
+                children: List.generate(5, (index) {
+                  return Icon(
+                    index < 4 ? Icons.star : Icons.star_half,
+                    color: const Color(0xFFF59E0B),
+                    size: 20,
+                  );
+                }),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Based on 128 reviews",
+                style: GoogleFonts.rubik(
+                  color: const Color(0xFF6B7280),
+                  fontSize: 12,
+                ),
+              ),
             ],
           ),
-          const SizedBox(height: 8),
-          Row(
-            children: [
-              Expanded(child: _buildDateField("dd-mm-yyyy")),
-              const SizedBox(width: 15),
-              Expanded(child: _buildDateField("dd-mm-yyyy")),
-            ],
-          ),
-          const SizedBox(height: 15),
-          _buildInputFieldLabel("Reason For Leave"),
-          const SizedBox(height: 8),
-          _buildTextAreaField("e.g. Annual vacation, renovation..."),
-          const SizedBox(height: 24),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildLeaveForm() {
+    return _buildDetailCard(
+      height: 250,
+      child: Column(
+        children: [
+          _detailRow(S.of(context).startDate, "Mar 10, 2025"),
+          _detailRow(S.of(context).endDate, "Mar 12, 2025"),
+          _detailRow(S.of(context).durationLabel, "3 Days"),
+          _detailRow(S.of(context).reasonLabel, "System Maintenance"),
+          const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             height: 48,
@@ -651,13 +733,12 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                elevation: 0,
               ),
               child: Text(
-                "Mark Leave",
+                S.of(context).submitLeaveRequest,
                 style: GoogleFonts.rubik(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  fontWeight: FontWeight.bold,
                   color: Colors.white,
                 ),
               ),
@@ -668,149 +749,266 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     );
   }
 
-  Widget _buildInputFieldLabel(String label) {
-    return Text(
-      label,
-      style: GoogleFonts.rubik(
-        fontSize: 12,
-        color: const Color(0xFF94A3B8).withOpacity(0.8),
-        fontWeight: FontWeight.w400,
+  Widget _buildLeaveHistory() {
+    return _buildDetailCard(
+      height: 150,
+      child: Column(
+        children: [
+          _detailRow("Feb 10-12", "Annual Leave"),
+          _detailRow(S.of(context).status, "Approved", isStatus: true),
+          _detailRow(S.of(context).applyOn, "Feb 01, 2025"),
+        ],
       ),
     );
   }
 
-  Widget _buildDateField(String hint) {
-    return Container(
-      height: 44,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-      ),
+  Widget _buildMenuList() {
+    return Column(
+      children: [
+        _menuItem(S.of(context).lunchMenu, "24 Items"),
+        const SizedBox(height: 12),
+        _menuItem(S.of(context).dinnerSpecial, "18 Items"),
+        const SizedBox(height: 12),
+        _menuItem(S.of(context).breakfast, "12 Items"),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddMenuScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF5216),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              S.of(context).addNewMenu,
+              style: GoogleFonts.rubik(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _menuItem(String name, String count) {
+    return _buildDetailCard(
+      height: 80,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            hint,
-            style: GoogleFonts.rubik(
-              fontSize: 12,
-              color: const Color(0xFF1F1F1F),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                name,
+                style: GoogleFonts.rubik(
+                  fontSize: 16,
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF1F1F1F),
+                ),
+              ),
+              Text(
+                count,
+                style: GoogleFonts.rubik(
+                  fontSize: 13,
+                  color: const Color(0xFF6B7280),
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.edit, color: Color(0xFF6B7280)),
+              ),
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.delete, color: Color(0xFFEF4444)),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildItemsList() {
+    return Column(
+      children: [
+        _foodItem(S.of(context).grilledChicken, "\$25.00"),
+        const SizedBox(height: 12),
+        _foodItem(S.of(context).vegBurger, "\$15.00"),
+        const SizedBox(height: 12),
+        _foodItem(S.of(context).sushiPlatter, "\$45.00"),
+        const SizedBox(height: 20),
+        SizedBox(
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddItemsScreen()),
+              );
+            },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF5216),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              S.of(context).addNewItem,
+              style: GoogleFonts.rubik(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-          const Icon(
-            Icons.calendar_month_outlined,
-            size: 18,
-            color: Color(0xFF64748B),
+        ),
+      ],
+    );
+  }
+
+  Widget _foodItem(String name, String price) {
+    return _buildDetailCard(
+      height: 100,
+      child: Row(
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: const Color(0xFFF3F4F6),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: const Icon(Icons.fastfood, color: Color(0xFFFF5216)),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  name,
+                  style: GoogleFonts.rubik(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: const Color(0xFF1F1F1F),
+                  ),
+                ),
+                Text(
+                  price,
+                  style: GoogleFonts.rubik(
+                    fontSize: 14,
+                    color: const Color(0xFFFF5216),
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) =>
+                      const MenuItemDetailsScreen(itemId: "33"),
+                ),
+              );
+            },
+            icon: const Icon(Icons.chevron_right, color: Color(0xFF6B7280)),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildTextAreaField(String hint) {
+  Widget _buildBulkImportInstructions() {
     return Container(
       width: double.infinity,
-      height: 100,
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: const Color(0xFFF8FAFC),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-      ),
-      child: Text(
-        hint,
-        style: GoogleFonts.rubik(fontSize: 12, color: const Color(0xFF94A3B8)),
-      ),
-    );
-  }
-
-  Widget _buildLeaveHistoryCard({
-    required String date,
-    required String status,
-    required String reason,
-    required bool isScheduled,
-  }) {
-    return Container(
-      width: 350,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
+        color: const Color(0xFFEEF2FF),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: const Color(0xFF6366F1).withOpacity(0.2)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              const Icon(Icons.info_outline, color: Color(0xFF4F46E1)),
+              const SizedBox(width: 10),
               Text(
-                date,
+                "Instructions",
                 style: GoogleFonts.rubik(
-                  fontSize: 14,
+                  fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F1F1F),
+                  color: const Color(0xFF4F46E1),
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 4,
-                ),
-                decoration: BoxDecoration(
-                  color: isScheduled
-                      ? const Color(0xFFDBEAFE)
-                      : const Color(0xFFDCFCE7),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  status,
-                  style: GoogleFonts.rubik(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: isScheduled
-                        ? const Color(0xFF3B82F6)
-                        : const Color(0xFF22C55E),
-                  ),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  setState(() {
+                    isInstructionsExpanded = !isInstructionsExpanded;
+                  });
+                },
+                icon: Icon(
+                  isInstructionsExpanded
+                      ? Icons.keyboard_arrow_up
+                      : Icons.keyboard_arrow_down,
+                  color: const Color(0xFF4F46E1),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 4),
-          Text(
-            reason,
-            style: GoogleFonts.rubik(
-              fontSize: 12,
-              color: const Color(0xFF64748B),
-            ),
-          ),
-          if (isScheduled) ...[
+          if (isInstructionsExpanded) ...[
             const SizedBox(height: 12),
+            Text(
+              "1. Download the template file.\n"
+              "2. Fill in the menu details as per the format.\n"
+              "3. Ensure all mandatory fields are filled.\n"
+              "4. Upload the completed file below.",
+              style: GoogleFonts.rubik(
+                fontSize: 14,
+                color: const Color(0xFF4338CA),
+                height: 1.6,
+              ),
+            ),
+            const SizedBox(height: 16),
             SizedBox(
-              width: double.infinity,
-              height: 40,
+              width: 160,
+              height: 36,
               child: OutlinedButton(
                 onPressed: () {},
                 style: OutlinedButton.styleFrom(
-                  side: const BorderSide(color: Color(0xFFFF5216)),
+                  side: const BorderSide(color: Color(0xFF4F46E1)),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
                 ),
                 child: Text(
-                  "Cancel Leave",
+                  "Download Template",
                   style: GoogleFonts.rubik(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
-                    color: const Color(0xFFFF5216),
+                    color: const Color(0xFF4F46E1),
                   ),
                 ),
               ),
@@ -821,1280 +1019,181 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     );
   }
 
-  Widget _buildMenuSection() {
+  Widget _buildImportSteps() {
     return Column(
       children: [
-        _buildMenuSearchRow(),
+        _importStep(1, "Upload File", "Select your completed menu file"),
         const SizedBox(height: 16),
-        _buildMenuActionRow(),
+        _importStep(2, "Review Data", "Verify the imported items"),
         const SizedBox(height: 16),
-        _buildMenuItemCard(),
-        const SizedBox(height: 16),
-        _buildMenuItemCard(),
-      ],
-    );
-  }
-
-  Widget _buildItemsSection() {
-    return Column(
-      children: [
-        _buildMenuSearchRow(),
-        const SizedBox(height: 16),
-        _buildItemsActionRow(),
-        const SizedBox(height: 16),
-        _buildItemsCard(name: "Zesty Chicken Burger (Half)", isAvailable: true),
-        const SizedBox(height: 16),
-        _buildItemsCard(
-          name: "Zesty Chicken Burger (Full)",
-          isAvailable: false,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildItemsActionRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        _buildItemsActionButton(
-          label: "Download",
-          icon: Icons.file_download_outlined,
-          bgColor: const Color(0xFFFFF1EE),
-          borderColor: const Color(0xFFFF5216),
-          textColor: const Color(0xFFFF5216),
-        ),
-        _buildItemsActionButton(
-          label: "Upload Menu",
-          icon: Icons.file_upload_outlined,
-          bgColor: const Color(0xFFEEF2FF),
-          borderColor: const Color(0xFF3B82F6),
-          textColor: const Color(0xFF3B82F6),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AddItemsScreen()),
-            );
-          },
-          child: _buildItemsActionButton(
-            label: "Add Item",
-            icon: Icons.add,
-            bgColor: Colors.white,
-            borderColor: const Color(0xFFFF5216),
-            textColor: const Color(0xFFFF5216),
-            iconOnRight: false,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildItemsActionButton({
-    required String label,
-    required IconData icon,
-    required Color bgColor,
-    required Color borderColor,
-    required Color textColor,
-    bool iconOnRight = true,
-    double? width,
-    bool isCentered = false,
-  }) {
-    return Container(
-      width: width,
-      height: 40,
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(99),
-        border: Border.all(color: borderColor, width: 0.5),
-      ),
-      child: Row(
-        mainAxisSize: width != null ? MainAxisSize.max : MainAxisSize.min,
-        mainAxisAlignment: isCentered
-            ? MainAxisAlignment.center
-            : MainAxisAlignment.start,
-        children: [
-          if (!iconOnRight) ...[
-            Icon(icon, color: textColor, size: 16),
-            const SizedBox(width: 4),
-          ],
-          Text(
-            label,
-            style: GoogleFonts.rubik(
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
-              color: textColor,
-            ),
-          ),
-          if (iconOnRight) ...[
-            const SizedBox(width: 4),
-            Icon(icon, color: textColor, size: 16),
-          ],
-        ],
-      ),
-    );
-  }
-
-  Widget _buildItemsCard({required String name, required bool isAvailable}) {
-    return Container(
-      width: 350,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image container
-              Stack(
-                children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: const DecorationImage(
-                        image: AssetImage("lib/assets/images/Burger.jpg"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "New Arrival",
-                          style: GoogleFonts.rubik(
-                            fontSize: 10,
-                            color: const Color(0xFFFF5216),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "ID: # 33",
-                          style: GoogleFonts.rubik(
-                            fontSize: 10,
-                            color: const Color(0xFF94A3B8),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        _buildMoreMenu(context),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      name,
-                      style: GoogleFonts.rubik(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1F1F1F),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFF1EE),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Text(
-                        "Chinese",
-                        style: GoogleFonts.rubik(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFFFF5216),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              "50.00 MRU",
-                              style: GoogleFonts.rubik(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFF1F1F1F),
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text(
-                              "100.00 MRU",
-                              style: GoogleFonts.rubik(
-                                fontSize: 10,
-                                color: const Color(0xFF94A3B8),
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Container(
-                              width: 6,
-                              height: 6,
-                              decoration: BoxDecoration(
-                                color: isAvailable
-                                    ? const Color(0xFF22C55E)
-                                    : const Color(0xFFEF4444),
-                                shape: BoxShape.circle,
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            Text(
-                              isAvailable ? "Available" : "Out Of Stock",
-                              style: GoogleFonts.rubik(
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                                color: isAvailable
-                                    ? const Color(0xFF22C55E)
-                                    : const Color(0xFFEF4444),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const MenuItemDetailsScreen(itemId: '33'),
-                  ),
-                );
-              },
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Color(0xFFFF5216)),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                "View Details",
-                style: GoogleFonts.rubik(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFFFF5216),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildMenuSearchRow() {
-    return Row(
-      children: [
-        CustomSearchBox(
-          hintText: "Search by ID, item name",
-          boxColor: Colors.white,
-          showSearchIcon: true,
-          width: 280,
-          height: 41,
-        ),
-        const SizedBox(width: 5),
+        _importStep(3, "Complete", "Finalize the bulk import"),
+        const SizedBox(height: 32),
         Container(
-          width: 54,
-          height: 41,
+          width: double.infinity,
+          height: 120,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFFF1F5F9)),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(color: const Color(0xFFE5E5E5), width: 1),
           ),
-          child: const Icon(Icons.tune, color: Color(0xFF64748B), size: 20),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildMenuActionRow() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Container(
-          height: 40,
-          padding: const EdgeInsets.symmetric(horizontal: 12),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(99),
-            border: Border.all(color: const Color(0xFFFF5216), width: 0.5),
-          ),
-          child: Row(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Text(
-                "All Categories",
-                style: GoogleFonts.rubik(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF1F1F1F),
-                ),
-              ),
-              const SizedBox(width: 4),
               const Icon(
-                Icons.keyboard_arrow_down,
-                color: Color(0xFF1F1F1F),
-                size: 18,
+                Icons.cloud_upload_outlined,
+                size: 32,
+                color: Color(0xFF9CA3AF),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                "Click or drag file to upload",
+                style: GoogleFonts.rubik(
+                  color: const Color(0xFF6B7280),
+                  fontSize: 14,
+                ),
               ),
             ],
-          ),
-        ),
-        GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (_) => const AddMenuScreen()),
-            );
-          },
-          child: Container(
-            height: 40,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(99),
-              border: Border.all(color: const Color(0xFFFF5216), width: 0.5),
-            ),
-            child: Row(
-              children: [
-                const Icon(Icons.add, color: Color(0xFFFF5216), size: 18),
-                const SizedBox(width: 4),
-                Text(
-                  "Add Menu",
-                  style: GoogleFonts.rubik(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFFFF5216),
-                  ),
-                ),
-              ],
-            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildMenuItemCard() {
-    return Container(
-      width: 350,
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image container
-              Stack(
-                children: [
-                  Container(
-                    width: 100,
-                    height: 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      image: const DecorationImage(
-                        image: AssetImage("lib/assets/images/Burger.jpg"),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
-                  Positioned(
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 4),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.6),
-                        borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(12),
-                          topRight: Radius.circular(12),
-                        ),
-                      ),
-                      child: Center(
-                        child: Text(
-                          "New Arrival",
-                          style: GoogleFonts.rubik(
-                            fontSize: 10,
-                            color: const Color(0xFFFF5216),
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "ID: # 33",
-                          style: GoogleFonts.rubik(
-                            fontSize: 10,
-                            color: const Color(0xFF94A3B8),
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                        _buildMoreMenu(context),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "Zesty Chicken Burger",
-                      style: GoogleFonts.rubik(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: const Color(0xFF1F1F1F),
-                      ),
-                    ),
-                    const SizedBox(height: 6),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 4,
-                      ),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFFFF1EE),
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                      child: Text(
-                        "Chinese",
-                        style: GoogleFonts.rubik(
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFFFF5216),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 8),
-                    Row(
-                      children: [
-                        Text(
-                          "50.00 MRU",
-                          style: GoogleFonts.rubik(
-                            fontSize: 12,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF1F1F1F),
-                          ),
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          "100.00 MRU",
-                          style: GoogleFonts.rubik(
-                            fontSize: 10,
-                            color: const Color(0xFF94A3B8),
-                            decoration: TextDecoration.lineThrough,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const MenuItemDetailsScreen(itemId: '33'),
-                  ),
-                );
-              },
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Color(0xFFFF5216)),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text(
-                "View Details",
-                style: GoogleFonts.rubik(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFFFF5216),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _subtitleLabel(String text, {required Color color}) {
-    return Text(
-      text,
-      style: GoogleFonts.rubik(
-        fontSize: 14,
-        fontWeight: FontWeight.w500,
-        color: color,
-      ),
-    );
-  }
-
-  Widget _buildMoreMenu(BuildContext context) {
-    final GlobalKey key = GlobalKey();
-    return GestureDetector(
-      key: key,
-      onTap: () async {
-        final RenderBox renderBox =
-            key.currentContext!.findRenderObject() as RenderBox;
-        final Offset offset = renderBox.localToGlobal(Offset.zero);
-        final Size size = renderBox.size;
-
-        await showMenu(
-          context: context,
-          color: Colors.white,
-          elevation: 3,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: Color(0xFFE5E5E5), width: 1),
-          ),
-          constraints: const BoxConstraints(minWidth: 138.52, maxWidth: 138.52),
-          position: RelativeRect.fromLTRB(
-            offset.dx - 138.52 + size.width,
-            offset.dy + size.height + 4,
-            offset.dx + size.width,
-            offset.dy + size.height + 4 + 66.07,
-          ),
-          items: [
-            PopupMenuItem(
-              padding: EdgeInsets.zero,
-              height: 0,
-              value: 'edit',
-              child: _buildMenuOption(Icons.edit_outlined, 'Edit'),
-            ),
-            PopupMenuItem(
-              padding: EdgeInsets.zero,
-              height: 0,
-              value: 'delete',
-              child: _buildMenuOption(Icons.delete_outline, 'Delete'),
-            ),
-          ],
-        ).then((value) {
-          if (value == 'edit') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => const EditItemsScreen(itemId: '33'),
-              ),
-            );
-          } else if (value == 'delete') {
-            // TODO: handle delete item
-          }
-        });
-      },
-      child: const Icon(Icons.more_vert, color: Color(0xFF94A3B8), size: 18),
-    );
-  }
-
-  Widget _buildMenuOption(IconData icon, String label) {
-    return SizedBox(
-      width: 121.69,
-      height: 33,
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                Icon(icon, size: 14, color: const Color(0xFF1F1F1F)),
-                const SizedBox(width: 8),
-                Text(
-                  label,
-                  style: GoogleFonts.rubik(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF1F1F1F),
-                  ),
-                ),
-              ],
-            ),
-            const Icon(Icons.chevron_right, size: 14, color: Color(0xFF94A3B8)),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMenuBulkImportSection() {
-    final List<Map<String, String>> categories = [
-      {"name": "Soups", "image": "lib/assets/images/Soups.png"},
-      {"name": "Juice", "image": "lib/assets/images/Juice.png"},
-      {"name": "Chinese", "image": "lib/assets/images/Chinese.png"},
-      {"name": "Sandwich", "image": "lib/assets/images/Sandwich.png"},
-    ];
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+  Widget _importStep(int number, String title, String subtitle) {
+    return Row(
       children: [
-        Text(
-          "Menu Bulk Import",
-          style: GoogleFonts.rubik(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F1F1F),
+        Container(
+          width: 32,
+          height: 32,
+          decoration: const BoxDecoration(
+            color: Color(0xFFFF5216),
+            shape: BoxShape.circle,
           ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          "Select a category and import menu items in bulk",
-          style: GoogleFonts.rubik(
-            fontSize: 10,
-            color: const Color(0xFF94A3B8),
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildItemsActionButton(
-              label: "Download Template",
-              icon: Icons.file_download_outlined,
-              bgColor: const Color(0xFFFFF1EE),
-              borderColor: const Color(0xFFFF5216),
-              textColor: const Color(0xFFFF5216),
-              width: 169,
-              isCentered: true,
+          child: Center(
+            child: Text(
+              number.toString(),
+              style: GoogleFonts.rubik(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            _buildItemsActionButton(
-              label: "Upload Images",
-              icon: Icons.file_upload_outlined,
-              bgColor: const Color(0xFFEEF2FF),
-              borderColor: const Color(0xFF3B82F6),
-              textColor: const Color(0xFF3B82F6),
-              width: 169,
-              isCentered: true,
+          ),
+        ),
+        const SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: GoogleFonts.rubik(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF1F1F1F),
+              ),
+            ),
+            Text(
+              subtitle,
+              style: GoogleFonts.rubik(
+                fontSize: 12,
+                color: const Color(0xFF6B7280),
+              ),
             ),
           ],
         ),
-        const SizedBox(height: 16),
-        GestureDetector(
-          onTap: () {
-            setState(() {
-              isInstructionsExpanded = !isInstructionsExpanded;
-            });
-          },
-          child: Container(
-            width: 350,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: const Color(0xFFF1F5F9)),
-            ),
-            child: Column(
-              children: [
-                SizedBox(
-                  height: 48,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        "Instructions",
-                        style: GoogleFonts.rubik(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                          color: const Color(0xFF1F1F1F),
-                        ),
-                      ),
-                      Icon(
-                        isInstructionsExpanded
-                            ? Icons.keyboard_arrow_up
-                            : Icons.keyboard_arrow_down,
-                        color: const Color(0xFF64748B),
-                      ),
-                    ],
-                  ),
-                ),
-                if (isInstructionsExpanded) ...[_buildInstructionsDetails()],
-              ],
-            ),
-          ),
+      ],
+    );
+  }
+
+  Widget _buildBasketList() {
+    return Column(
+      children: [
+        _basketItem(
+          S.of(context).classicBasket,
+          "10 Items",
+          S.of(context).activeLabel,
         ),
-        // const SizedBox(height: 15),
+        const SizedBox(height: 12),
+        _basketItem(
+          S.of(context).comboOffer,
+          "5 Items",
+          S.of(context).inactiveLabel,
+        ),
+        const SizedBox(height: 20),
         SizedBox(
-          width: 350,
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: (categories.length / 2).ceil(),
-            itemBuilder: (context, index) {
-              return Padding(
-                padding: EdgeInsets.only(
-                  bottom: index == (categories.length / 2).ceil() - 1
-                      ? 0
-                      : 16.0,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    _buildBulkImportCard(
-                      categories[index * 2]["name"]!,
-                      categories[index * 2]["image"]!,
-                    ),
-                    if (index * 2 + 1 < categories.length)
-                      _buildBulkImportCard(
-                        categories[index * 2 + 1]["name"]!,
-                        categories[index * 2 + 1]["image"]!,
-                      )
-                    else
-                      const SizedBox(width: 169),
-                  ],
+          width: double.infinity,
+          height: 48,
+          child: ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const BasketDetailsScreen(),
                 ),
               );
             },
+            style: ElevatedButton.styleFrom(
+              backgroundColor: const Color(0xFFFF5216),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: Text(
+              S.of(context).createNewBasket,
+              style: GoogleFonts.rubik(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildBulkImportCard(String category, String imagePath) {
-    return Container(
-      width: 169,
-      height: 215,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
+  Widget _basketItem(String name, String count, String status) {
+    return _buildDetailCard(
+      height: 80,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // Image
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Image.asset(
-                imagePath,
-                width: 153,
-                height: 118,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            category,
-            style: GoogleFonts.rubik(
-              fontSize: 14,
-              fontWeight: FontWeight.w600,
-              color: const Color(0xFF1F1F1F),
-            ),
-          ),
-          const Spacer(),
-          Padding(
-            padding: const EdgeInsets.only(bottom: 12.0),
-            child: SizedBox(
-              width: 153,
-              height: 32,
-              child: ElevatedButton(
-                onPressed: () {},
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFFFF5216),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(9),
-                  ),
-                  padding: const EdgeInsets.symmetric(vertical: 0),
-                  elevation: 0,
-                ),
-                child: Text(
-                  "Import",
-                  style: GoogleFonts.rubik(
-                    fontSize: 12,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInstructionsDetails() {
-    return Container(
-      padding: const EdgeInsets.only(top: 24, right: 14, bottom: 24, left: 14),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          _instructionItem(
-            "1. Download Template",
-            "Download the template file and fill it with proper data.",
-          ),
-          const SizedBox(height: 10),
-          _instructionItem(
-            "2. Select Category",
-            "Once you have downloaded and filled the template, select the corresponding category and upload the file.",
-          ),
-          const SizedBox(height: 10),
-          _instructionItem(
-            "3. Attributes Reference",
-            "For attributes, refer to the attributes list below and use the attribute ID in the attribute_id column along with its corresponding value.",
-          ),
-          const SizedBox(height: 10),
-          _instructionItem(
-            "4. Post-Upload Editing",
-            "After uploading, you need to edit the items individually to set images and variations.",
-          ),
-          const SizedBox(height: 10),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "5. Image File Naming",
+                name,
                 style: GoogleFonts.rubik(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F1F1F),
-                ),
-              ),
-              const SizedBox(height: 4),
-              RichText(
-                text: TextSpan(
-                  style: GoogleFonts.rubik(
-                    fontSize: 10,
-                    color: const Color(0xFF94A3B8),
-                    fontWeight: FontWeight.w500,
-                  ),
-                  children: [
-                    const TextSpan(text: "Image file names must start with "),
-                    TextSpan(
-                      text: "restaurant/menus/filename.extension",
-                      style: GoogleFonts.rubik(color: const Color(0xFFFF5216)),
-                    ),
-                    const TextSpan(text: " (e.g., restaurant/menus/pizza.jpg)"),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 24),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "Available Attributes",
-                style: GoogleFonts.rubik(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F1F1F),
-                ),
-              ),
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFF1EE),
-                  borderRadius: BorderRadius.circular(4),
-                ),
-                child: Text(
-                  "3 ATTRIBUTES",
-                  style: GoogleFonts.rubik(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFFFF5216),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          _buildAttributeTableHeader(),
-          _attributeRow("1", "Full", isGray: false),
-          _attributeRow("2", "Half", isGray: true),
-          _attributeRow("4", "Quarter", isGray: false),
-        ],
-      ),
-    );
-  }
-
-  Widget _instructionItem(String title, String description) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: GoogleFonts.rubik(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F1F1F),
-          ),
-        ),
-        const SizedBox(height: 4),
-        Text(
-          description,
-          style: GoogleFonts.rubik(
-            fontSize: 10,
-            color: const Color(0xFF94A3B8),
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildAttributeTableHeader() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8.0, left: 16, right: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            "ID",
-            style: GoogleFonts.rubik(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF94A3B8),
-            ),
-          ),
-          Text(
-            "NAME",
-            style: GoogleFonts.rubik(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF94A3B8),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _attributeRow(String id, String name, {required bool isGray}) {
-    return Container(
-      height: 48,
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      decoration: BoxDecoration(
-        color: isGray ? const Color(0xFFF8FAFC) : Colors.white,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            id,
-            style: GoogleFonts.rubik(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F1F1F),
-            ),
-          ),
-          Text(
-            name,
-            style: GoogleFonts.rubik(
-              fontSize: 12,
-              fontWeight: FontWeight.w500,
-              color: const Color(0xFF1F1F1F),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildBasketSection() {
-    return Column(
-      children: [
-        _buildMenuSearchRow(),
-        const SizedBox(height: 16),
-        _buildBasketCard(
-          title: "Restaurant Basket 1",
-          basketId: "12",
-          createdDate: "Nov 25, 2025",
-          itemsCount: "3 Items",
-          redeemPoints: "2000 Pts",
-          status: "ACTIVE",
-          statusColor: const Color(0xFF22C55E),
-          statusBg: const Color(0xFFDCFCE7),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildBasketCard({
-    required String title,
-    required String basketId,
-    required String createdDate,
-    required String itemsCount,
-    required String redeemPoints,
-    required String status,
-    required Color statusColor,
-    required Color statusBg,
-  }) {
-    return Container(
-      width: 350,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.02),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // R1 Logo Box
-              Container(
-                width: 48,
-                height: 48,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFEEF2FF),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Center(
-                  child: Text(
-                    "R1",
-                    style: GoogleFonts.rubik(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFFFF5216),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          title,
-                          style: GoogleFonts.rubik(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFF1F1F1F),
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: statusBg,
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          child: Text(
-                            status,
-                            style: GoogleFonts.rubik(
-                              fontSize: 10,
-                              fontWeight: FontWeight.bold,
-                              color: statusColor,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "Basket ID: $basketId • Created $createdDate",
-                      style: GoogleFonts.rubik(
-                        fontSize: 10,
-                        color: const Color(0xFF94A3B8),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              // Items Count Box
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF8FAFC),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "ITEMS COUNT",
-                        style: GoogleFonts.rubik(
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF94A3B8),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        itemsCount,
-                        style: GoogleFonts.rubik(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F1F1F),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              const SizedBox(width: 12),
-              // Redeem Points Box
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.all(12),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFF8FAFC),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "REDEEM POINTS",
-                        style: GoogleFonts.rubik(
-                          fontSize: 9,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF94A3B8),
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        redeemPoints,
-                        style: GoogleFonts.rubik(
-                          fontSize: 13,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFF1F1F1F),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          // View Details Button
-          SizedBox(
-            width: double.infinity,
-            height: 40,
-            child: OutlinedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const BasketDetailsScreen(),
-                  ),
-                );
-              },
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: Color(0xFFFF5216), width: 0.8),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                "View Details",
-                style: GoogleFonts.rubik(
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight: FontWeight.w600,
-                  color: const Color(0xFFFF5216),
+                  color: const Color(0xFF1F1F1F),
                 ),
+              ),
+              Text(
+                count,
+                style: GoogleFonts.rubik(
+                  fontSize: 13,
+                  color: const Color(0xFF6B7280),
+                ),
+              ),
+            ],
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+            decoration: BoxDecoration(
+              color: (status == "Active" || status == S.of(context).activeLabel)
+                  ? const Color(0xFFF0FDF4)
+                  : const Color(0xFFFEF2F2),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              status,
+              style: GoogleFonts.rubik(
+                fontSize: 12,
+                color:
+                    (status == "Active" || status == S.of(context).activeLabel)
+                    ? const Color(0xFF166534)
+                    : const Color(0xFF991B1B),
+                fontWeight: FontWeight.w600,
               ),
             ),
           ),
@@ -2103,252 +1202,55 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     );
   }
 
-  Widget _buildReceivedPayoutsSection() {
+  Widget _buildPayoutsList() {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Total Payout Balance Gradient Card
-        Container(
-          width: 350,
-          height: 110,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(12),
-            gradient: const LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color(0xFFFF4D26), // Bright Orange
-                Color(0xFFA62A00), // Dark brownish orange
-              ],
-            ),
-          ),
-          child: Center(
-            child: SizedBox(
-              width: 142,
-              height: 47,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    "Total Payout Balance",
-                    style: GoogleFonts.rubik(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 7), // Gap 7px
-                  Text(
-                    "0.00 MRU",
-                    style: GoogleFonts.rubik(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 24),
-        Text(
-          "History",
-          style: GoogleFonts.rubik(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F1F1F),
-          ),
-        ),
-        const SizedBox(height: 60),
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              // No Payouts Illustration
-              Container(
-                width: 140,
-                height: 140,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 241, 244, 247),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 60,
-                    height: 46,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 206, 212, 220),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 36,
-                          height: 3,
-                          color: const Color.fromARGB(255, 219, 224, 230),
-                        ),
-                        Container(
-                          width: 36,
-                          height: 3,
-                          color: const Color.fromARGB(255, 219, 224, 230),
-                        ),
-                        Container(
-                          width: 20,
-                          height: 3,
-                          color: const Color.fromARGB(255, 219, 224, 230),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                "No Payouts Yet",
-                style: GoogleFonts.rubik(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF64748B),
-                ),
-              ),
-            ],
-          ),
-        ),
+        _payoutItem("PO-2025-001", "Mar 01, 2025", "\$450.00"),
+        const SizedBox(height: 12),
+        _payoutItem("PO-2025-002", "Feb 23, 2025", "\$320.50"),
+        const SizedBox(height: 12),
+        _payoutItem("PO-2025-003", "Feb 15, 2025", "\$580.00"),
       ],
     );
   }
 
-  Widget _buildRestaurantReportsSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          "Sales Report",
-          style: GoogleFonts.rubik(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F1F1F),
-          ),
-        ),
-        const SizedBox(height: 16),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [_buildDateInput("From Date"), _buildDateInput("To Date")],
-        ),
-        const SizedBox(height: 60),
-        Center(
-          child: Column(
+  Widget _payoutItem(String id, String date, String amount) {
+    return _buildDetailCard(
+      height: 80,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // No Reports Illustration
-              Container(
-                width: 140,
-                height: 140,
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 241, 244, 247),
-                  shape: BoxShape.circle,
-                ),
-                child: Center(
-                  child: Container(
-                    width: 60,
-                    height: 46,
-                    padding: const EdgeInsets.all(12),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(
-                        color: const Color.fromARGB(255, 206, 212, 220),
-                        width: 1.5,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: 36,
-                          height: 3,
-                          color: const Color.fromARGB(255, 219, 224, 230),
-                        ),
-                        Container(
-                          width: 36,
-                          height: 3,
-                          color: const Color.fromARGB(255, 219, 224, 230),
-                        ),
-                        Container(
-                          width: 20,
-                          height: 3,
-                          color: const Color.fromARGB(255, 219, 224, 230),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 24),
               Text(
-                "No Reports Yet",
+                id,
                 style: GoogleFonts.rubik(
                   fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                  color: const Color(0xFF64748B),
+                  fontWeight: FontWeight.w600,
+                  color: const Color(0xFF1F1F1F),
                 ),
               ),
-            ],
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDateInput(String label) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: GoogleFonts.rubik(
-            fontSize: 10,
-            color: const Color(0xFF94A3B8),
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 8),
-        Container(
-          width: 169,
-          height: 48,
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: const Color(0xFFF1F5F9)),
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
               Text(
-                "dd-mm-yyyy",
+                date,
                 style: GoogleFonts.rubik(
                   fontSize: 12,
-                  color: const Color(0xFF1F1F1F),
-                  fontWeight: FontWeight.w400,
+                  color: const Color(0xFF6B7280),
                 ),
-              ),
-              const Icon(
-                Icons.calendar_today_outlined,
-                size: 18,
-                color: Color(0xFF64748B),
               ),
             ],
           ),
-        ),
-      ],
+          Text(
+            amount,
+            style: GoogleFonts.rubik(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF166534),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

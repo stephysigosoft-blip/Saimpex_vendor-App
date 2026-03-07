@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localization/flutter_localization.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/configs/ApiConfigs.dart';
+import 'package:saimpex_vendor/controller/dashboard_controller.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_stat_card.dart';
 
@@ -11,319 +15,429 @@ class Dashboard extends StatefulWidget {
 }
 
 class _DashboardState extends State<Dashboard> {
-  String selectedYear = "2026";
-  final List<String> years = ["2024", "2025", "2026"];
-
   @override
   Widget build(BuildContext context) {
-    return CommonBackground(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: const Icon(
-            Icons.arrow_back_ios,
-            color: Colors.black,
-            size: 20,
-          ),
-        ),
-        title: Text(
-          "Dashboard",
-          style: GoogleFonts.rubik(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: const Color(0xFF1F1F1F),
-          ),
-        ),
-        centerTitle: true,
-      ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            // Membership Card
-            Container(
-              width: double.infinity,
-              height: 60.25,
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: const Color(0xFFE5E5E5), width: 1),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.05),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Image.asset(
-                    'lib/assets/images/Silver.png',
-                    width: 30,
-                    height: 30,
-                  ),
-                  const SizedBox(width: 12),
-                  Expanded(
-                    child: Text(
-                      "Silver Member",
-                      style: GoogleFonts.rubik(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: const Color(0xFF1F1F1F),
-                      ),
-                    ),
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 12,
-                      vertical: 6,
-                    ),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFFFE5E5),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Text(
-                      "Expires in 7 days",
-                      style: GoogleFonts.rubik(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.red,
-                      ),
-                    ),
-                  ),
-                ],
+    return GetBuilder<DashboardController>(
+      init: DashboardController(),
+      didChangeDependencies: (state) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          state.controller?.getDashboard();
+        });
+      },
+      builder: (controller) {
+        return CommonBackground(
+          appBar: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            leading: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.black,
+                size: 20,
               ),
             ),
-            const SizedBox(height: 24),
-            // Stats
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                VendorStatCard(
-                  title: "Today's Orders",
-                  value: "69",
-                  icon: Icons.shopping_bag,
-                  backgroundColor: Color(0xFFE5E5FF),
-                  iconDecorationColor: Color(0xFF6B6BFF),
-                ),
-                VendorStatCard(
-                  title: "Total Orders",
-                  value: "100",
-                  icon: Icons.payments,
-                  backgroundColor: Color(0xFFD9F9E7),
-                  iconDecorationColor: Color(0xFF00D15D),
-                ),
-                VendorStatCard(
-                  title: "Products",
-                  value: "10",
-                  icon: Icons.shopping_bag,
-                  backgroundColor: Color(0xFFFFE5D9),
-                  iconDecorationColor: Color(0xFFFF5216),
-                ),
-              ],
-            ),
-            const SizedBox(height: 32),
-            // Revenue Report Section
-            Text(
-              "REVENUE REPORT",
+            title: Text(
+              "Dashboard",
               style: GoogleFonts.rubik(
-                fontSize: 14,
+                fontSize: 18,
                 fontWeight: FontWeight.bold,
                 color: const Color(0xFF1F1F1F),
               ),
             ),
-            const SizedBox(height: 16),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
-                    blurRadius: 10,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 4),
+            centerTitle: true,
+          ),
+          child: controller.isLoading
+              ? const Center(
+                  child: Padding(
+                    padding: EdgeInsets.all(40.0),
+                    child: CircularProgressIndicator(color: Color(0xFFFF5216)),
                   ),
-                ],
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                )
+              : SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      const SizedBox(height: 20),
+                      // Membership Card
+                      _buildMembershipCard(controller),
+                      const SizedBox(height: 24),
+                      // Stats Row
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          VendorStatCard(
+                            title: "Today's Orders",
+                            value:
+                                controller.dashboardData?.todayOrders
+                                    ?.toString() ??
+                                "0",
+                            icon: Icons.shopping_bag,
+                            backgroundColor: const Color(0xFFE5E5FF),
+                            iconDecorationColor: const Color(0xFF6B6BFF),
+                          ),
+                          VendorStatCard(
+                            title: "Total Orders",
+                            value:
+                                controller.dashboardData?.totalOrders
+                                    ?.toString() ??
+                                "0",
+                            icon: Icons.payments,
+                            backgroundColor: const Color(0xFFD9F9E7),
+                            iconDecorationColor: const Color(0xFF00D15D),
+                          ),
+                          VendorStatCard(
+                            title: "Products",
+                            value:
+                                controller.dashboardData?.totalProducts
+                                    ?.toString() ??
+                                "0",
+                            icon: Icons.shopping_bag,
+                            backgroundColor: const Color(0xFFFFE5D9),
+                            iconDecorationColor: const Color(0xFFFF5216),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 32),
+                      // Revenue Report Section
+                      Text(
+                        "REVENUE REPORT",
+                        style: GoogleFonts.rubik(
+                          fontSize: 14,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFF1F1F1F),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      _buildRevenueCard(controller),
+                      const SizedBox(height: 32),
+                      // Popular Items Section
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            "Total Revenue",
+                            "POPULAR ITEMS",
                             style: GoogleFonts.rubik(
                               fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: const Color(0xFF9CA3AF),
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            "45,280 MRU",
-                            style: GoogleFonts.rubik(
-                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: const Color(0xFF1F1F1F),
                             ),
                           ),
-                        ],
-                      ),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 12,
-                          vertical: 4,
-                        ),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFFE5D9),
-                          borderRadius: BorderRadius.circular(15),
-                          border: Border.all(
-                            color: const Color(0xFFFF5216).withOpacity(0.2),
-                          ),
-                        ),
-                        child: Row(
-                          children: [
-                            Text(
-                              selectedYear,
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "View All",
                               style: GoogleFonts.rubik(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w500,
-                                color: const Color(0xFF1F1F1F),
+                                fontSize: 12,
+                                fontWeight: FontWeight.w600,
+                                color: const Color(0xFFFF5216),
                               ),
                             ),
-                            const SizedBox(width: 4),
-                            const Icon(Icons.keyboard_arrow_down, size: 18),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+                      const SizedBox(height: 8),
+                      _buildPopularItems(controller),
+                      const SizedBox(height: 40),
                     ],
                   ),
-                  const SizedBox(height: 24),
-                  // Placeholder for Chart
-                  Stack(
-                    alignment: Alignment.topRight,
-                    children: [
-                      SizedBox(
-                        height: 150,
-                        width: double.infinity,
-                        child: CustomPaint(painter: RevenueChartPainter()),
-                      ),
-                      Positioned(
-                        top: 0,
-                        right: 10,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 4,
-                          ),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFF5216),
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          child: Text(
-                            "45,000 MRU",
-                            style: GoogleFonts.rubik(
-                              fontSize: 8,
-                              fontWeight: FontWeight.w600,
-                              color: Colors.white,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMembershipCard(DashboardController controller) {
+    final locale =
+        FlutterLocalization.instance.currentLocale?.languageCode ?? 'en';
+    final subName = controller.getSubscriptionName(locale);
+    final daysLeft = controller.subscriptionDaysLeft;
+    final endDate =
+        controller.dashboardData?.subscriptionDetails?.subscriptionEndDate ??
+        "";
+
+    return Container(
+      width: double.infinity,
+      height: 60.25,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE5E5E5), width: 1),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Image.asset(
+            'lib/assets/images/Silver.png',
+            width: 30,
+            height: 30,
+            errorBuilder: (_, __, ___) =>
+                const Icon(Icons.star, color: Colors.amber, size: 30),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              subName.isNotEmpty ? "$subName Member" : "Member",
+              style: GoogleFonts.rubik(
+                fontSize: 14,
+                fontWeight: FontWeight.w600,
+                color: const Color(0xFF1F1F1F),
+              ),
+            ),
+          ),
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+            decoration: BoxDecoration(
+              color: daysLeft <= 30
+                  ? const Color(0xFFFFE5E5)
+                  : const Color(0xFFE5FFE5),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              daysLeft > 0
+                  ? "Expires in $daysLeft days"
+                  : (endDate.isNotEmpty ? "Expires $endDate" : ""),
+              style: GoogleFonts.rubik(
+                fontSize: 10,
+                fontWeight: FontWeight.w600,
+                color: daysLeft <= 30 ? Colors.red : Colors.green,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRevenueCard(DashboardController controller) {
+    final revenueTotal = controller.dashboardData?.revenueYearTotal ?? "0.00";
+    final report =
+        controller.dashboardData?.revenueReport ?? List.filled(12, 0.0);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 10,
+            spreadRadius: 2,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Total Revenue",
+                    style: GoogleFonts.rubik(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF9CA3AF),
+                    ),
                   ),
-                  const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: ["Jan", "Mar", "Jun", "Sep", "Dec"]
-                        .map(
-                          (e) => Text(
-                            e,
-                            style: GoogleFonts.rubik(
-                              fontSize: 10,
-                              color: const Color(0xFF9CA3AF),
-                            ),
-                          ),
-                        )
-                        .toList(),
+                  const SizedBox(height: 8),
+                  Text(
+                    "$revenueTotal MRU",
+                    style: GoogleFonts.rubik(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1F1F1F),
+                    ),
                   ),
                 ],
               ),
-            ),
-            const SizedBox(height: 32),
-            // Popular Items Section
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  "POPULAR ITEMS",
-                  style: GoogleFonts.rubik(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F1F1F),
+              // Year selector
+              PopupMenuButton<String>(
+                onSelected: (year) => controller.changeYear(year),
+                itemBuilder: (context) => controller.years
+                    .map(
+                      (y) => PopupMenuItem<String>(
+                        value: y,
+                        child: Text(y, style: GoogleFonts.rubik(fontSize: 13)),
+                      ),
+                    )
+                    .toList(),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFE5D9),
+                    borderRadius: BorderRadius.circular(15),
+                    border: Border.all(
+                      color: const Color(0xFFFF5216).withOpacity(0.2),
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        controller.selectedYear,
+                        style: GoogleFonts.rubik(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: const Color(0xFF1F1F1F),
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      const Icon(Icons.keyboard_arrow_down, size: 18),
+                    ],
                   ),
                 ),
-                TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    "View All",
-                    style: GoogleFonts.rubik(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
+              ),
+            ],
+          ),
+          const SizedBox(height: 24),
+          // Dynamic chart with real revenue data
+          Stack(
+            alignment: Alignment.topRight,
+            children: [
+              SizedBox(
+                height: 150,
+                width: double.infinity,
+                child: CustomPaint(
+                  painter: RevenueChartPainter(
+                    revenueData: report,
+                    maxValue: controller.maxRevenue,
+                  ),
+                ),
+              ),
+              if (double.tryParse(revenueTotal) != null &&
+                  double.parse(revenueTotal) > 0)
+                Positioned(
+                  top: 0,
+                  right: 10,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 4,
+                    ),
+                    decoration: BoxDecoration(
                       color: const Color(0xFFFF5216),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Text(
+                      "$revenueTotal MRU",
+                      style: GoogleFonts.rubik(
+                        fontSize: 8,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
-              ],
+            ],
+          ),
+          const SizedBox(height: 12),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: ["Jan", "Mar", "Jun", "Sep", "Dec"]
+                .map(
+                  (e) => Text(
+                    e,
+                    style: GoogleFonts.rubik(
+                      fontSize: 10,
+                      color: const Color(0xFF9CA3AF),
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPopularItems(DashboardController controller) {
+    final locale =
+        FlutterLocalization.instance.currentLocale?.languageCode ?? 'en';
+    final items = controller.dashboardData?.popularItems ?? [];
+
+    if (items.isEmpty) {
+      return Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.03),
+              blurRadius: 10,
+              spreadRadius: 2,
+              offset: const Offset(0, 4),
             ),
-            const SizedBox(height: 8),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withOpacity(0.03),
-                    blurRadius: 10,
-                    spreadRadius: 2,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Column(
-                children: [
-                  _popularItem(
-                    name: "Double Cheeseburger",
-                    subtitle: "#3-Full",
-                    orders: "28 Orders",
-                    imageUrl: "lib/assets/images/Food vendor.png",
-                  ),
-                  const Divider(indent: 70, endIndent: 20, height: 1),
-                  _popularItem(
-                    name: "Double Cheeseburger",
-                    subtitle: "#5-Full",
-                    orders: "16 Orders",
-                    imageUrl: "lib/assets/images/Food vendor.png",
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 40),
           ],
         ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Center(
+            child: Text(
+              "No popular items found",
+              style: GoogleFonts.rubik(
+                color: const Color(0xFF9CA3AF),
+                fontSize: 13,
+              ),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.03),
+            blurRadius: 10,
+            spreadRadius: 2,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Column(
+        children: List.generate(items.length, (index) {
+          final item = items[index];
+          final name = controller.getItemName(item, locale);
+          final attrName = controller.getAttributeName(item, locale);
+          final orders = "${item.orderCount ?? 0} Orders";
+          final subtitle = attrName.isNotEmpty
+              ? "#${item.id}-$attrName"
+              : "#${item.id}";
+          return Column(
+            children: [
+              _popularItem(
+                name: name,
+                subtitle: subtitle,
+                orders: orders,
+                imageUrl: item.image != null
+                    ? ApiConfigs.IMAGE_URL + item.image!
+                    : "",
+              ),
+              if (index < items.length - 1)
+                const Divider(indent: 70, endIndent: 20, height: 1),
+            ],
+          );
+        }),
       ),
     );
   }
@@ -340,20 +454,37 @@ class _DashboardState extends State<Dashboard> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(12),
-            child: Image.asset(
-              imageUrl,
-              width: 50,
-              height: 50,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  width: 50,
-                  height: 50,
-                  color: Colors.grey[200],
-                  child: const Icon(Icons.fastfood, color: Colors.grey),
-                );
-              },
-            ),
+            child: imageUrl.startsWith('http')
+                ? Image.network(
+                    imageUrl,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 50,
+                        height: 50,
+                        color: Colors.grey[200],
+                        child: const Icon(Icons.fastfood, color: Colors.grey),
+                      );
+                    },
+                  )
+                : Image.asset(
+                    imageUrl.isNotEmpty
+                        ? imageUrl
+                        : "lib/assets/images/Food vendor.png",
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: 50,
+                        height: 50,
+                        color: Colors.grey[200],
+                        child: const Icon(Icons.fastfood, color: Colors.grey),
+                      );
+                    },
+                  ),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -394,6 +525,11 @@ class _DashboardState extends State<Dashboard> {
 }
 
 class RevenueChartPainter extends CustomPainter {
+  final List<double> revenueData;
+  final double maxValue;
+
+  RevenueChartPainter({required this.revenueData, required this.maxValue});
+
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
@@ -412,20 +548,39 @@ class RevenueChartPainter extends CustomPainter {
         ],
       ).createShader(Rect.fromLTRB(0, 0, size.width, size.height));
 
+    final data = revenueData.length >= 12
+        ? revenueData.sublist(0, 12)
+        : [...revenueData, ...List.filled(12 - revenueData.length, 0.0)];
+
     final path = Path();
-    path.moveTo(0, size.height * 0.9);
-    path.quadraticBezierTo(
-      size.width * 0.25,
-      size.height * 0.8,
-      size.width * 0.5,
-      size.height * 0.5,
-    );
-    path.quadraticBezierTo(
-      size.width * 0.75,
-      size.height * 0.35,
-      size.width,
-      size.height * 0.2,
-    );
+    final points = <Offset>[];
+
+    for (int i = 0; i < data.length; i++) {
+      final x = (i / (data.length - 1)) * size.width;
+      final normalized = maxValue > 0 ? data[i] / maxValue : 0.0;
+      final y =
+          size.height - (normalized * size.height * 0.85) - size.height * 0.05;
+      points.add(Offset(x, y));
+    }
+
+    if (points.isEmpty) return;
+
+    path.moveTo(points[0].dx, points[0].dy);
+    for (int i = 0; i < points.length - 1; i++) {
+      final cp1 = Offset((points[i].dx + points[i + 1].dx) / 2, points[i].dy);
+      final cp2 = Offset(
+        (points[i].dx + points[i + 1].dx) / 2,
+        points[i + 1].dy,
+      );
+      path.cubicTo(
+        cp1.dx,
+        cp1.dy,
+        cp2.dx,
+        cp2.dy,
+        points[i + 1].dx,
+        points[i + 1].dy,
+      );
+    }
 
     final fillPath = Path();
     fillPath.addPath(path, Offset.zero);
@@ -448,5 +603,7 @@ class RevenueChartPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+  bool shouldRepaint(covariant RevenueChartPainter oldDelegate) =>
+      oldDelegate.revenueData != revenueData ||
+      oldDelegate.maxValue != maxValue;
 }

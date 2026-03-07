@@ -9,6 +9,8 @@ import '../Utils/Utils.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:saimpex_vendor/configs/ApiConfigs.dart';
+import 'package:saimpex_vendor/configs/Dioclient.dart';
 
 class ProfileController extends GetxController {
   final FlutterLocalization localization = FlutterLocalization.instance;
@@ -52,14 +54,41 @@ class ProfileController extends GetxController {
   Future<void> logout(BuildContext context) async {
     try {
       showLoadingDialog(context);
-      await Future.delayed(const Duration(seconds: 1));
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      } else {
+        DioClient().updateToken("");
+      }
+
+      final response = await DioClient().post(ApiEndPoints.logout);
+
       if (context.mounted) {
         Get.back();
       }
-      final prefs = await SharedPreferences.getInstance();
-      await prefs.clear();
-      await savename("@isFirstLaunch", "true");
-      Get.offAll(LoginScreen());
+
+      if (response.data['status'] == 'true' ||
+          response.data['status'] == true) {
+        if (context.mounted) {
+          showToast(
+            context,
+            response.data['message']?.toString() ??
+                "You are logged out successfully.",
+          );
+        }
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        await savename("@isFirstLaunch", "true");
+        Get.offAll(const LoginScreen());
+      } else {
+        if (context.mounted) {
+          showToast(
+            context,
+            response.data['message']?.toString() ?? "Logout failed.",
+          );
+        }
+      }
     } catch (error) {
       if (context.mounted) {
         Get.back();
@@ -70,14 +99,36 @@ class ProfileController extends GetxController {
 
   Future<void> getProfile(BuildContext context) async {
     try {
-      // Mock profile data
-      nameController.text = "Mock User";
-      phoneController.text = "1234567890";
-      countryCode = "+91";
-      profilePicture = '';
+      isProfileLoading = true;
       update();
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      } else {
+        DioClient().updateToken("");
+      }
+
+      var vendorType = await getSavedObject("vendorType");
+
+      final response = await DioClient().get(
+        ApiEndPoints.profile,
+        query: {"vendor_type": vendorType ?? 1},
+      );
+
+      ProfileModel profileModel = ProfileModel.fromJson(response.data);
+      if (profileModel.status == true) {
+        profileData = profileModel.data;
+        nameController.text = profileData?.name ?? "";
+        phoneController.text = profileData?.mobile ?? "";
+        countryCode = profileData?.countryCode ?? "";
+        profilePicture = profileData?.image ?? "";
+      }
     } catch (error) {
-      debugPrint("getProfile Mock Error: $error");
+      debugPrint("getProfile Error: $error");
+    } finally {
+      isProfileLoading = false;
+      update();
     }
   }
 
@@ -184,21 +235,57 @@ class ProfileController extends GetxController {
   Future<void> deleteAccount(BuildContext context) async {
     try {
       showLoadingDialog(context);
-      await Future.delayed(const Duration(seconds: 1));
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      }
+
+      final response = await DioClient().get(ApiEndPoints.deleteAccount);
+
       if (context.mounted) {
         Get.back();
-        showToast(context, "Account deleted successfully (Mock)");
+      }
+
+      if (response.data['status'] == 'true' ||
+          response.data['status'] == true) {
+        final languageCode = localization.currentLocale?.languageCode;
+        final messageObj = response.data['message'];
+        String? toastMessage;
+
+        if (messageObj is Map) {
+          final list = languageCode == 'fr'
+              ? messageObj['message_fr']
+              : languageCode == 'ar'
+              ? messageObj['message_ar']
+              : messageObj['message_en'];
+          if (list is List && list.isNotEmpty) {
+            toastMessage = list.first.toString();
+          }
+        }
+
+        if (context.mounted) {
+          showToast(context, toastMessage ?? "Account deleted successfully");
+        }
+
         final prefs = await SharedPreferences.getInstance();
         await prefs.clear();
         await savename("@isFirstLaunch", "true");
         Get.offAll(LoginScreen());
+      } else {
+        if (context.mounted) {
+          showToast(
+            context,
+            response.data['message']?.toString() ?? "Delete account failed.",
+          );
+        }
       }
     } catch (error) {
       if (context.mounted) {
         Get.back();
         showToast(context, error.toString());
       }
-      debugPrint("deleteAccount Mock Error: $error");
+      debugPrint("deleteAccount Error: $error");
     }
   }
 

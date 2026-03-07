@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/controller/profile_controller.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/utils.dart';
 
 class AppSettings extends StatelessWidget {
@@ -25,7 +26,7 @@ class AppSettings extends StatelessWidget {
           onPressed: () => Get.back(),
         ),
         title: Text(
-          "Settings",
+          S.of(context).settings,
           style: GoogleFonts.rubik(
             fontSize: 18,
             fontWeight: FontWeight.w700,
@@ -43,7 +44,7 @@ class AppSettings extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
               _buildSettingItem(
-                title: "Notification",
+                title: S.of(context).notification,
                 trailing: Transform.scale(
                   scale: 0.8,
                   child: Switch(
@@ -61,7 +62,7 @@ class AppSettings extends StatelessWidget {
               const Divider(height: 1, indent: 0, endIndent: 0),
               SizedBox(height: 5),
               _buildSettingItem(
-                title: "Delete Account",
+                title: S.of(context).deleteAccount,
                 titleColor: const Color(0xFFFF5216),
                 trailing: const Icon(
                   Icons.arrow_forward_ios,
@@ -109,10 +110,10 @@ class AppSettings extends StatelessWidget {
   ) {
     showConfirmationBottomSheet(
       context: context,
-      title: "Delete Account",
-      message: "Are you sure you want to delete your account?",
-      leftButtonText: "Cancel",
-      rightButtonText: "Delete",
+      title: S.of(context).deleteAccount,
+      message: S.of(context).areYouSureYouWantToDeleteYourAccount,
+      leftButtonText: S.of(context).cancel,
+      rightButtonText: S.of(context).delete,
       onConfirm: () => controller.deleteAccount(context),
     );
   }
