@@ -169,7 +169,7 @@ class _SettingsState extends State<Settings> {
                               S.of(context).contact,
                               (controller.profileData?.countryCode != null ||
                                       controller.profileData?.mobile != null)
-                                  ? "${controller.profileData?.countryCode ?? ''}${controller.profileData?.mobile ?? ''}"
+                                  ? "${controller.profileData?.countryCode ?? '+222'} ${controller.profileData?.mobile ?? ''}"
                                   : "",
                             ),
                             const SizedBox(height: 10),
@@ -188,7 +188,7 @@ class _SettingsState extends State<Settings> {
                             _buildDetailRow(
                               context,
                               S.of(context).address,
-                              controller.profileData?.address ?? "",
+                              _formatLongText(controller.profileData?.address),
                               maxLines: 2,
                             ),
                           ],
@@ -418,6 +418,11 @@ class _SettingsState extends State<Settings> {
       rightButtonText: S.of(context).logout,
       onConfirm: () => controller.logout(context),
     );
+  }
+
+  String _formatLongText(String? text) {
+    if (text == null || text.length <= 20) return text ?? "";
+    return "${text.substring(0, 20)}\n${text.substring(20)}";
   }
 
   Widget _buildDetailRow(

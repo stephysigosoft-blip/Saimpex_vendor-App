@@ -500,6 +500,8 @@
   "@language": {},
   "home": "Accueil",
   "@home": {},
+  "account": "Compte",
+  "@account": {},
   "myRestaurant": "Mon Restaurant",
   "@myRestaurant": {},
   "workingHours": "Heures de Travail",

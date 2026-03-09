@@ -18,6 +18,7 @@ import '../model/home_model.dart';
 // import 'grocery_controller.dart';
 // import 'cart_controller.dart';
 // import 'chat_controller.dart';
+import 'profile_controller.dart';
 
 class HomeController extends GetxController {
   int currentIndex = 0;
@@ -80,6 +81,10 @@ class HomeController extends GetxController {
           break;
         case 1: // My Restaurant tab
           // Reload restaurant data if needed
+          final ProfileController profileController =
+              Get.find<ProfileController>();
+          await profileController.getProfile(context);
+          await profileController.getRatingsReviews(context);
           break;
         case 2: // Chat tab
           // Reload chat data if needed

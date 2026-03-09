@@ -4,6 +4,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
+import 'package:get/get.dart';
+import 'package:saimpex_vendor/controller/profile_controller.dart';
+import 'package:saimpex_vendor/Utils/Utils.dart';
 
 class AddMenuScreen extends StatefulWidget {
   const AddMenuScreen({super.key});
@@ -362,7 +365,41 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {
-                      // TODO: submit new menu item
+                      if (_nameEnCtrl.text.isEmpty) {
+                        showToast(context, "Please enter item name");
+                        return;
+                      }
+                      if (_selectedCategory == null) {
+                        showToast(context, "Please select category");
+                        return;
+                      }
+                      if (_uploadedImages.isEmpty) {
+                        showToast(context, "Please upload image");
+                        return;
+                      }
+
+                      final profileController = Get.find<ProfileController>();
+                      profileController.addGroceryMenu(
+                        context,
+                        categoryIds: ["8"], // Placeholder Category ID
+                        nameEn: _nameEnCtrl.text,
+                        descriptionEn: _descEnCtrl.text,
+                        tags: ["1"], // Placeholder Tag ID
+                        serialNumber: _prepTimeCtrl.text.isNotEmpty
+                            ? _prepTimeCtrl.text
+                            : "SN-${DateTime.now().millisecondsSinceEpoch}",
+                        quantityAllowed: "10", // Placeholder quantity
+                        attributes: [
+                          {
+                            "grocery_attribute_id":
+                                "6", // Placeholder attribute id
+                            "attribute_value": "Standard", // Placeholder
+                            "retail_price": _priceCtrl.text,
+                            "selling_price": _discountPriceCtrl.text,
+                          },
+                        ],
+                        imagePath: _uploadedImages.first.path,
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFF5216),
