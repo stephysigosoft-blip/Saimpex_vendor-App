@@ -84,6 +84,7 @@ class HomeController extends GetxController {
           final ProfileController profileController =
               Get.find<ProfileController>();
           await profileController.getProfile(context);
+          await profileController.getRatingsReviews(context);
           break;
         case 2: // Chat tab
           // Reload chat data if needed

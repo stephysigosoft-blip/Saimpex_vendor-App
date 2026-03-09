@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:saimpex_vendor/model/profile_model.dart';
+import 'package:saimpex_vendor/model/rating_review_model.dart';
 import 'package:saimpex_vendor/view/Login/login.dart';
 
 import '../Utils/Utils.dart';
@@ -50,6 +51,53 @@ class ProfileController extends GetxController {
   ProfileData? profileData;
   double points = 0.0;
   double redeemableAmount = 0.0;
+
+  RatingReviewData? ratingReviewData;
+  bool isRatingReviewLoading = false;
+
+  Future<void> getRatingsReviews(
+    BuildContext context, {
+    String vendorType = "2",
+    int limit = 10,
+  }) async {
+    try {
+      isRatingReviewLoading = true;
+      update();
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      } else {
+        DioClient().updateToken("");
+      }
+
+      final response = await DioClient().get(
+        ApiEndPoints.ratingsReviews,
+        query: {"limit": limit, "vendor_type": vendorType},
+      );
+
+      if (response.data['status'] == 'true' ||
+          response.data['status'] == true) {
+        final ratingReviewModel = RatingReviewModel.fromJson(response.data);
+        ratingReviewData = ratingReviewModel.data;
+      } else {
+        if (context.mounted) {
+          showToast(
+            context,
+            response.data['message']?.toString() ??
+                "Failed to fetch ratings and reviews",
+          );
+        }
+      }
+    } catch (error) {
+      if (context.mounted) {
+        showToast(context, error.toString());
+      }
+    } finally {
+      isRatingReviewLoading = false;
+      update();
+    }
+  }
 
   Future<void> logout(BuildContext context) async {
     try {

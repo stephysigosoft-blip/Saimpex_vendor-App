@@ -343,22 +343,38 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  _buildReviewItem(
-                    name: "Aicha Mint Ahmed",
-                    date: "Jun 12 2025, 07:15 am",
-                    rating: 1.0,
-                    review: "Price was too high. Quality not as expected.",
-                    orderId: "ORD-000091",
-                  ),
-                  const SizedBox(height: 12),
-                  _buildReviewItem(
-                    name: "Aicha Mint Ahmed",
-                    date: "Jun 12 2025, 07:15 am",
-                    rating: 1.0,
-                    review: "Price was too high. Quality not as expected.",
-                    orderId: "ORD-000091",
-                  ),
-                  const SizedBox(height: 20),
+                  if (profileController.isRatingReviewLoading)
+                    const Center(child: CircularProgressIndicator())
+                  else if (profileController.ratingReviewData?.reviews !=
+                          null &&
+                      profileController.ratingReviewData!.reviews!.isNotEmpty)
+                    ...profileController.ratingReviewData!.reviews!.take(5).map(
+                      (review) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 12),
+                          child: _buildReviewItem(
+                            name: review.username ?? "Anonymous",
+                            date: review.createdAt ?? "",
+                            rating:
+                                double.tryParse(review.rating ?? "0") ?? 0.0,
+                            review: review.comment ?? "No comment",
+                            orderId: review.orderCode ?? "",
+                          ),
+                        );
+                      },
+                    )
+                  else
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Text(
+                        "No reviews found.",
+                        style: GoogleFonts.rubik(
+                          color: Colors.grey,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ),
+                  const SizedBox(height: 8),
                 ] else if (selectedMenu == "Leaves") ...[
                   const SizedBox(height: 20),
                   _sectionHeader("MARK LEAVE"),

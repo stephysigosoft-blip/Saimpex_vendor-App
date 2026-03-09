@@ -23,4 +23,5 @@ class ApiEndPoints {
   static String dashboard = "dashboard";
   static String deleteAccount = "deleteAccount";
   static String markLeave = "markLeave";
+  static String ratingsReviews = "ratingsReviews";
 }
