@@ -49,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "aboutUs": MessageLookupByLibrary.simpleMessage("About Us"),
     "acceptOrder": MessageLookupByLibrary.simpleMessage("Accept Order"),
     "accepted": MessageLookupByLibrary.simpleMessage("Accepted"),
+    "account": MessageLookupByLibrary.simpleMessage("Account"),
     "accountName": MessageLookupByLibrary.simpleMessage("Account Name"),
     "accountNumber": MessageLookupByLibrary.simpleMessage("Account Number"),
     "active": MessageLookupByLibrary.simpleMessage("ACTIVE"),
@@ -77,6 +78,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "allMenus": MessageLookupByLibrary.simpleMessage("ALL MENUS"),
     "allRestaurants": MessageLookupByLibrary.simpleMessage("All Restaurants"),
+    "allRevenue": MessageLookupByLibrary.simpleMessage("All Revenue"),
     "allStores": MessageLookupByLibrary.simpleMessage("All Stores"),
     "alreadyOneCouponIsAppliedOnThisOrderIfYou":
         MessageLookupByLibrary.simpleMessage(
@@ -512,6 +514,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "points": MessageLookupByLibrary.simpleMessage("points"),
     "pointsLabel": MessageLookupByLibrary.simpleMessage("POINTS"),
+    "popularItems": MessageLookupByLibrary.simpleMessage("Popular Items"),
     "positionTheBarcodeWithinTheFrame": MessageLookupByLibrary.simpleMessage(
       "Position the barcode within the frame",
     ),
@@ -530,6 +533,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Product out of stock",
     ),
     "products": MessageLookupByLibrary.simpleMessage("Products"),
+    "profile": MessageLookupByLibrary.simpleMessage("Profile"),
     "qty": MessageLookupByLibrary.simpleMessage("Qty"),
     "qtyLabel": m5,
     "quantity": MessageLookupByLibrary.simpleMessage("Quantity"),
@@ -593,6 +597,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Restaurant Reports",
     ),
     "revenueLabel": MessageLookupByLibrary.simpleMessage("Revenue"),
+    "revenueReport": MessageLookupByLibrary.simpleMessage("Revenue Report"),
     "reviews": MessageLookupByLibrary.simpleMessage("reviews"),
     "saimpex": MessageLookupByLibrary.simpleMessage("SAIMPEX"),
     "salesPerformanceHeader": MessageLookupByLibrary.simpleMessage(

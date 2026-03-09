@@ -46,6 +46,7 @@ class ProfileData {
   final String? address;
   final String? owner;
   final String? status;
+  final String? rating;
 
   ProfileData({
     this.id,
@@ -62,6 +63,7 @@ class ProfileData {
     this.address,
     this.owner,
     this.status,
+    this.rating,
   });
 
   factory ProfileData.fromJson(Map<String, dynamic>? json) {
@@ -86,6 +88,7 @@ class ProfileData {
           : (json['status']?.toString() == '0'
                 ? 'INACTIVE'
                 : json['status']?.toString()),
+      rating: json['rating']?.toString(),
     );
   }
 
@@ -96,6 +99,7 @@ class ProfileData {
       'country_code': countryCode,
       'mobile': mobile,
       'image': image,
+      'rating': rating,
     };
   }
 }

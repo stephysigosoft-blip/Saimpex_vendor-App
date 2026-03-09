@@ -97,6 +97,69 @@ class ProfileController extends GetxController {
     }
   }
 
+  Future<void> markLeave(
+    BuildContext context,
+    String fromDate,
+    String toDate,
+    String reason,
+  ) async {
+    try {
+      showLoadingDialog(context);
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      } else {
+        DioClient().updateToken("");
+      }
+
+      var formData = {
+        "vendor_type": "1",
+        "from_date": fromDate,
+        "to_date": toDate,
+        if (reason.isNotEmpty) "reason": reason,
+      };
+
+      final response = await DioClient().post(
+        ApiEndPoints.markLeave,
+        body: formData,
+      );
+
+      if (context.mounted) {
+        Get.back(); // close dialog
+      }
+
+      if (response.data['status'] == 'true' ||
+          response.data['status'] == true) {
+        if (context.mounted) {
+          String successMessage = "Leave marked successfully";
+          if (response.data['message'] != null) {
+            var msgMap = response.data['message'];
+            if (msgMap is Map &&
+                msgMap.containsKey('message_en') &&
+                msgMap['message_en'] is List &&
+                msgMap['message_en'].isNotEmpty) {
+              successMessage = msgMap['message_en'][0];
+            }
+          }
+          showToast(context, successMessage);
+        }
+      } else {
+        if (context.mounted) {
+          showToast(
+            context,
+            response.data['message']?.toString() ?? "Failed to mark leave",
+          );
+        }
+      }
+    } catch (error) {
+      if (context.mounted) {
+        Get.back();
+        showToast(context, error.toString());
+      }
+    }
+  }
+
   Future<void> getProfile(BuildContext context) async {
     try {
       isProfileLoading = true;

@@ -129,6 +129,11 @@ class S {
     );
   }
 
+  /// `All Revenue`
+  String get allRevenue {
+    return Intl.message('All Revenue', name: 'allRevenue', desc: '', args: []);
+  }
+
   /// `All Stores`
   String get allStores {
     return Intl.message('All Stores', name: 'allStores', desc: '', args: []);
@@ -634,6 +639,16 @@ class S {
     return Intl.message('Profile', name: 'profile', desc: '', args: []);
   }
 
+  /// `Expires in {days} days`
+  String expiresInDays(String days) {
+    return Intl.message(
+      'Expires in $days days',
+      name: 'expiresInDays',
+      desc: '',
+      args: [days],
+    );
+  }
+
   /// `Email us`
   String get emailUs {
     return Intl.message('Email us', name: 'emailUs', desc: '', args: []);
@@ -1104,6 +1119,26 @@ class S {
     return Intl.message(
       'Notifications',
       name: 'notifications',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Popular Items`
+  String get popularItems {
+    return Intl.message(
+      'Popular Items',
+      name: 'popularItems',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Revenue Report`
+  String get revenueReport {
+    return Intl.message(
+      'Revenue Report',
+      name: 'revenueReport',
       desc: '',
       args: [],
     );
@@ -2249,6 +2284,11 @@ class S {
     return Intl.message('Version', name: 'version', desc: '', args: []);
   }
 
+  /// `View All`
+  String get viewAll {
+    return Intl.message('View All', name: 'viewAll', desc: '', args: []);
+  }
+
   /// `Language`
   String get language {
     return Intl.message('Language', name: 'language', desc: '', args: []);
@@ -2257,6 +2297,11 @@ class S {
   /// `Home`
   String get home {
     return Intl.message('Home', name: 'home', desc: '', args: []);
+  }
+
+  /// `Account`
+  String get account {
+    return Intl.message('Account', name: 'account', desc: '', args: []);
   }
 
   /// `My Restaurant`
@@ -2402,11 +2447,6 @@ class S {
       desc: '',
       args: [],
     );
-  }
-
-  /// `View All`
-  String get viewAll {
-    return Intl.message('View All', name: 'viewAll', desc: '', args: []);
   }
 
   /// `Holder Name`
@@ -2597,16 +2637,6 @@ class S {
   /// `Membership`
   String get membership {
     return Intl.message('Membership', name: 'membership', desc: '', args: []);
-  }
-
-  /// `Expires in {days} days`
-  String expiresInDays(String days) {
-    return Intl.message(
-      'Expires in $days days',
-      name: 'expiresInDays',
-      desc: '',
-      args: [days],
-    );
   }
 
   /// `All`
