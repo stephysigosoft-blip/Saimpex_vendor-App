@@ -65,6 +65,24 @@ class ProfileData {
   final String? owner;
   final String? status;
   final String? rating;
+  // Bank details
+  final String? accountHolderName;
+  final String? accountNumber;
+  final String? ifscCode;
+  final String? upiId;
+  final String? bankName;
+  // Registration details
+  final String? registrationNumber;
+  final String? registrationDate;
+  final String? gstNo;
+  // Payment details
+  final String? commissionPercentage;
+  final String? totalProfit;
+  // Images
+  final String? ownerIdProof;
+  final String? certificate;
+  // Restaurant type
+  final int? restaurantType;
 
   ProfileData({
     this.id,
@@ -82,6 +100,19 @@ class ProfileData {
     this.owner,
     this.status,
     this.rating,
+    this.accountHolderName,
+    this.accountNumber,
+    this.ifscCode,
+    this.upiId,
+    this.bankName,
+    this.registrationNumber,
+    this.registrationDate,
+    this.gstNo,
+    this.commissionPercentage,
+    this.totalProfit,
+    this.ownerIdProof,
+    this.certificate,
+    this.restaurantType,
   });
 
   factory ProfileData.fromJson(Map<String, dynamic>? json) {
@@ -107,6 +138,21 @@ class ProfileData {
                 ? 'INACTIVE'
                 : json['status']?.toString()),
       rating: json['rating']?.toString(),
+      accountHolderName: json['account_holder_name']?.toString(),
+      accountNumber: json['account_number']?.toString(),
+      ifscCode: json['ifsc_code']?.toString(),
+      upiId: json['upi_id']?.toString(),
+      bankName: json['bank_name']?.toString(),
+      registrationNumber: json['registration_number']?.toString(),
+      registrationDate: json['registration_date']?.toString(),
+      gstNo: json['gst_no']?.toString(),
+      commissionPercentage: json['commission_percentage']?.toString(),
+      totalProfit: json['total_profit']?.toString(),
+      ownerIdProof: json['owner_id_proof']?.toString(),
+      certificate: json['certificate']?.toString(),
+      restaurantType: json['restaurant_type'] != null
+          ? int.tryParse(json['restaurant_type'].toString())
+          : null,
     );
   }
 

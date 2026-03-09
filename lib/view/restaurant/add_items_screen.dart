@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
+import 'package:get/get.dart';
+import 'package:saimpex_vendor/controller/profile_controller.dart';
+import 'package:saimpex_vendor/Utils/Utils.dart';
 
 class AddItemsScreen extends StatefulWidget {
   const AddItemsScreen({super.key});
@@ -216,7 +219,32 @@ class _AddItemsScreenState extends State<AddItemsScreen> {
                 height: 48,
                 child: ElevatedButton(
                   onPressed: () {
-                    // TODO: handle submit
+                    if (_selectedAttribute == null) {
+                      showToast(context, "Please select attribute");
+                      return;
+                    }
+                    if (_priceCtrl.text.isEmpty) {
+                      showToast(context, "Please enter price");
+                      return;
+                    }
+
+                    final profileController = Get.find<ProfileController>();
+                    profileController.addGroceryMenuItem(
+                      context,
+                      menuId: "1", // Placeholder Menu ID
+                      attributeValue: "2", // Placeholder
+                      groceryAttributeId: "5", // Placeholder
+                      price: _priceCtrl.text,
+                      discountPrice: _discountPriceCtrl.text.isNotEmpty
+                          ? _discountPriceCtrl.text
+                          : _priceCtrl.text,
+                      quantityAllowed: _maxQuantityCtrl.text.isNotEmpty
+                          ? _maxQuantityCtrl.text
+                          : "10",
+                      serialNumber: _serialNumberCtrl.text.isNotEmpty
+                          ? _serialNumberCtrl.text
+                          : "SN-${DateTime.now().millisecondsSinceEpoch}",
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFFFF5216),

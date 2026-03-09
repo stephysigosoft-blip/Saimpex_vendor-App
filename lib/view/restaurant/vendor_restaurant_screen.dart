@@ -1,17 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:saimpex_vendor/generated/l10n.dart';
-import 'package:saimpex_vendor/utils/widgets/common_background.dart';
-import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
-import 'package:saimpex_vendor/view/restaurant/add_menu_screen.dart';
-import 'package:saimpex_vendor/view/restaurant/add_items_screen.dart';
-import 'package:saimpex_vendor/view/restaurant/menu_item_details_screen.dart';
-import 'package:saimpex_vendor/view/restaurant/basket_details_screen.dart';
-import 'package:saimpex_vendor/view/restaurant/rating_reviews_screen.dart';
-import 'package:saimpex_vendor/view/restaurant/leave_history_screen.dart';
 import 'package:get/get.dart';
+import '../../generated/l10n.dart';
+import '../../utils/widgets/common_background.dart';
+import '../../utils/widgets/custom_search_box.dart';
+import 'add_menu_screen.dart';
+import 'add_items_screen.dart';
+import 'edit_menu_screen.dart';
+import 'edit_items_screen.dart';
+import 'menu_item_details_screen.dart';
+import 'basket_details_screen.dart';
+import 'rating_reviews_screen.dart';
+import 'leave_history_screen.dart';
 import '../../controller/profile_controller.dart';
 import '../../Utils/Utils.dart';
+import 'package:saimpex_vendor/configs/ApiConfigs.dart';
 
 class VendorRestaurantScreen extends StatefulWidget {
   const VendorRestaurantScreen({super.key});
@@ -51,6 +54,11 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     } catch (_) {
       return dateStr;
     }
+  }
+
+  String _formatLongText(String? text) {
+    if (text == null || text.length <= 20) return text ?? "-";
+    return "${text.substring(0, 20)}\n${text.substring(20)}";
   }
 
   Future<void> _selectDate(BuildContext context, bool isFromDate) async {
@@ -239,7 +247,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                         _detailRow("ID", profile?.id?.toString() ?? "1"),
                         _detailRow(
                           "Contact",
-                          profile?.mobile ?? "+22241518211",
+                          "${profile?.countryCode ?? "+222"} ${profile?.mobile ?? ""}",
                         ),
                         _detailRow(
                           "Email",
@@ -252,7 +260,10 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                         ),
                         _detailRow(
                           "Address",
-                          profile?.address ?? "Restaurant Block 5, Mauritania",
+                          _formatLongText(
+                            profile?.address ??
+                                "Restaurant Block 5, Mauritania",
+                          ),
                         ),
                       ],
                     ),
@@ -261,12 +272,18 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("BANK DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: 135,
+                    height: 150,
                     child: Column(
                       children: [
-                        _detailRow("Holder Name", "Salman H"),
-                        _detailRow("IBAN Number", "121236218936189111"),
-                        _detailRow("SWIFT Code", "TESTMRMR001"),
+                        _detailRow(
+                          "Holder Name",
+                          profile?.accountHolderName ?? "-",
+                        ),
+                        _detailRow(
+                          "Account Number",
+                          _formatLongText(profile?.accountNumber ?? "-"),
+                        ),
+                        _detailRow("SWIFT Code", profile?.ifscCode ?? "-"),
                       ],
                     ),
                   ),
@@ -275,7 +292,14 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   const SizedBox(height: 12),
                   _buildDetailCard(
                     height: 70,
-                    child: _detailRow("Category", "Non-Veg"),
+                    child: _detailRow(
+                      "Category",
+                      profile?.restaurantType == 1
+                          ? "Veg"
+                          : profile?.restaurantType == 2
+                          ? "Non-Veg"
+                          : "-",
+                    ),
                   ),
                   const SizedBox(height: 24),
                   _sectionHeader("REGISTRATION DETAILS"),
@@ -284,9 +308,15 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     height: 132,
                     child: Column(
                       children: [
-                        _detailRow("Reg. Number", "REST11MAUR13"),
-                        _detailRow("Reg. Date", "Dec 7, 2025"),
-                        _detailRow("GST Number", "GSTMAU127444"),
+                        _detailRow(
+                          "Reg. Number",
+                          profile?.registrationNumber ?? "-",
+                        ),
+                        _detailRow(
+                          "Reg. Date",
+                          _formatLeaveDate(profile?.registrationDate),
+                        ),
+                        _detailRow("GST Number", profile?.gstNo ?? "-"),
                       ],
                     ),
                   ),
@@ -297,24 +327,35 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     height: 102,
                     child: Column(
                       children: [
-                        _detailRow("Commission %", "5.00%"),
-                        _detailRow("Total Profit", "0 MRU", isBoldValue: true),
+                        _detailRow(
+                          "Commission %",
+                          profile?.commissionPercentage != null
+                              ? "${profile!.commissionPercentage}%"
+                              : "-",
+                        ),
+                        _detailRow(
+                          "Total Profit",
+                          "${profile?.totalProfit ?? "0"} MRU",
+                          isBoldValue: true,
+                        ),
                       ],
                     ),
                   ),
                   const SizedBox(height: 24),
                   _sectionHeader("OWNER IDENTITY PROOF"),
                   const SizedBox(height: 12),
-                  _buildImageCard(height: 120),
+                  _buildImageCard(height: 120, imageUrl: profile?.ownerIdProof),
                   const SizedBox(height: 24),
                   _sectionHeader("CERTIFICATES"),
                   const SizedBox(height: 12),
-                  _buildImageCard(height: 120),
+                  _buildImageCard(height: 120, imageUrl: profile?.certificate),
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _sectionHeader("RATING & REVIEWS"),
+                      _sectionHeader(
+                        "RATING & REVIEWS (${profileController.ratingReviewData?.totalReviews ?? 0})",
+                      ),
                       TextButton(
                         onPressed: () {
                           Navigator.push(
@@ -463,19 +504,16 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   const SizedBox(height: 20),
                 ] else if (selectedMenu == "Menu") ...[
                   const SizedBox(height: 20),
-                  _sectionHeader("ALL MENUS"),
-                  const SizedBox(height: 12),
+                  _buildSearchRow(),
+                  const SizedBox(height: 16),
+                  _buildCategoryAddRow(),
+                  const SizedBox(height: 20),
                   _buildMenuList(),
                   const SizedBox(height: 20),
                 ] else if (selectedMenu == "Items") ...[
                   const SizedBox(height: 20),
-                  CustomSearchBox(
-                    hintText: S.of(context).searchByIdName,
-                    boxColor: Colors.white,
-                  ),
-                  const SizedBox(height: 20),
-                  _sectionHeader("ALL ITEMS"),
-                  const SizedBox(height: 12),
+                  _buildSearchRow(),
+                  const SizedBox(height: 16),
                   _buildItemsList(),
                   const SizedBox(height: 20),
                 ] else if (selectedMenu == "Menu Bulk Import") ...[
@@ -524,6 +562,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
           padding: const EdgeInsets.only(bottom: 12),
           child: _buildDetailCard(
             height: 60,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -568,10 +607,19 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         setState(() {
           selectedMenu = title;
         });
+        if (title == "Menu") {
+          final profileController = Get.find<ProfileController>();
+          profileController.fetchGroceryMenus();
+          profileController.fetchRestaurantMenus();
+        } else if (title == "Items") {
+          final profileController = Get.find<ProfileController>();
+          profileController.fetchGroceryMenuItems();
+          profileController.fetchRestaurantMenuItems();
+        }
       },
       child: Container(
         width: 125,
-        height: 42,
+        height: 45,
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFFFF5216) : const Color(0xFFF8FAFC),
           borderRadius: BorderRadius.circular(9999),
@@ -644,11 +692,15 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     );
   }
 
-  Widget _buildDetailCard({required double height, required Widget child}) {
+  Widget _buildDetailCard({
+    required double height,
+    required Widget child,
+    EdgeInsetsGeometry? padding,
+  }) {
     return Container(
       width: 350,
       height: height,
-      padding: const EdgeInsets.all(20),
+      padding: padding ?? const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
@@ -745,15 +797,52 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     );
   }
 
-  Widget _buildImageCard({double width = 350, double height = 150}) {
+  Widget _buildImageCard({
+    double width = 350,
+    double height = 150,
+    String? imageUrl,
+  }) {
+    final String? fullUrl = imageUrl != null && imageUrl.isNotEmpty
+        ? (imageUrl.startsWith('http')
+              ? imageUrl
+              : '${ApiConfigs.IMAGE_URL}$imageUrl')
+        : null;
+
     return Container(
       width: width,
       height: height,
+      padding: const EdgeInsets.all(12), // Add padding for "small image inside"
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: const Color(0xFFF3F4F6), width: 1),
       ),
+      child: fullUrl != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Image.network(
+                fullUrl,
+                fit: BoxFit.contain, // Change to contain for small image effect
+                errorBuilder: (context, error, stackTrace) => const Center(
+                  child: Icon(
+                    Icons.broken_image_outlined,
+                    color: Color(0xFF9CA3AF),
+                    size: 36,
+                  ),
+                ),
+                loadingBuilder: (context, child, loadingProgress) {
+                  if (loadingProgress == null) return child;
+                  return const Center(child: CircularProgressIndicator());
+                },
+              ),
+            )
+          : const Center(
+              child: Icon(
+                Icons.image_outlined,
+                color: Color(0xFF9CA3AF),
+                size: 36,
+              ),
+            ),
     );
   }
 
@@ -1158,178 +1247,526 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   }
 
   Widget _buildMenuList() {
+    final profileController = Get.find<ProfileController>();
+
+    if (profileController.isGroceryMenusLoading ||
+        profileController.isRestaurantMenusLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (profileController.groceryMenus.isEmpty &&
+        profileController.restaurantMenus.isEmpty) {
+      return const Center(child: Text("No menus found."));
+    }
+
     return Column(
       children: [
-        _menuItem(S.of(context).lunchMenu, "24 Items"),
-        const SizedBox(height: 12),
-        _menuItem(S.of(context).dinnerSpecial, "18 Items"),
-        const SizedBox(height: 12),
-        _menuItem(S.of(context).breakfast, "12 Items"),
-        const SizedBox(height: 20),
-        SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddMenuScreen()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF5216),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: Text(
-              S.of(context).addNewMenu,
-              style: GoogleFonts.rubik(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+        // Grocery Menus
+        ...profileController.groceryMenus.map((menu) {
+          final lang =
+              profileController.localization.currentLocale?.languageCode;
+          final name = lang == 'fr'
+              ? (menu.nameFr ?? menu.nameEn ?? "")
+              : lang == 'ar'
+              ? (menu.nameAr ?? menu.nameEn ?? "")
+              : (menu.nameEn ?? "");
+          final category = lang == 'fr'
+              ? (menu.categoryNameFr ?? menu.categoryNameEn ?? "")
+              : lang == 'ar'
+              ? (menu.categoryNameAr ?? menu.categoryNameEn ?? "")
+              : (menu.categoryNameEn ?? "");
+
+          return _menuItem(
+            name,
+            category,
+            id: menu.id.toString(),
+            imageUrl: menu.image,
+          );
+        }).toList(),
+
+        // Restaurant Menus
+        ...profileController.restaurantMenus.map((menu) {
+          final lang =
+              profileController.localization.currentLocale?.languageCode;
+          final name = lang == 'fr'
+              ? (menu.nameFr ?? menu.nameEn ?? "")
+              : lang == 'ar'
+              ? (menu.nameAr ?? menu.nameEn ?? "")
+              : (menu.nameEn ?? "");
+          return _menuItem(
+            name,
+            menu.categoryId ?? "",
+            id: menu.id.toString(),
+            imageUrl: menu.image,
+          );
+        }).toList(),
+      ],
+    );
+  }
+
+  Widget _buildSearchRow() {
+    return Row(
+      children: [
+        Expanded(
+          child: CustomSearchBox(
+            hintText: S.of(context).searchByIdName,
+            boxColor: Colors.white,
           ),
+        ),
+        const SizedBox(width: 12),
+        Container(
+          padding: const EdgeInsets.all(12),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: const Color(0xFFF1F5F9)),
+          ),
+          child: const Icon(Icons.tune, color: Color(0xFF64748B), size: 24),
         ),
       ],
     );
   }
 
-  Widget _menuItem(String name, String count) {
-    return _buildDetailCard(
-      height: 80,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                name,
-                style: GoogleFonts.rubik(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w600,
-                  color: const Color(0xFF1F1F1F),
-                ),
-              ),
-              Text(
-                count,
-                style: GoogleFonts.rubik(
-                  fontSize: 13,
-                  color: const Color(0xFF6B7280),
-                ),
-              ),
-            ],
-          ),
-          Row(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.edit, color: Color(0xFF6B7280)),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.delete, color: Color(0xFFEF4444)),
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildItemsList() {
-    return Column(
+  Widget _buildCategoryAddRow() {
+    return Row(
       children: [
-        _foodItem(S.of(context).grilledChicken, "\$25.00"),
-        const SizedBox(height: 12),
-        _foodItem(S.of(context).vegBurger, "\$15.00"),
-        const SizedBox(height: 12),
-        _foodItem(S.of(context).sushiPlatter, "\$45.00"),
-        const SizedBox(height: 20),
         SizedBox(
-          width: double.infinity,
-          height: 48,
-          child: ElevatedButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const AddItemsScreen()),
-              );
-            },
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFFFF5216),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-            ),
-            child: Text(
-              S.of(context).addNewItem,
-              style: GoogleFonts.rubik(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _foodItem(String name, String price) {
-    return _buildDetailCard(
-      height: 100,
-      child: Row(
-        children: [
-          Container(
-            width: 60,
-            height: 60,
+          width: 160,
+          child: Container(
+            height: 48,
             decoration: BoxDecoration(
-              color: const Color(0xFFF3F4F6),
-              borderRadius: BorderRadius.circular(12),
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(color: const Color(0xFFF1F5F9)),
             ),
-            child: const Icon(Icons.fastfood, color: Color(0xFFFF5216)),
-          ),
-          const SizedBox(width: 16),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  name,
-                  style: GoogleFonts.rubik(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F1F1F),
-                  ),
-                ),
-                Text(
-                  price,
+                  "All Categories",
                   style: GoogleFonts.rubik(
                     fontSize: 14,
-                    color: const Color(0xFFFF5216),
-                    fontWeight: FontWeight.bold,
+                    color: const Color(0xFF1F2937),
+                  ),
+                ),
+                const Icon(Icons.keyboard_arrow_down, color: Color(0xFF64748B)),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(width: 60),
+        OutlinedButton.icon(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const AddMenuScreen()),
+            );
+          },
+          icon: const Icon(Icons.add, color: Color(0xFFFF5216), size: 18),
+          label: Text(
+            S.of(context).addMenuTitle,
+            style: GoogleFonts.rubik(
+              color: const Color(0xFFFF5216),
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          style: OutlinedButton.styleFrom(
+            side: const BorderSide(color: Color(0xFFFF5216), width: 1),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(20),
+            ),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _menuItem(
+    String name,
+    String category, {
+    String? imageUrl,
+    String? id,
+    String price = "50.00 MRU",
+    String? discountPrice = "100.00 MRU",
+  }) {
+    return _richCard(
+      id: id ?? "33",
+      name: name,
+      category: category,
+      price: price,
+      originalPrice: discountPrice,
+      imageUrl: imageUrl,
+      itemId: id ?? "33",
+      isMenu: true,
+    );
+  }
+
+  Widget _richCard({
+    required String id,
+    required String name,
+    required String category,
+    required String price,
+    String? originalPrice,
+    String? imageUrl,
+    required String itemId,
+    bool isMenu = false,
+  }) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+      ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Image Section
+                  Stack(
+                    children: [
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(12),
+                        child: imageUrl != null && imageUrl.isNotEmpty
+                            ? Image.network(
+                                imageUrl.startsWith('http')
+                                    ? imageUrl
+                                    : "${ApiConfigs.IMAGE_URL}$imageUrl",
+                                width: 80,
+                                height: 80,
+                                fit: BoxFit.cover,
+                                errorBuilder: (_, __, ___) => _defaultImage(),
+                              )
+                            : _defaultImage(),
+                      ),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          height: 18,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(12),
+                              topRight: Radius.circular(12),
+                            ),
+                          ),
+                          alignment: Alignment.center,
+                          child: const Text(
+                            "New Arrival",
+                            style: TextStyle(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                              fontSize: 8,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(width: 12),
+                  // Details Section
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "ID: # $id",
+                          style: GoogleFonts.rubik(
+                            fontSize: 10,
+                            color: const Color(0xFF94A3B8),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          name,
+                          style: GoogleFonts.rubik(
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                            color: const Color(0xFF1F1F1F),
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFFFF1EE),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Text(
+                            category,
+                            style: GoogleFonts.rubik(
+                              fontSize: 10,
+                              color: const Color(0xFFFF5216),
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Row(
+                          children: [
+                            Text(
+                              price,
+                              style: GoogleFonts.rubik(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: const Color(0xFF1F1F1F),
+                              ),
+                            ),
+                            if (originalPrice != null) ...[
+                              const SizedBox(width: 8),
+                              Text(
+                                originalPrice,
+                                style: GoogleFonts.rubik(
+                                  fontSize: 11,
+                                  color: const Color(0xFF94A3B8),
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              // View Details Button
+              SizedBox(
+                width: double.infinity,
+                height: 44,
+                child: OutlinedButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            MenuItemDetailsScreen(itemId: itemId),
+                      ),
+                    );
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: const BorderSide(color: Color(0xFFFF5216)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  child: Text(
+                    S.of(context).viewDetails,
+                    style: GoogleFonts.rubik(
+                      color: const Color(0xFFFF5216),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // Menu Icon - Positioned Top Right
+          Positioned(
+            top: -8,
+            right: -8,
+            child: PopupMenuButton(
+              icon: const Icon(Icons.more_vert, color: Color(0xFF94A3B8)),
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              onSelected: (value) {
+                if (value == 'edit') {
+                  if (isMenu) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditMenuScreen(itemId: itemId),
+                      ),
+                    );
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => EditItemsScreen(itemId: itemId),
+                      ),
+                    );
+                  }
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'edit',
+                  child: ListTile(
+                    leading: const Icon(Icons.edit_outlined, size: 20),
+                    title: Text("Edit", style: GoogleFonts.rubik(fontSize: 14)),
+                    trailing: const Icon(Icons.chevron_right, size: 20),
+                    contentPadding: EdgeInsets.zero,
+                  ),
+                ),
+                PopupMenuItem(
+                  value: 'delete',
+                  child: ListTile(
+                    leading: const Icon(
+                      Icons.delete_outline,
+                      size: 20,
+                      color: Color(0xFFEF4444),
+                    ),
+                    title: Text(
+                      "Delete",
+                      style: GoogleFonts.rubik(
+                        fontSize: 14,
+                        color: const Color(0xFFEF4444),
+                      ),
+                    ),
+                    trailing: const Icon(
+                      Icons.chevron_right,
+                      size: 20,
+                      color: Color(0xFFEF4444),
+                    ),
+                    contentPadding: EdgeInsets.zero,
                   ),
                 ),
               ],
             ),
           ),
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) =>
-                      const MenuItemDetailsScreen(itemId: "33"),
-                ),
-              );
-            },
-            icon: const Icon(Icons.chevron_right, color: Color(0xFF6B7280)),
-          ),
         ],
       ),
+    );
+  }
+
+  Widget _defaultImage() {
+    return Container(
+      width: 80,
+      height: 80,
+      color: const Color(0xFFF1F5F9),
+      child: const Icon(Icons.fastfood, color: Color(0xFFFF5216)),
+    );
+  }
+
+  Widget _buildItemsList() {
+    final profileController = Get.find<ProfileController>();
+
+    if (profileController.isGroceryMenuItemsLoading ||
+        profileController.isRestaurantMenuItemsLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (profileController.groceryMenuItems.isEmpty &&
+        profileController.restaurantMenuItems.isEmpty) {
+      return Column(
+        children: [
+          const Center(child: Text("No items found.")),
+          const SizedBox(height: 20),
+          _addNewItemButton(),
+        ],
+      );
+    }
+
+    return Column(
+      children: [
+        // Grocery Menu Items
+        ...profileController.groceryMenuItems.map((item) {
+          final lang =
+              profileController.localization.currentLocale?.languageCode;
+          final name = lang == 'fr'
+              ? (item.nameFr ?? item.nameEn ?? "")
+              : lang == 'ar'
+              ? (item.nameAr ?? item.nameEn ?? "")
+              : (item.nameEn ?? "");
+          final category = lang == 'fr'
+              ? (item.categoryNameFr ?? item.categoryNameEn ?? "")
+              : lang == 'ar'
+              ? (item.categoryNameAr ?? item.categoryNameEn ?? "")
+              : (item.categoryNameEn ?? "");
+          final price = "${item.price} MRU";
+
+          return _foodItem(
+            name,
+            price,
+            item.image,
+            item.id.toString(),
+            category: category,
+          );
+        }).toList(),
+
+        // Restaurant Menu Items
+        ...profileController.restaurantMenuItems.map((item) {
+          final lang =
+              profileController.localization.currentLocale?.languageCode;
+          final name = lang == 'fr'
+              ? (item.nameFr ?? item.nameEn ?? "")
+              : lang == 'ar'
+              ? (item.nameAr ?? item.nameEn ?? "")
+              : (item.nameEn ?? "");
+          final price = "${item.price} MRU";
+
+          return _foodItem(
+            name,
+            price,
+            item.image,
+            item.id.toString(),
+            category: item.categoryId?.toString() ?? "",
+          );
+        }).toList(),
+
+        const SizedBox(height: 20),
+        _addNewItemButton(),
+      ],
+    );
+  }
+
+  Widget _addNewItemButton() {
+    return SizedBox(
+      width: double.infinity,
+      height: 48,
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const AddItemsScreen()),
+          );
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: const Color(0xFFFF5216),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(12),
+          ),
+        ),
+        child: Text(
+          S.of(context).addNewItem,
+          style: GoogleFonts.rubik(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _foodItem(
+    String name,
+    String price,
+    String? imageUrl,
+    String itemId, {
+    String category = "Category",
+  }) {
+    return _richCard(
+      id: itemId,
+      name: name,
+      category: category,
+      price: price,
+      imageUrl: imageUrl,
+      itemId: itemId,
+      isMenu: false,
     );
   }
 

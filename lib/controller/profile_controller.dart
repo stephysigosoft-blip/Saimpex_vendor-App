@@ -1,9 +1,14 @@
+import 'package:dio/dio.dart' as dio;
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:saimpex_vendor/model/profile_model.dart';
 import 'package:saimpex_vendor/model/rating_review_model.dart';
+import 'package:saimpex_vendor/model/grocery_menus_model.dart';
+import 'package:saimpex_vendor/model/grocery_menu_items_model.dart';
+import 'package:saimpex_vendor/model/restaurant_menus_model.dart';
+import 'package:saimpex_vendor/model/restaurant_menu_items_model.dart';
 import 'package:saimpex_vendor/view/Login/login.dart';
 
 import '../Utils/Utils.dart';
@@ -58,6 +63,18 @@ class ProfileController extends GetxController {
   RatingReviewData? ratingReviewData;
   bool isRatingReviewLoading = false;
 
+  List<GroceryMenu> groceryMenus = [];
+  bool isGroceryMenusLoading = false;
+
+  List<RestaurantMenu> restaurantMenus = [];
+  bool isRestaurantMenusLoading = false;
+
+  List<GroceryMenuItem> groceryMenuItems = [];
+  bool isGroceryMenuItemsLoading = false;
+
+  List<RestaurantMenuItemData> restaurantMenuItems = [];
+  bool isRestaurantMenuItemsLoading = false;
+
   Future<void> getRatingsReviews(
     BuildContext context, {
     String vendorType = "2",
@@ -99,6 +116,260 @@ class ProfileController extends GetxController {
     } finally {
       isRatingReviewLoading = false;
       update();
+    }
+  }
+
+  Future<void> fetchGroceryMenus({
+    int limit = 10,
+    int page = 1,
+    int? categoryId,
+  }) async {
+    try {
+      isGroceryMenusLoading = true;
+      update();
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      } else {
+        DioClient().updateToken("");
+      }
+
+      final response = await DioClient().get(
+        ApiEndPoints.groceryMenus,
+        query: {
+          "limit": limit,
+          "page": page,
+          if (categoryId != null) "category_id": categoryId,
+        },
+      );
+
+      final groceryMenusModel = GroceryMenusModel.fromJson(response.data);
+      if (groceryMenusModel.status == true) {
+        groceryMenus = groceryMenusModel.data?.groceryMenus?.data ?? [];
+      }
+    } catch (error) {
+      debugPrint("fetchGroceryMenus Error: $error");
+    } finally {
+      isGroceryMenusLoading = false;
+      update();
+    }
+  }
+
+  Future<void> fetchRestaurantMenus() async {
+    try {
+      isRestaurantMenusLoading = true;
+      update();
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      }
+
+      final response = await DioClient().get(ApiEndPoints.getRestaurantMenus);
+
+      final model = RestaurantMenusModel.fromJson(response.data);
+      if (model.status == true) {
+        restaurantMenus = model.data ?? [];
+      }
+    } catch (error) {
+      debugPrint("fetchRestaurantMenus Error: $error");
+    } finally {
+      isRestaurantMenusLoading = false;
+      update();
+    }
+  }
+
+  Future<void> fetchGroceryMenuItems({
+    int limit = 10,
+    int page = 1,
+    int status = 1,
+  }) async {
+    try {
+      isGroceryMenuItemsLoading = true;
+      update();
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      }
+
+      final response = await DioClient().get(
+        ApiEndPoints.groceryMenuItems,
+        query: {"limit": limit, "page": page, "status": status},
+      );
+
+      final model = GroceryMenuItemsModel.fromJson(response.data);
+      if (model.status == true) {
+        groceryMenuItems = model.data?.groceryMenuItems?.data ?? [];
+      }
+    } catch (error) {
+      debugPrint("fetchGroceryMenuItems Error: $error");
+    } finally {
+      isGroceryMenuItemsLoading = false;
+      update();
+    }
+  }
+
+  Future<void> fetchRestaurantMenuItems({int limit = 10, int page = 1}) async {
+    try {
+      isRestaurantMenuItemsLoading = true;
+      update();
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      }
+
+      final response = await DioClient().get(
+        ApiEndPoints.restaurantMenuItems,
+        query: {"limit": limit, "page": page},
+      );
+
+      final model = RestaurantMenuItemsModel.fromJson(response.data);
+      if (model.status == true) {
+        restaurantMenuItems = model.data?.restaurantMenuItems?.data ?? [];
+      }
+    } catch (error) {
+      debugPrint("fetchRestaurantMenuItems Error: $error");
+    } finally {
+      isRestaurantMenuItemsLoading = false;
+      update();
+    }
+  }
+
+  Future<void> addGroceryMenu(
+    BuildContext context, {
+    required List<String> categoryIds,
+    required String nameEn,
+    required String descriptionEn,
+    required List<String> tags,
+    required String serialNumber,
+    required String quantityAllowed,
+    required List<Map<String, dynamic>> attributes,
+    required String imagePath,
+  }) async {
+    try {
+      showLoadingDialog(context);
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      }
+
+      Map<String, dynamic> formDataMap = {
+        "name_en": nameEn,
+        "description_en": descriptionEn,
+        "serial_number": serialNumber,
+        "quantity_allowed": quantityAllowed,
+        "image": await dio.MultipartFile.fromFile(imagePath),
+      };
+
+      for (int i = 0; i < attributes.length; i++) {
+        attributes[i].forEach((key, value) {
+          formDataMap["attributes[$i][$key]"] = value.toString();
+        });
+      }
+
+      dio.FormData formData = dio.FormData.fromMap(formDataMap);
+
+      for (var id in categoryIds) {
+        formData.fields.add(MapEntry("category_id[]", id));
+      }
+
+      for (var tag in tags) {
+        formData.fields.add(MapEntry("tags[]", tag));
+      }
+
+      final response = await DioClient().post(
+        ApiEndPoints.addGroceryMenu,
+        body: formData,
+      );
+
+      if (context.mounted) {
+        Get.back(); // close dialog
+      }
+
+      if (response.data['status'] == 'true' ||
+          response.data['status'] == true) {
+        if (context.mounted) {
+          showToast(context, "Grocery menu added successfully");
+          Get.back(); // go back to menu list
+          fetchGroceryMenus(); // refresh list
+        }
+      } else {
+        if (context.mounted) {
+          showToast(
+            context,
+            response.data['message']?.toString() ?? "Failed to add menu",
+          );
+        }
+      }
+    } catch (error) {
+      if (context.mounted) {
+        Get.back();
+        showToast(context, error.toString());
+      }
+    }
+  }
+
+  Future<void> addGroceryMenuItem(
+    BuildContext context, {
+    required String menuId,
+    required String attributeValue,
+    required String groceryAttributeId,
+    required String price,
+    required String discountPrice,
+    required String quantityAllowed,
+    required String serialNumber,
+  }) async {
+    try {
+      showLoadingDialog(context);
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      }
+
+      dio.FormData formData = dio.FormData.fromMap({
+        "menu_id": menuId,
+        "attribute_value": attributeValue,
+        "grocery_attribute_id": groceryAttributeId,
+        "price": price,
+        "discount_price": discountPrice,
+        "quantity_allowed": quantityAllowed,
+        "serial_number": serialNumber,
+      });
+
+      final response = await DioClient().post(
+        ApiEndPoints.addGroceryMenuItem,
+        body: formData,
+      );
+
+      if (context.mounted) {
+        Get.back(); // close loading dialog
+      }
+
+      if (response.data['status'] == 'true' ||
+          response.data['status'] == true) {
+        if (context.mounted) {
+          showToast(context, "Grocery item added successfully");
+          Get.back(); // go back to items list
+          fetchGroceryMenuItems(); // refresh list
+        }
+      } else {
+        if (context.mounted) {
+          showToast(
+            context,
+            response.data['message']?.toString() ?? "Failed to add item",
+          );
+        }
+      }
+    } catch (error) {
+      if (context.mounted) {
+        Get.back();
+        showToast(context, error.toString());
+      }
     }
   }
 
