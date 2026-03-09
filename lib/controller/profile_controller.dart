@@ -52,6 +52,9 @@ class ProfileController extends GetxController {
   double points = 0.0;
   double redeemableAmount = 0.0;
 
+  List<LeaveData> upcomingLeaves = [];
+  List<LeaveData> leaveHistory = [];
+
   RatingReviewData? ratingReviewData;
   bool isRatingReviewLoading = false;
 
@@ -230,6 +233,8 @@ class ProfileController extends GetxController {
       ProfileModel profileModel = ProfileModel.fromJson(response.data);
       if (profileModel.status == true) {
         profileData = profileModel.data;
+        upcomingLeaves = profileModel.upcomingLeaves ?? [];
+        leaveHistory = profileModel.leaveHistory ?? [];
         nameController.text = profileData?.name ?? "";
         phoneController.text = profileData?.mobile ?? "";
         countryCode = profileData?.countryCode ?? "";

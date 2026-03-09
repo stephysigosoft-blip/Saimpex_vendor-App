@@ -1,16 +1,41 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../utils/widgets/common_background.dart';
+import '../../model/profile_model.dart';
 
 class LeaveHistoryScreen extends StatelessWidget {
-  final List<Map<String, dynamic>> upcomingLeaves;
-  final List<Map<String, dynamic>> completedLeaves;
+  final List<LeaveData> upcomingLeaves;
+  final List<LeaveData> leaveHistory;
 
   const LeaveHistoryScreen({
     super.key,
     required this.upcomingLeaves,
-    required this.completedLeaves,
+    required this.leaveHistory,
   });
+
+  String _formatLeaveDate(String? dateStr) {
+    if (dateStr == null || dateStr.isEmpty) return "";
+    try {
+      final dt = DateTime.parse(dateStr);
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      return "${months[dt.month - 1]} ${dt.day.toString().padLeft(2, '0')}, ${dt.year}";
+    } catch (_) {
+      return dateStr;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +52,7 @@ class LeaveHistoryScreen extends StatelessWidget {
           ),
         ),
         title: Text(
-          "Leaves History", // You can use localization if needed
+          "Leaves History",
           style: GoogleFonts.rubik(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -56,16 +81,16 @@ class LeaveHistoryScreen extends StatelessWidget {
                   (leave) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: _buildLeaveTile(
-                      dateRange: leave["dateRange"],
-                      reason: leave["reason"],
-                      status: leave["status"],
+                      dateRange: _formatLeaveDate(leave.date),
+                      reason: leave.reason ?? "Leave",
+                      status: "SCHEDULED",
                       isUpcoming: true,
                     ),
                   ),
                 ),
                 const SizedBox(height: 12),
               ],
-              if (completedLeaves.isNotEmpty) ...[
+              if (leaveHistory.isNotEmpty) ...[
                 Text(
                   "Completed Leaves",
                   style: GoogleFonts.rubik(
@@ -75,18 +100,23 @@ class LeaveHistoryScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                ...completedLeaves.map(
+                ...leaveHistory.map(
                   (leave) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: _buildLeaveTile(
-                      dateRange: leave["dateRange"],
-                      reason: leave["reason"],
-                      status: leave["status"],
+                      dateRange: _formatLeaveDate(leave.date),
+                      reason: leave.reason ?? "Leave",
+                      status: "COMPLETED",
                       isUpcoming: false,
                     ),
                   ),
                 ),
               ],
+              if (upcomingLeaves.isEmpty && leaveHistory.isEmpty)
+                Text(
+                  "No leave history found.",
+                  style: GoogleFonts.rubik(color: Colors.grey, fontSize: 13),
+                ),
             ],
           ),
         ),
@@ -172,7 +202,7 @@ class LeaveHistoryScreen extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "Cancel Leave", // If localization works, this will just be text. Let's keep existing design unchanged.
+                  "Cancel Leave",
                   style: GoogleFonts.rubik(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,

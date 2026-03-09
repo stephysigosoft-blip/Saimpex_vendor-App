@@ -2,8 +2,16 @@ class ProfileModel {
   final bool? status;
   final ProfileData? data;
   final ProfileMessage? message;
+  final List<LeaveData>? upcomingLeaves;
+  final List<LeaveData>? leaveHistory;
 
-  ProfileModel({this.status, this.data, this.message});
+  ProfileModel({
+    this.status,
+    this.data,
+    this.message,
+    this.upcomingLeaves,
+    this.leaveHistory,
+  });
 
   factory ProfileModel.fromJson(Map<String, dynamic>? json) {
     if (json == null) return ProfileModel();
@@ -18,6 +26,16 @@ class ProfileModel {
           : null,
       message: json['message'] != null
           ? ProfileMessage.fromJson(json['message'] as Map<String, dynamic>?)
+          : null,
+      upcomingLeaves: json['data']?['upcoming_leaves'] != null
+          ? (json['data']['upcoming_leaves'] as List)
+                .map((i) => LeaveData.fromJson(i))
+                .toList()
+          : null,
+      leaveHistory: json['data']?['leave_history'] != null
+          ? (json['data']['leave_history'] as List)
+                .map((i) => LeaveData.fromJson(i))
+                .toList()
           : null,
     );
   }
@@ -133,5 +151,26 @@ class ProfileMessage {
       'message_fr': messageFr,
       'message_ar': messageAr,
     };
+  }
+}
+
+class LeaveData {
+  final int? id;
+  final int? vendorId;
+  final String? date;
+  final String? reason;
+
+  LeaveData({this.id, this.vendorId, this.date, this.reason});
+
+  factory LeaveData.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return LeaveData();
+    return LeaveData(
+      id: json['id'] != null ? int.tryParse(json['id'].toString()) : null,
+      vendorId: json['vendor_id'] != null
+          ? int.tryParse(json['vendor_id'].toString())
+          : null,
+      date: json['date']?.toString(),
+      reason: json['reason']?.toString(),
+    );
   }
 }

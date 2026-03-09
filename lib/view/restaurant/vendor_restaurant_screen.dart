@@ -29,36 +29,28 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   DateTime? _toDate;
   final TextEditingController _reasonController = TextEditingController();
 
-  List<Map<String, dynamic>> _upcomingLeaves = [
-    {
-      "dateRange": "Feb 20 - Feb 25, 2026",
-      "reason": "Renovation Work",
-      "status": "SCHEDULED",
-    },
-    {
-      "dateRange": "Feb 20 - Feb 25, 2026",
-      "reason": "Renovation Work",
-      "status": "SCHEDULED",
-    },
-  ];
-
-  String _formatDisplayRange(DateTime? from, DateTime? to) {
-    if (from == null || to == null) return "";
-    const m = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-    return "${m[from.month - 1]} ${from.day.toString().padLeft(2, '0')} - ${m[to.month - 1]} ${to.day.toString().padLeft(2, '0')}, ${to.year}";
+  String _formatLeaveDate(String? dateStr) {
+    if (dateStr == null || dateStr.isEmpty) return "";
+    try {
+      final dt = DateTime.parse(dateStr);
+      const months = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+      ];
+      return "${months[dt.month - 1]} ${dt.day.toString().padLeft(2, '0')}, ${dt.year}";
+    } catch (_) {
+      return dateStr;
+    }
   }
 
   Future<void> _selectDate(BuildContext context, bool isFromDate) async {
@@ -392,19 +384,9 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => LeaveHistoryScreen(
-                                upcomingLeaves: _upcomingLeaves,
-                                completedLeaves: const [
-                                  {
-                                    "dateRange": "Jan 20 - Jan 25, 2025",
-                                    "reason": "Renovation Work",
-                                    "status": "COMPLETED",
-                                  },
-                                  {
-                                    "dateRange": "Jan 20 - Jan 25, 2025",
-                                    "reason": "Renovation Work",
-                                    "status": "COMPLETED",
-                                  },
-                                ],
+                                upcomingLeaves:
+                                    profileController.upcomingLeaves,
+                                leaveHistory: profileController.leaveHistory,
                               ),
                             ),
                           );
@@ -430,17 +412,18 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  ..._upcomingLeaves.map(
-                    (leave) => Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: _buildLeaveTile(
-                        dateRange: leave["dateRange"],
-                        reason: leave["reason"],
-                        status: leave["status"],
-                        isUpcoming: true,
+                  if (profileController.upcomingLeaves.isNotEmpty)
+                    ...profileController.upcomingLeaves.map(
+                      (leave) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _buildLeaveTile(
+                          dateRange: _formatLeaveDate(leave.date),
+                          reason: leave.reason ?? "Leave",
+                          status: "SCHEDULED",
+                          isUpcoming: true,
+                        ),
                       ),
                     ),
-                  ),
                   const SizedBox(height: 12),
                   Text(
                     "Completed Leaves",
@@ -451,19 +434,26 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _buildLeaveTile(
-                    dateRange: "Jan 20 - Jan 25, 2025",
-                    reason: "Renovation Work",
-                    status: "COMPLETED",
-                    isUpcoming: false,
-                  ),
-                  const SizedBox(height: 12),
-                  _buildLeaveTile(
-                    dateRange: "Jan 20 - Jan 25, 2025",
-                    reason: "Renovation Work",
-                    status: "COMPLETED",
-                    isUpcoming: false,
-                  ),
+                  if (profileController.leaveHistory.isNotEmpty)
+                    ...profileController.leaveHistory.map(
+                      (leave) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: _buildLeaveTile(
+                          dateRange: _formatLeaveDate(leave.date),
+                          reason: leave.reason ?? "Leave",
+                          status: "COMPLETED",
+                          isUpcoming: false,
+                        ),
+                      ),
+                    )
+                  else
+                    Text(
+                      "No completed leaves.",
+                      style: GoogleFonts.rubik(
+                        color: Colors.grey,
+                        fontSize: 13,
+                      ),
+                    ),
                   const SizedBox(height: 20),
                 ] else if (selectedMenu == "Working Hours") ...[
                   const SizedBox(height: 20),
@@ -1044,14 +1034,8 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                       _reasonController.text.trim(),
                     )
                     .then((_) {
+                      Get.find<ProfileController>().getProfile(context);
                       setState(() {
-                        _upcomingLeaves.insert(0, {
-                          "dateRange": _formatDisplayRange(_fromDate, _toDate),
-                          "reason": _reasonController.text.trim().isEmpty
-                              ? "Leave"
-                              : _reasonController.text.trim(),
-                          "status": "SCHEDULED",
-                        });
                         _fromDate = null;
                         _toDate = null;
                         _reasonController.clear();
