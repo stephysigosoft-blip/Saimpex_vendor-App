@@ -251,6 +251,31 @@ String convertToAmPm(String time24) {
   }
 }
 
+/// Converts duration value like "00:00:15" (HH:mm:ss) or "15" to "15 minutes".
+String formatDurationToMinutes(String? value) {
+  if (value == null || value.trim().isEmpty) return '0 minutes';
+  final trimmed = value.trim();
+  final parts = trimmed.split(':');
+  if (parts.length >= 3) {
+    final h = int.tryParse(parts[0].trim()) ?? 0;
+    final m = int.tryParse(parts[1].trim()) ?? 0;
+    final s = int.tryParse(parts[2].trim()) ?? 0;
+    final totalMinutes = (h == 0 && m == 0)
+        ? s
+        : (h * 60 + m + s / 60).round();
+    return totalMinutes == 1 ? '1 minute' : '$totalMinutes minutes';
+  }
+  if (parts.length == 2) {
+    final m = int.tryParse(parts[0].trim()) ?? 0;
+    final s = int.tryParse(parts[1].trim()) ?? 0;
+    final totalMinutes = (m + s / 60).round();
+    return totalMinutes == 1 ? '1 minute' : '$totalMinutes minutes';
+  }
+  final n = int.tryParse(trimmed);
+  if (n != null) return n == 1 ? '1 minute' : '$n minutes';
+  return trimmed;
+}
+
 /// Formats order placed_at (ISO or DateTime) for display.
 /// Returns "Feb 07, 2026 10:45 AM" or "Today, 10:45 AM" when same day.
 String formatOrderPlacedAt(DateTime? dateTime) {
