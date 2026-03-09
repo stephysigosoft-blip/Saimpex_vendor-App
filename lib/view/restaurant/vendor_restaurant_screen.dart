@@ -8,6 +8,7 @@ import 'package:saimpex_vendor/view/restaurant/add_items_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/menu_item_details_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/basket_details_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/rating_reviews_screen.dart';
+import 'package:saimpex_vendor/view/restaurant/leave_history_screen.dart';
 import 'package:get/get.dart';
 import '../../controller/profile_controller.dart';
 import '../../Utils/Utils.dart';
@@ -386,7 +387,28 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     children: [
                       _sectionHeader("LEAVES HISTORY"),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => LeaveHistoryScreen(
+                                upcomingLeaves: _upcomingLeaves,
+                                completedLeaves: const [
+                                  {
+                                    "dateRange": "Jan 20 - Jan 25, 2025",
+                                    "reason": "Renovation Work",
+                                    "status": "COMPLETED",
+                                  },
+                                  {
+                                    "dateRange": "Jan 20 - Jan 25, 2025",
+                                    "reason": "Renovation Work",
+                                    "status": "COMPLETED",
+                                  },
+                                ],
+                              ),
+                            ),
+                          );
+                        },
                         child: Text(
                           S.of(context).viewAll,
                           style: GoogleFonts.rubik(
