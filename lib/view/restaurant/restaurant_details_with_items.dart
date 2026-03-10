@@ -18,6 +18,7 @@ import '../../utils/widgets/restaurant_details_widget.dart';
 import '../../utils/widgets/restaurant_items_filter_bottom_sheet.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
 import '../shimmer_loading/shimmer_food_product_item.dart';
+import '../../utils/widgets/app_loader.dart';
 
 class RestaurantDetailsWithItems extends StatefulWidget {
   const RestaurantDetailsWithItems({
@@ -207,10 +208,8 @@ Widget _buildContent(
                   child: Column(
                     children: [
                       Container(
-                        height: 150,
-                        child: Center(
-                          child: CircularProgressIndicator(color: colorPrimary),
-                        ),
+                        height: MediaQuery.of(context).size.height * 0.2,
+                        child: Center(child: AppLoader(size: 40)),
                       ),
                       Container(
                         padding: EdgeInsets.only(left: 10, right: 10),
@@ -286,7 +285,7 @@ Widget _buildContent(
                               .of(context)
                               .findSomethingFromThisRestaurant,
                           boxColor: Colors.white,
-                          width: 293,
+                          width: MediaQuery.of(context).size.width * 0.75,
                         ),
                       ),
                     ),
@@ -540,9 +539,7 @@ Widget _buildContent(
                                             bottom: hasCartItems ? 100 : 10,
                                           ),
                                           child: const Center(
-                                            child: CircularProgressIndicator(
-                                              color: colorPrimary,
-                                            ),
+                                            child: AppLoader(size: 40),
                                           ),
                                         ),
                                     ],
@@ -606,19 +603,19 @@ Widget _buildCartBottomBar(
           borderRadius: BorderRadius.circular(25),
           child: CachedNetworkImage(
             imageUrl: controller.vendorImage.toString(),
-            height: 42,
-            width: 42,
+            height: MediaQuery.of(context).size.height * 0.05,
+            width: MediaQuery.of(context).size.height * 0.05,
             fit: BoxFit.cover,
             placeholder: (context, url) => Image.asset(
               "lib/assets/images/logo.png",
-              height: 42,
-              width: 42,
+              height: MediaQuery.of(context).size.height * 0.05,
+              width: MediaQuery.of(context).size.height * 0.05,
               fit: BoxFit.cover,
             ),
             errorWidget: (context, url, error) => Image.asset(
               "lib/assets/images/logo.png",
-              height: 42,
-              width: 42,
+              height: MediaQuery.of(context).size.height * 0.05,
+              width: MediaQuery.of(context).size.height * 0.05,
               fit: BoxFit.cover,
             ),
           ),
@@ -694,8 +691,8 @@ Widget _buildCartBottomBar(
                 },
                 child: Image.asset(
                   'lib/assets/images/delete_cart.png',
-                  height: 23,
-                  width: 23,
+                  height: MediaQuery.of(context).size.height * 0.03,
+                  width: MediaQuery.of(context).size.height * 0.03,
                 ),
               ),
             ],

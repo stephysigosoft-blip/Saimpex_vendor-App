@@ -36,8 +36,8 @@ class BasketDetailsScreen extends StatelessWidget {
               const SizedBox(height: 20),
               // Header Details Container
               Container(
-                width: 358,
-                height: 415,
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.5,
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -340,8 +340,8 @@ class BasketDetailsScreen extends StatelessWidget {
     String qty,
   ) {
     return Container(
-      width: 358,
-      height: 121,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.15,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -421,8 +421,8 @@ class BasketDetailsScreen extends StatelessWidget {
     String date,
   ) {
     return Container(
-      width: 358,
-      height: 161,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.2,
       padding: const EdgeInsets.only(top: 20, right: 20, left: 20),
       decoration: BoxDecoration(
         color: Colors.white,

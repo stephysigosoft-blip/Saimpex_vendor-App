@@ -5,6 +5,8 @@ import '../../generated/l10n.dart';
 import '../../utils/widgets/common_background.dart';
 import '../../controller/profile_controller.dart';
 import '../../model/rating_review_model.dart';
+import '../../utils/widgets/app_loader.dart';
+import '../../utils/widgets/no_data_widget.dart';
 
 class RatingReviewsScreen extends StatelessWidget {
   const RatingReviewsScreen({super.key});
@@ -37,17 +39,14 @@ class RatingReviewsScreen extends StatelessWidget {
         builder: (profileController) {
           final reviews = profileController.ratingReviewData?.reviews ?? [];
           if (profileController.isRatingReviewLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const AppLoader();
           }
           if (reviews.isEmpty) {
-            return Center(
-              child: Text(
-                "No reviews found.",
-                style: GoogleFonts.rubik(
-                  fontSize: 14,
-                  color: const Color(0xFF6B7280),
-                ),
-              ),
+            return NoDataWidget(
+              context,
+              "No reviews found.",
+              "",
+              "lib/assets/images/nodata.png",
             );
           }
           return ListView.separated(
@@ -66,8 +65,8 @@ class RatingReviewsScreen extends StatelessWidget {
   Widget _buildReviewTile(BuildContext context, ReviewItem review) {
     double ratingVal = double.tryParse(review.rating?.toString() ?? "0") ?? 0.0;
     return Container(
-      width: 350,
-      height: 154,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.2,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,

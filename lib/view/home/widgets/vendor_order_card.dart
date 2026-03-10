@@ -13,6 +13,7 @@ class VendorOrderCard extends StatelessWidget {
   final VoidCallback onReject;
   final VoidCallback onAccept;
   final VoidCallback? onTap;
+  final String? deliveryBoyName;
 
   const VendorOrderCard({
     super.key,
@@ -25,6 +26,7 @@ class VendorOrderCard extends StatelessWidget {
     required this.onReject,
     required this.onAccept,
     this.onTap,
+    this.deliveryBoyName,
   });
 
   @override
@@ -32,8 +34,10 @@ class VendorOrderCard extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 350,
-        constraints: const BoxConstraints(minHeight: 199),
+        width: MediaQuery.of(context).size.width * 0.92,
+        constraints: BoxConstraints(
+          minHeight: MediaQuery.of(context).size.height * 0.25,
+        ),
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
@@ -55,14 +59,17 @@ class VendorOrderCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  S.of(context).orderIdLabel(orderId),
-                  style: GoogleFonts.rubik(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: colorPrimary,
+                Expanded(
+                  child: Text(
+                    S.of(context).orderIdLabel(orderId),
+                    style: GoogleFonts.rubik(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      color: colorPrimary,
+                    ),
                   ),
                 ),
+                const SizedBox(width: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -76,6 +83,11 @@ class VendorOrderCard extends StatelessWidget {
                         : status.toLowerCase() == 'preparing'
                         ? const Color(0xFF60A5FA)
                         : status.toLowerCase() == 'ready'
+                        ? const Color(0xFF22C55E)
+                        : status.toLowerCase() == 'assigned' ||
+                              status.toLowerCase() == 'reached restaurant' ||
+                              status.toLowerCase() == 'picked up' ||
+                              status.toLowerCase() == 'delivering'
                         ? const Color(0xFF22C55E)
                         : status.toLowerCase() == 'delivered'
                         ? const Color(0xFF15803D)
@@ -124,65 +136,78 @@ class VendorOrderCard extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      S.of(context).items.toUpperCase(),
-                      style: GoogleFonts.rubik(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    RichText(
-                      text: TextSpan(
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        S.of(context).items.toUpperCase(),
                         style: GoogleFonts.rubik(
-                          fontSize: 12,
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      RichText(
+                        text: TextSpan(
+                          style: GoogleFonts.rubik(
+                            fontSize: 12,
+                            color: Colors.grey[700],
+                          ),
+                          children: [
+                            TextSpan(
+                              text: "$itemsCount ${S.of(context).items} • ",
+                            ),
+                            TextSpan(
+                              text: "${price.toStringAsFixed(2)} MRU",
+                              style: const TextStyle(
+                                color: Color(0xFFFF5216),
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        S.of(context).dateTime,
+                        style: GoogleFonts.rubik(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.grey,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        dateTime,
+                        textAlign: TextAlign.right,
+                        style: GoogleFonts.rubik(
+                          fontSize: 10,
                           color: Colors.grey[700],
                         ),
-                        children: [
-                          TextSpan(
-                            text: "$itemsCount ${S.of(context).items} • ",
-                          ),
-                          TextSpan(
-                            text: "${price.toStringAsFixed(2)} MRU",
-                            style: const TextStyle(
-                              color: Color(0xFFFF5216),
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
                       ),
-                    ),
-                  ],
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text(
-                      S.of(context).dateTime,
-                      style: GoogleFonts.rubik(
-                        fontSize: 10,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      dateTime,
-                      style: GoogleFonts.rubik(
-                        fontSize: 10,
-                        color: Colors.grey[700],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ],
             ),
             if (status.toLowerCase() == 'ready' ||
-                status.toLowerCase() == 'delivered') ...[
+                status.toLowerCase() == 'delivered' ||
+                status.toLowerCase() == 'assigned' ||
+                status.toLowerCase() == 'reached restaurant' ||
+                status.toLowerCase() == 'picked up' ||
+                status.toLowerCase() == 'delivering' ||
+                status == S.of(context).ready ||
+                status == S.of(context).delivered ||
+                status == S.of(context).assignedStatus) ...[
               const SizedBox(height: 12),
               Text(
                 S.of(context).driver.toUpperCase(),
@@ -204,9 +229,17 @@ class VendorOrderCard extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    const TextSpan(
-                      text: "[Abdallahi Ould Ahmed]",
-                      style: TextStyle(color: Color(0xFF6B7280), fontSize: 11),
+                    TextSpan(
+                      text:
+                          (deliveryBoyName == "" ||
+                              deliveryBoyName == "null" ||
+                              deliveryBoyName == null)
+                          ? ""
+                          : "[$deliveryBoyName]",
+                      style: const TextStyle(
+                        color: Color(0xFF6B7280),
+                        fontSize: 11,
+                      ),
                     ),
                   ],
                 ),
@@ -335,7 +368,7 @@ class VendorOrderCard extends StatelessWidget {
             else
               SizedBox(
                 width: double.infinity,
-                height: 40,
+                height: MediaQuery.of(context).size.height * 0.05,
                 child: OutlinedButton(
                   onPressed: onTap,
                   style: OutlinedButton.styleFrom(

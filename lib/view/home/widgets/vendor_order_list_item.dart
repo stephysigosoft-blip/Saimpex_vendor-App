@@ -14,6 +14,7 @@ class VendorOrderListItem extends StatelessWidget {
     required this.dateTime,
     required this.status,
     required this.onAccept,
+    this.deliveryBoyName,
   });
 
   final double horizontalPadding;
@@ -24,6 +25,7 @@ class VendorOrderListItem extends StatelessWidget {
   final String dateTime;
   final String status;
   final VoidCallback onAccept;
+  final String? deliveryBoyName;
 
   @override
   Widget build(BuildContext context) {
@@ -38,12 +40,11 @@ class VendorOrderListItem extends StatelessWidget {
         status: status,
         onReject: () {},
         onAccept: onAccept,
+        deliveryBoyName: deliveryBoyName,
         onTap: () {
-          Get.to(
-            () => VendorOrderDetails(
-              orderId: orderId.toString(),
-            ),
-          );
+          if (status.toLowerCase() != 'cancelled') {
+            Get.to(() => VendorOrderDetails(orderId: orderId.toString()));
+          }
         },
       ),
     );

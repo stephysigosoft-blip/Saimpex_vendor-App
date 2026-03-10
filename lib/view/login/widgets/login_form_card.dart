@@ -25,10 +25,7 @@ class LoginFormCard extends StatelessWidget {
       right: 0,
       child: Container(
         width: size.width,
-        padding: const EdgeInsets.symmetric(
-          horizontal: 24,
-          vertical: 32,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 32),
         decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
@@ -84,10 +81,7 @@ class LoginFormCard extends StatelessWidget {
               controller: loginController.userNameController,
               decoration: InputDecoration(
                 hintText: "Enter your username",
-                hintStyle: GoogleFonts.rubik(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
+                hintStyle: GoogleFonts.rubik(fontSize: 14, color: Colors.grey),
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding: const EdgeInsets.symmetric(
@@ -96,15 +90,11 @@ class LoginFormCard extends StatelessWidget {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: Colors.black12,
-                  ),
+                  borderSide: const BorderSide(color: Colors.black12),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: Colors.orange,
-                  ),
+                  borderSide: const BorderSide(color: Colors.orange),
                 ),
               ),
             ),
@@ -123,10 +113,7 @@ class LoginFormCard extends StatelessWidget {
               obscureText: !loginController.isPasswordVisible,
               decoration: InputDecoration(
                 hintText: "Enter your password",
-                hintStyle: GoogleFonts.rubik(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
+                hintStyle: GoogleFonts.rubik(fontSize: 14, color: Colors.grey),
                 filled: true,
                 fillColor: Colors.white,
                 contentPadding: const EdgeInsets.symmetric(
@@ -135,15 +122,11 @@ class LoginFormCard extends StatelessWidget {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: Colors.black12,
-                  ),
+                  borderSide: const BorderSide(color: Colors.black12),
                 ),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(
-                    color: Colors.orange,
-                  ),
+                  borderSide: const BorderSide(color: Colors.orange),
                 ),
                 suffixIcon: IconButton(
                   icon: Icon(
@@ -159,7 +142,7 @@ class LoginFormCard extends StatelessWidget {
             const SizedBox(height: 32),
             SizedBox(
               width: size.width,
-              height: 50,
+              height: size.height * 0.065,
               child: ElevatedButton(
                 onPressed: onLogin,
                 style: ElevatedButton.styleFrom(

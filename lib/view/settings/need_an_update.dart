@@ -33,7 +33,7 @@ class NeedAnUpdate extends StatelessWidget {
               Center(
                 child: Image.asset(
                   "lib/assets/images/logo.png",
-                  height: 200,
+                  height: MediaQuery.of(context).size.height * 0.25,
                 ),
               ),
 
@@ -73,14 +73,22 @@ class NeedAnUpdate extends StatelessWidget {
                     final packageInfo = await PackageInfo.fromPlatform();
                     final String packageName = packageInfo.packageName;
                     final Uri url = Platform.isAndroid
-                        ? Uri.parse("https://play.google.app/store/apps/details?id="+packageName)
-                        : Uri.parse("https://apps.apple.app/app/"+"id1234567895");
+                        ? Uri.parse(
+                            "https://play.google.app/store/apps/details?id=" +
+                                packageName,
+                          )
+                        : Uri.parse(
+                            "https://apps.apple.app/app/" + "id1234567895",
+                          );
                     if (await canLaunchUrl(url)) {
-                    await launchUrl(url, mode: LaunchMode.externalApplication).then((value) {
-                    Get.offAll(Home());
-                    },);
+                      await launchUrl(
+                        url,
+                        mode: LaunchMode.externalApplication,
+                      ).then((value) {
+                        Get.offAll(Home());
+                      });
                     } else {
-                    throw 'Could not launch $url';
+                      throw 'Could not launch $url';
                     }
                   },
                 ),
@@ -89,7 +97,9 @@ class NeedAnUpdate extends StatelessWidget {
               const SizedBox(height: 25),
 
               Image.asset(
-                Platform.isAndroid?"lib/assets/images/googleplay.png":"lib/assets/images/appstore.png",
+                Platform.isAndroid
+                    ? "lib/assets/images/googleplay.png"
+                    : "lib/assets/images/appstore.png",
                 height: 20,
               ),
 

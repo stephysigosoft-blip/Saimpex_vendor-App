@@ -15,6 +15,8 @@ import 'leave_history_screen.dart';
 import '../../controller/profile_controller.dart';
 import '../../Utils/Utils.dart';
 import 'package:saimpex_vendor/configs/ApiConfigs.dart';
+import '../../utils/widgets/app_loader.dart';
+import '../../utils/widgets/no_data_widget.dart';
 
 class VendorRestaurantScreen extends StatefulWidget {
   const VendorRestaurantScreen({super.key});
@@ -124,8 +126,8 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                 const SizedBox(height: 60),
                 // Header Card
                 Container(
-                  width: 350,
-                  height: 189,
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  padding: const EdgeInsets.symmetric(vertical: 24),
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
@@ -142,8 +144,8 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     children: [
                       // Logo R1
                       Container(
-                        width: 80,
-                        height: 80,
+                        width: MediaQuery.of(context).size.width * 0.2,
+                        height: MediaQuery.of(context).size.width * 0.2,
                         padding: const EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
                           color: const Color(0xFFEEF2FF),
@@ -272,7 +274,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("BANK DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: 150,
+                    height: MediaQuery.of(context).size.height * 0.18,
                     child: Column(
                       children: [
                         _detailRow(
@@ -291,7 +293,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("ABOUT THE RESTAURANT"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: 70,
+                    height: MediaQuery.of(context).size.height * 0.08,
                     child: _detailRow(
                       "Category",
                       profile?.restaurantType == 1
@@ -305,7 +307,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("REGISTRATION DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: 132,
+                    height: MediaQuery.of(context).size.height * 0.16,
                     child: Column(
                       children: [
                         _detailRow(
@@ -324,7 +326,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("PAYMENT DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: 102,
+                    height: MediaQuery.of(context).size.height * 0.12,
                     child: Column(
                       children: [
                         _detailRow(
@@ -344,11 +346,17 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   const SizedBox(height: 24),
                   _sectionHeader("OWNER IDENTITY PROOF"),
                   const SizedBox(height: 12),
-                  _buildImageCard(height: 120, imageUrl: profile?.ownerIdProof),
+                  _buildImageCard(
+                    height: MediaQuery.of(context).size.height * 0.14,
+                    imageUrl: profile?.ownerIdProof,
+                  ),
                   const SizedBox(height: 24),
                   _sectionHeader("CERTIFICATES"),
                   const SizedBox(height: 12),
-                  _buildImageCard(height: 120, imageUrl: profile?.certificate),
+                  _buildImageCard(
+                    height: MediaQuery.of(context).size.height * 0.14,
+                    imageUrl: profile?.certificate,
+                  ),
                   const SizedBox(height: 24),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -378,7 +386,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                   const SizedBox(height: 12),
                   if (profileController.isRatingReviewLoading)
-                    const Center(child: CircularProgressIndicator())
+                    const AppLoader()
                   else if (profileController.ratingReviewData?.reviews !=
                           null &&
                       profileController.ratingReviewData!.reviews!.isNotEmpty)
@@ -398,15 +406,11 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                       },
                     )
                   else
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Text(
-                        "No reviews found.",
-                        style: GoogleFonts.rubik(
-                          color: Colors.grey,
-                          fontSize: 13,
-                        ),
-                      ),
+                    NoDataWidget(
+                      context,
+                      "No reviews found.",
+                      "",
+                      "lib/assets/images/nodata.png",
                     ),
                   const SizedBox(height: 8),
                 ] else if (selectedMenu == "Leaves") ...[
@@ -488,12 +492,11 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                       ),
                     )
                   else
-                    Text(
+                    NoDataWidget(
+                      context,
                       "No completed leaves.",
-                      style: GoogleFonts.rubik(
-                        color: Colors.grey,
-                        fontSize: 13,
-                      ),
+                      "",
+                      "lib/assets/images/nodata.png",
                     ),
                   const SizedBox(height: 20),
                 ] else if (selectedMenu == "Working Hours") ...[
@@ -537,7 +540,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _buildPayoutsList(),
                   const SizedBox(height: 20),
                 ],
-                const SizedBox(height: 100),
+                SizedBox(height: MediaQuery.of(context).size.height * 0.12),
               ],
             ),
           );
@@ -561,19 +564,22 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         return Padding(
           padding: const EdgeInsets.only(bottom: 12),
           child: _buildDetailCard(
-            height: 60,
+            height: MediaQuery.of(context).size.height * 0.08,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  day,
-                  style: GoogleFonts.rubik(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF1F1F1F),
+                Expanded(
+                  child: Text(
+                    day,
+                    style: GoogleFonts.rubik(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF1F1F1F),
+                    ),
                   ),
                 ),
+                const SizedBox(width: 8),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 12,
@@ -618,8 +624,14 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         }
       },
       child: Container(
-        width: 125,
-        height: 45,
+        padding: EdgeInsets.symmetric(
+          horizontal: MediaQuery.of(context).size.width * 0.04,
+          vertical: MediaQuery.of(context).size.height * 0.01,
+        ),
+        constraints: BoxConstraints(
+          minWidth: MediaQuery.of(context).size.width * 0.25,
+          minHeight: MediaQuery.of(context).size.height * 0.05,
+        ),
         decoration: BoxDecoration(
           color: isSelected ? const Color(0xFFFF5216) : const Color(0xFFF8FAFC),
           borderRadius: BorderRadius.circular(9999),
@@ -693,7 +705,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   }
 
   Widget _buildDetailCard({
-    required double height,
+    double? height,
     required Widget child,
     EdgeInsetsGeometry? padding,
   }) {
@@ -755,13 +767,16 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            localizedLabel,
-            style: GoogleFonts.rubik(
-              fontSize: 14,
-              color: const Color(0xFF6B7280),
+          Expanded(
+            child: Text(
+              localizedLabel,
+              style: GoogleFonts.rubik(
+                fontSize: 14,
+                color: const Color(0xFF6B7280),
+              ),
             ),
           ),
+          const SizedBox(width: 12),
           if (isStatus)
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -798,11 +813,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     );
   }
 
-  Widget _buildImageCard({
-    double width = 350,
-    double height = 150,
-    String? imageUrl,
-  }) {
+  Widget _buildImageCard({double? height, String? imageUrl}) {
     final String? fullUrl = imageUrl != null && imageUrl.isNotEmpty
         ? (imageUrl.startsWith('http')
               ? imageUrl
@@ -810,8 +821,8 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         : null;
 
     return Container(
-      width: width,
-      height: height,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: height ?? MediaQuery.of(context).size.height * 0.14,
       padding: const EdgeInsets.all(12), // Add padding for "small image inside"
       decoration: BoxDecoration(
         color: Colors.white,
@@ -833,7 +844,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                 ),
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
-                  return const Center(child: CircularProgressIndicator());
+                  return const AppLoader();
                 },
               ),
             )
@@ -855,8 +866,10 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     required String orderId,
   }) {
     return Container(
-      width: 350,
-      height: 150.25,
+      width: MediaQuery.of(context).size.width * 0.9,
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height * 0.18,
+      ),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -951,12 +964,15 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                 ),
                 const SizedBox(width: 4),
-                Text(
-                  orderId,
-                  style: GoogleFonts.rubik(
-                    fontSize: 11,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFF4B5563),
+                Expanded(
+                  child: Text(
+                    orderId,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.rubik(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w500,
+                      color: const Color(0xFF4B5563),
+                    ),
                   ),
                 ),
               ],
@@ -969,7 +985,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
 
   Widget _buildLeaveForm() {
     return _buildDetailCard(
-      height: 305,
+      height: MediaQuery.of(context).size.height * 0.38,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -1076,7 +1092,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
           ),
           const SizedBox(height: 6),
           Container(
-            height: 100,
+            height: MediaQuery.of(context).size.height * 0.12,
             width: double.infinity,
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -1161,7 +1177,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     required bool isUpcoming,
   }) {
     return Container(
-      width: 350,
+      width: MediaQuery.of(context).size.width * 0.9,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -1174,26 +1190,33 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    dateRange,
-                    style: GoogleFonts.rubik(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w600,
-                      color: const Color(0xFF1F1F1F),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      dateRange,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.rubik(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w600,
+                        color: const Color(0xFF1F1F1F),
+                      ),
                     ),
-                  ),
-                  Text(
-                    reason,
-                    style: GoogleFonts.rubik(
-                      fontSize: 10,
-                      color: const Color(0xFF9CA3AF),
+                    Text(
+                      reason,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.rubik(
+                        fontSize: 10,
+                        color: const Color(0xFF9CA3AF),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
+              const SizedBox(width: 12),
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 10,
@@ -1252,12 +1275,17 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
 
     if (profileController.isGroceryMenusLoading ||
         profileController.isRestaurantMenusLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoader();
     }
 
     if (profileController.groceryMenus.isEmpty &&
         profileController.restaurantMenus.isEmpty) {
-      return const Center(child: Text("No menus found."));
+      return NoDataWidget(
+        context,
+        "No menus found.",
+        "",
+        "lib/assets/images/nodata.png",
+      );
     }
 
     return Column(
@@ -1331,53 +1359,69 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   Widget _buildCategoryAddRow() {
     return Row(
       children: [
-        SizedBox(
-          width: 160,
+        Expanded(
+          flex: 5,
           child: Container(
-            height: 48,
+            height: MediaQuery.of(context).size.height * 0.055,
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(color: const Color(0xFFF1F5F9)),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "All Categories",
-                  style: GoogleFonts.rubik(
-                    fontSize: 14,
-                    color: const Color(0xFF1F2937),
+                Expanded(
+                  child: Text(
+                    "All Categories",
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: GoogleFonts.rubik(
+                      fontSize: 14,
+                      color: const Color(0xFF1F2937),
+                    ),
                   ),
                 ),
-                const Icon(Icons.keyboard_arrow_down, color: Color(0xFF64748B)),
+                const Icon(
+                  Icons.keyboard_arrow_down,
+                  color: Color(0xFF64748B),
+                  size: 18,
+                ),
               ],
             ),
           ),
         ),
-        const SizedBox(width: 60),
-        OutlinedButton.icon(
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => const AddMenuScreen()),
-            );
-          },
-          icon: const Icon(Icons.add, color: Color(0xFFFF5216), size: 18),
-          label: Text(
-            S.of(context).addMenuTitle,
-            style: GoogleFonts.rubik(
-              color: const Color(0xFFFF5216),
-              fontWeight: FontWeight.w600,
+        const SizedBox(width: 8),
+        Expanded(
+          flex: 4,
+          child: OutlinedButton.icon(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddMenuScreen()),
+              );
+            },
+            icon: const Icon(Icons.add, color: Color(0xFFFF5216), size: 14),
+            label: Flexible(
+              child: Text(
+                S.of(context).addMenuTitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: GoogleFonts.rubik(
+                  fontSize: 12,
+                  color: const Color(0xFFFF5216),
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
             ),
-          ),
-          style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: Color(0xFFFF5216), width: 1),
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+            style: OutlinedButton.styleFrom(
+              side: const BorderSide(color: Color(0xFFFF5216), width: 1),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           ),
         ),
       ],
@@ -1440,8 +1484,9 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                                 imageUrl.startsWith('http')
                                     ? imageUrl
                                     : "${ApiConfigs.IMAGE_URL}$imageUrl",
-                                width: 80,
-                                height: 80,
+                                width: MediaQuery.of(context).size.width * 0.22,
+                                height:
+                                    MediaQuery.of(context).size.width * 0.22,
                                 fit: BoxFit.cover,
                                 errorBuilder: (_, __, ___) => _defaultImage(),
                               )
@@ -1490,6 +1535,8 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                         const SizedBox(height: 4),
                         Text(
                           name,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                           style: GoogleFonts.rubik(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
@@ -1508,6 +1555,8 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                           ),
                           child: Text(
                             category,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.rubik(
                               fontSize: 10,
                               color: const Color(0xFFFF5216),
@@ -1518,22 +1567,30 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                         const SizedBox(height: 6),
                         Row(
                           children: [
-                            Text(
-                              price,
-                              style: GoogleFonts.rubik(
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
-                                color: const Color(0xFF1F1F1F),
+                            Flexible(
+                              child: Text(
+                                price,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: GoogleFonts.rubik(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: const Color(0xFF1F1F1F),
+                                ),
                               ),
                             ),
                             if (originalPrice != null) ...[
                               const SizedBox(width: 8),
-                              Text(
-                                originalPrice,
-                                style: GoogleFonts.rubik(
-                                  fontSize: 11,
-                                  color: const Color(0xFF94A3B8),
-                                  decoration: TextDecoration.lineThrough,
+                              Flexible(
+                                child: Text(
+                                  originalPrice,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: GoogleFonts.rubik(
+                                    fontSize: 11,
+                                    color: const Color(0xFF94A3B8),
+                                    decoration: TextDecoration.lineThrough,
+                                  ),
                                 ),
                               ),
                             ],
@@ -1548,7 +1605,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               // View Details Button
               SizedBox(
                 width: double.infinity,
-                height: 44,
+                height: MediaQuery.of(context).size.height * 0.05,
                 child: OutlinedButton(
                   onPressed: () {
                     Navigator.push(
@@ -1658,14 +1715,19 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
 
     if (profileController.isGroceryMenuItemsLoading ||
         profileController.isRestaurantMenuItemsLoading) {
-      return const Center(child: CircularProgressIndicator());
+      return const AppLoader();
     }
 
     if (profileController.groceryMenuItems.isEmpty &&
         profileController.restaurantMenuItems.isEmpty) {
       return Column(
         children: [
-          const Center(child: Text("No items found.")),
+          NoDataWidget(
+            context,
+            "No items found.",
+            "",
+            "lib/assets/images/nodata.png",
+          ),
           const SizedBox(height: 20),
           _addNewItemButton(),
         ],
@@ -1728,7 +1790,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   Widget _addNewItemButton() {
     return SizedBox(
       width: double.infinity,
-      height: 48,
+      height: MediaQuery.of(context).size.height * 0.06,
       child: ElevatedButton(
         onPressed: () {
           Navigator.push(
@@ -1826,8 +1888,8 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
             ),
             const SizedBox(height: 16),
             SizedBox(
-              width: 160,
-              height: 36,
+              width: MediaQuery.of(context).size.width * 0.45,
+              height: MediaQuery.of(context).size.height * 0.045,
               child: OutlinedButton(
                 onPressed: () {},
                 style: OutlinedButton.styleFrom(
@@ -1863,7 +1925,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         const SizedBox(height: 32),
         Container(
           width: double.infinity,
-          height: 120,
+          height: MediaQuery.of(context).size.height * 0.15,
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(20),
@@ -1954,7 +2016,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         const SizedBox(height: 20),
         SizedBox(
           width: double.infinity,
-          height: 48,
+          height: MediaQuery.of(context).size.height * 0.06,
           child: ElevatedButton(
             onPressed: () {
               Navigator.push(
@@ -1985,7 +2047,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
 
   Widget _basketItem(String name, String count, String status) {
     return _buildDetailCard(
-      height: 80,
+      height: MediaQuery.of(context).size.height * 0.1,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -2049,7 +2111,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
 
   Widget _payoutItem(String id, String date, String amount) {
     return _buildDetailCard(
-      height: 80,
+      height: MediaQuery.of(context).size.height * 0.1,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

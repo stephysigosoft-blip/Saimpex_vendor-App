@@ -178,12 +178,12 @@ class _AddItemsScreenState extends State<AddItemsScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 100),
+            SizedBox(height: MediaQuery.of(context).size.height * 0.12),
           ],
         ),
       ),
       bottomNavigationBar: Container(
-        height: 100,
+        height: MediaQuery.of(context).size.height * 0.12,
         color: Colors.white.withOpacity(0.01),
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Row(

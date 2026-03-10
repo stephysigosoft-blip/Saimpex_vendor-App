@@ -39,11 +39,7 @@ class VendorMembershipCard extends StatelessWidget {
         ),
         child: Row(
           children: [
-            Image.asset(
-              'lib/assets/images/Silver.png',
-              width: 30,
-              height: 30,
-            ),
+            Image.asset('lib/assets/images/Silver.png', width: 30, height: 30),
             const SizedBox(width: 12),
             Expanded(
               child: Text(
@@ -56,10 +52,7 @@ class VendorMembershipCard extends StatelessWidget {
               ),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(
-                horizontal: 12,
-                vertical: 6,
-              ),
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
                 color: const Color(0xFFFFE5E5),
                 borderRadius: BorderRadius.circular(20),

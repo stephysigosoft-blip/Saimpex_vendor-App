@@ -111,7 +111,7 @@ class RestaurantItemWidget extends StatelessWidget {
                         child: CachedNetworkImage(
                           // imageUrl: ApiConfigs.IMAGE_URL + imageUrl,
                           imageUrl: imageUrl,
-                          height: 150,
+                          height: MediaQuery.of(context).size.height * 0.2,
                           fit: BoxFit.cover,
                           width: double.infinity,
                           errorWidget: (context, url, error) => Image.asset(

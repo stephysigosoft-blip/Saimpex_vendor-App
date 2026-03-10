@@ -9,19 +9,21 @@ Widget NoDataWidget(
 ) {
   return Center(
     child: Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: 50),
+        const SizedBox(height: 20),
         Image.asset(
           image,
-          height: MediaQuery.of(context).size.height * 0.3,
-          width: MediaQuery.of(context).size.width * 0.9,
+          height: MediaQuery.of(context).size.height * 0.1,
+          width: MediaQuery.of(context).size.width * 0.3,
+          fit: BoxFit.contain,
         ),
-        SizedBox(height: 20,),
+        // SizedBox(height: 5),
         Text(
           title,
           style: GoogleFonts.rubik(
-            fontSize: 20,
+            fontSize: 10,
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),

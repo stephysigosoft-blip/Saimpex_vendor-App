@@ -24,7 +24,9 @@ class VendorStatusTabs extends StatelessWidget {
 
   Color _tabColor(String tab) {
     if (tab == "Pending") return const Color(0xFFF59E0B);
-    if (tab == "Accepted" || tab == "Ready") return const Color(0xFF22C55E);
+    if (tab == "Accepted" || tab == "Ready" || tab == "On Going") {
+      return const Color(0xFF22C55E);
+    }
     if (tab == "Delivered") return const Color(0xFF15803D);
     if (tab == "Preparing") return const Color(0xFF60A5FA);
     if (tab == "Cancelled") return const Color(0xFFEF4444);
@@ -41,6 +43,7 @@ class VendorStatusTabs extends StatelessWidget {
     if (tab == "Accepted") return S.of(context).accepted;
     if (tab == "Preparing") return S.of(context).preparing;
     if (tab == "Ready") return S.of(context).ready;
+    if (tab == "On Going") return S.of(context).onGoing;
     if (tab == "Delivered") return S.of(context).delivered;
     if (tab == "Cancelled") return S.of(context).cancelled;
     return tab;
@@ -86,7 +89,7 @@ class VendorStatusTabs extends StatelessWidget {
                     ),
                   ),
                 ),
-                if (isSelected)
+                if (isSelected && tab != "Delivered" && tab != "Cancelled")
                   Positioned(
                     top: 1,
                     right: 0,

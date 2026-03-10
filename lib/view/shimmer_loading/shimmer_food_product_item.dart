@@ -19,9 +19,10 @@ class ShimmerFoodProductItemState extends State<ShimmerFoodProductItem>
       vsync: this,
     )..repeat();
 
-    _animation = Tween<double>(begin: -2.0, end: 2.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: -2.0,
+      end: 2.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -45,11 +46,7 @@ class ShimmerFoodProductItemState extends State<ShimmerFoodProductItem>
         gradient: LinearGradient(
           begin: Alignment(_animation.value - 1, 0),
           end: Alignment(_animation.value, 0),
-          colors: [
-            Colors.grey[300]!,
-            Colors.grey[100]!,
-            Colors.grey[300]!,
-          ],
+          colors: [Colors.grey[300]!, Colors.grey[100]!, Colors.grey[300]!],
           stops: const [0.0, 0.5, 1.0],
         ),
       ),
@@ -71,11 +68,7 @@ class ShimmerFoodProductItemState extends State<ShimmerFoodProductItem>
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Padding(
-                padding: const EdgeInsets.only(
-                  left: 8,
-                  right: 8,
-                  top: 8,
-                ),
+                padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -84,7 +77,7 @@ class ShimmerFoodProductItemState extends State<ShimmerFoodProductItem>
                       borderRadius: BorderRadius.circular(12),
                       child: _buildShimmerBox(
                         width: double.infinity,
-                        height: 100,
+                        height: MediaQuery.of(context).size.height * 0.12,
                         borderRadius: 12,
                       ),
                     ),
@@ -109,10 +102,7 @@ class ShimmerFoodProductItemState extends State<ShimmerFoodProductItem>
                           ),
                           child: Padding(
                             padding: const EdgeInsets.all(6),
-                            child: _buildShimmerBox(
-                              width: 12,
-                              height: 12,
-                            ),
+                            child: _buildShimmerBox(width: 12, height: 12),
                           ),
                         ),
                       ],

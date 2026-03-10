@@ -18,9 +18,10 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
       vsync: this,
     )..repeat();
 
-    _animation = Tween<double>(begin: -2.0, end: 2.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: -2.0,
+      end: 2.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -46,7 +47,7 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
               Center(
                 child: _buildShimmerContainer(
                   height: 18,
-                  width: 200,
+                  width: MediaQuery.of(context).size.width * 0.5,
                   borderRadius: 4,
                 ),
               ),
@@ -103,18 +104,14 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
   // Carousel shimmer
   Widget _buildCarouselShimmer() {
     return Container(
-      height: 120,
+      height: MediaQuery.of(context).size.height * 0.15,
       margin: const EdgeInsets.symmetric(horizontal: 5),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         gradient: LinearGradient(
           begin: Alignment(_animation.value - 1, 0),
           end: Alignment(_animation.value, 0),
-          colors: [
-            Colors.grey[300]!,
-            Colors.grey[100]!,
-            Colors.grey[300]!,
-          ],
+          colors: [Colors.grey[300]!, Colors.grey[100]!, Colors.grey[300]!],
           stops: const [0.0, 0.5, 1.0],
         ),
       ),
@@ -125,14 +122,9 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
   Widget _buildFilterCategoryShimmer() {
     return Card(
       elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(10),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Container(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 14,
-          vertical: 8,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
@@ -140,18 +132,10 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
         child: Row(
           children: [
             // Icon shimmer
-            _buildShimmerContainer(
-              height: 20,
-              width: 20,
-              borderRadius: 4,
-            ),
+            _buildShimmerContainer(height: 20, width: 20, borderRadius: 4),
             const SizedBox(width: 6),
             // Text shimmer
-            _buildShimmerContainer(
-              height: 14,
-              width: 60,
-              borderRadius: 4,
-            ),
+            _buildShimmerContainer(height: 14, width: 60, borderRadius: 4),
           ],
         ),
       ),
@@ -167,14 +151,10 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
         children: [
           _buildShimmerContainer(
             height: 20,
-            width: 120,
+            width: MediaQuery.of(context).size.width * 0.3,
             borderRadius: 4,
           ),
-          _buildShimmerContainer(
-            height: 16,
-            width: 60,
-            borderRadius: 4,
-          ),
+          _buildShimmerContainer(height: 16, width: 60, borderRadius: 4),
         ],
       ),
     );
@@ -198,7 +178,7 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
               topRight: Radius.circular(16),
             ),
             child: _buildShimmerContainer(
-              height: 150,
+              height: MediaQuery.of(context).size.height * 0.18,
               width: double.infinity,
               borderRadius: 0,
             ),
@@ -217,7 +197,7 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
                     Expanded(
                       child: _buildShimmerContainer(
                         height: 18,
-                        width: 150,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         borderRadius: 4,
                       ),
                     ),
@@ -254,7 +234,7 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
                 // Offer shimmer
                 _buildShimmerContainer(
                   height: 14,
-                  width: 100,
+                  width: MediaQuery.of(context).size.width * 0.25,
                   borderRadius: 4,
                 ),
               ],
@@ -281,11 +261,7 @@ class _ShimmerLoadingHomeState extends State<ShimmerLoadingHome>
         gradient: LinearGradient(
           begin: Alignment(_animation.value - 1, 0),
           end: Alignment(_animation.value, 0),
-          colors: [
-            Colors.grey[300]!,
-            Colors.grey[100]!,
-            Colors.grey[300]!,
-          ],
+          colors: [Colors.grey[300]!, Colors.grey[100]!, Colors.grey[300]!],
           stops: const [0.0, 0.5, 1.0],
         ),
       ),

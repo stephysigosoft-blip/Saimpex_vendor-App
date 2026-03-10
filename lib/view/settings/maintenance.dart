@@ -24,7 +24,7 @@ class Maintenance extends StatelessWidget {
                 child: Image.asset(
                   "lib/assets/images/wewillback.png",
                   // replace with your asset
-                  height: 180,
+                  height: MediaQuery.of(context).size.height * 0.25,
                 ),
               ),
 

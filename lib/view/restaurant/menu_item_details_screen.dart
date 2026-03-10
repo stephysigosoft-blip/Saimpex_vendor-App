@@ -43,11 +43,11 @@ class MenuItemDetailsScreen extends StatelessWidget {
               child: Image.asset(
                 'lib/assets/images/Burger.jpg',
                 width: double.infinity,
-                height: 200,
+                height: MediaQuery.of(context).size.height * 0.25,
                 fit: BoxFit.cover,
                 errorBuilder: (_, __, ___) => Container(
                   width: double.infinity,
-                  height: 200,
+                  height: MediaQuery.of(context).size.height * 0.25,
                   color: const Color(0xFFF1F5F9),
                   child: const Icon(
                     Icons.fastfood,

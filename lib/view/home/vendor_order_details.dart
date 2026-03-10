@@ -91,7 +91,7 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                               const SizedBox(height: 14),
                               // Order Summary Card
                               Container(
-                                width: 350,
+                                width: MediaQuery.of(context).size.width * 0.95,
                                 constraints: const BoxConstraints(
                                   minHeight: 220,
                                 ),
@@ -307,8 +307,16 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                               8,
                                             ),
                                             child: SizedBox(
-                                              width: 120,
-                                              height: 78,
+                                              width:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.width *
+                                                  0.3,
+                                              height:
+                                                  MediaQuery.of(
+                                                    context,
+                                                  ).size.height *
+                                                  0.09,
                                               child: IgnorePointer(
                                                 child: _deliveryMap(
                                                   controller
@@ -452,7 +460,9 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                           ""
                                   ? Container()
                                   : Container(
-                                      width: 350,
+                                      width:
+                                          MediaQuery.of(context).size.width *
+                                          0.95,
                                       padding: const EdgeInsets.all(16),
                                       decoration: BoxDecoration(
                                         color: const Color(0xFFFFFBEB),
@@ -781,7 +791,10 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                 ),
                               ],
 
-                              const SizedBox(height: 120),
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.15,
+                              ),
                               // Spacing for bottom buttons
                             ],
                           ),
@@ -1034,8 +1047,8 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
     BuildContext context,
   ) {
     return Container(
-      width: 350,
-      height: 98,
+      width: MediaQuery.of(context).size.width * 0.95,
+      height: MediaQuery.of(context).size.height * 0.12,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -1250,7 +1263,7 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
     OrderDetailsController controller,
   ) {
     return Container(
-      width: 350,
+      width: MediaQuery.of(context).size.width * 0.95,
       padding: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -1314,7 +1327,7 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
     String? phone,
   ) {
     return Container(
-      width: 350,
+      width: MediaQuery.of(context).size.width * 0.95,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,

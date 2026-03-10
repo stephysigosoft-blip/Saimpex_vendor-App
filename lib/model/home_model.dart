@@ -3,11 +3,7 @@ class HomeModel {
   final HomeData? data;
   final Message? message;
 
-  HomeModel({
-    this.status,
-    this.data,
-    this.message,
-  });
+  HomeModel({this.status, this.data, this.message});
 
   factory HomeModel.fromJson(Map<String, dynamic>? json) {
     if (json == null) return HomeModel();
@@ -15,7 +11,9 @@ class HomeModel {
     return HomeModel(
       status: json['status']?.toString() == "true",
       data: json['data'] != null ? HomeData.fromJson(json['data']) : null,
-      message: json['message'] != null ? Message.fromJson(json['message']) : null,
+      message: json['message'] != null
+          ? Message.fromJson(json['message'])
+          : null,
     );
   }
 }
@@ -26,12 +24,7 @@ class HomeData {
   final Orders? orders;
   final Vendor? vendor;
 
-  HomeData({
-    this.membership,
-    this.summary,
-    this.orders,
-    this.vendor,
-  });
+  HomeData({this.membership, this.summary, this.orders, this.vendor});
 
   factory HomeData.fromJson(Map<String, dynamic>? json) {
     if (json == null) return HomeData();
@@ -40,8 +33,9 @@ class HomeData {
       membership: json['membership'] != null
           ? Membership.fromJson(json['membership'])
           : null,
-      summary:
-          json['summary'] != null ? Summary.fromJson(json['summary']) : null,
+      summary: json['summary'] != null
+          ? Summary.fromJson(json['summary'])
+          : null,
       orders: json['orders'] != null ? Orders.fromJson(json['orders']) : null,
       vendor: json['vendor'] != null ? Vendor.fromJson(json['vendor']) : null,
     );
@@ -81,11 +75,7 @@ class Summary {
   final int? totalOrders;
   final int? totalProducts;
 
-  Summary({
-    this.todayOrders,
-    this.totalOrders,
-    this.totalProducts,
-  });
+  Summary({this.todayOrders, this.totalOrders, this.totalProducts});
 
   factory Summary.fromJson(Map<String, dynamic>? json) {
     if (json == null) return Summary();
@@ -104,12 +94,7 @@ class Orders {
   final int? lastPage;
   final dynamic total;
 
-  Orders({
-    this.currentPage,
-    this.data,
-    this.lastPage,
-    this.total,
-  });
+  Orders({this.currentPage, this.data, this.lastPage, this.total});
 
   factory Orders.fromJson(Map<String, dynamic>? json) {
     if (json == null) return Orders();
@@ -118,9 +103,7 @@ class Orders {
       currentPage: json['current_page'],
       lastPage: json['last_page'],
       total: json['total'],
-      data: (json['data'] as List?)
-          ?.map((e) => OrderData.fromJson(e))
-          .toList(),
+      data: (json['data'] as List?)?.map((e) => OrderData.fromJson(e)).toList(),
     );
   }
 }
@@ -136,6 +119,7 @@ class OrderData {
   final String? userMobile;
   final int? orderItemsCount;
   final String? placedAtFormatted;
+  final String? deliveryBoyName;
 
   OrderData({
     this.orderCode,
@@ -148,6 +132,7 @@ class OrderData {
     this.userMobile,
     this.orderItemsCount,
     this.placedAtFormatted,
+    this.deliveryBoyName,
   });
 
   factory OrderData.fromJson(Map<String, dynamic>? json) {
@@ -164,6 +149,13 @@ class OrderData {
       userMobile: json['user_mobile']?.toString(),
       orderItemsCount: json['order_items_count'],
       placedAtFormatted: json['placed_at_formatted']?.toString(),
+      deliveryBoyName:
+          (json['delivery_boy_name']?.toString() ??
+                  json['delivery_boy']?['name']?.toString() ??
+                  json['driver']?['name']?.toString() ??
+                  json['driver_name']?.toString() ??
+                  json['delivery_boy']?.toString())
+              ?.trim(),
     );
   }
 }
@@ -204,19 +196,21 @@ class Message {
   final List<String>? messageFr;
   final List<String>? messageAr;
 
-  Message({
-    this.messageEn,
-    this.messageFr,
-    this.messageAr,
-  });
+  Message({this.messageEn, this.messageFr, this.messageAr});
 
   factory Message.fromJson(Map<String, dynamic>? json) {
     if (json == null) return Message();
 
     return Message(
-      messageEn: (json['message_en'] as List?)?.map((e) => e.toString()).toList(),
-      messageFr: (json['message_fr'] as List?)?.map((e) => e.toString()).toList(),
-      messageAr: (json['message_ar'] as List?)?.map((e) => e.toString()).toList(),
+      messageEn: (json['message_en'] as List?)
+          ?.map((e) => e.toString())
+          .toList(),
+      messageFr: (json['message_fr'] as List?)
+          ?.map((e) => e.toString())
+          .toList(),
+      messageAr: (json['message_ar'] as List?)
+          ?.map((e) => e.toString())
+          .toList(),
     );
   }
 }
