@@ -373,7 +373,7 @@ class HomeController extends GetxController {
     BuildContext context, {
     required int orderStatus,
     String keyword = "",
-    int limit = 10,
+    int limit = 5,
   }) async {
     try {
       isFirstLoadRunning = true;

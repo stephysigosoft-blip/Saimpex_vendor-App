@@ -239,7 +239,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("RESTAURANT DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: 280,
+                    height: MediaQuery.of(context).size.height * 0.4,
                     child: Column(
                       children: [
                         _detailRow("Name", profile?.name ?? "Restaurant 1"),
@@ -698,7 +698,6 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     EdgeInsetsGeometry? padding,
   }) {
     return Container(
-      width: 350,
       height: height,
       padding: padding ?? const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -781,9 +780,11 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               ),
             )
           else
-            Flexible(
+            Expanded(
               child: Text(
                 value,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 2,
                 textAlign: TextAlign.right,
                 style: GoogleFonts.rubik(
                   fontSize: 14,

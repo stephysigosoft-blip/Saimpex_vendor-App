@@ -18,19 +18,23 @@ class VendorHomeTopBar extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Row(
-            children: [
-              Image.asset('lib/assets/images/logo.png', height: 50),
-              const SizedBox(width: 12),
-              Text(
-                "Welcome to Saimpex Vendor!",
-                style: GoogleFonts.rubik(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F1F1F),
+          Expanded(
+            child: Row(
+              children: [
+                Image.asset('lib/assets/images/logo.png', height: 50),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Text(
+                    "Welcome to Saimpex Vendor!",
+                    style: GoogleFonts.rubik(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFF1F1F1F),
+                    ),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           GestureDetector(
             onTap: () => Get.to(() => const Notifications()),

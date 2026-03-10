@@ -88,7 +88,7 @@ class VendorStatusTabs extends StatelessWidget {
                 ),
                 if (isSelected)
                   Positioned(
-                    top: -4,
+                    top: 1,
                     right: 0,
                     child: Container(
                       padding: const EdgeInsets.symmetric(

@@ -27,7 +27,7 @@ class VendorHomeController {
     required double topPadding,
   }) {
     final horizontalPadding = (screenWidth * 0.04).clamp(16.0, 24.0).toDouble();
-    final topSpacing = (screenHeight * 0.035).clamp(48.0, 72.0).toDouble();
+    final topSpacing = (screenHeight * 0.03).clamp(15.0, 72.0).toDouble();
     final membershipCardHeight = (screenHeight * 0.075)
         .clamp(56.0, 72.0)
         .toDouble();

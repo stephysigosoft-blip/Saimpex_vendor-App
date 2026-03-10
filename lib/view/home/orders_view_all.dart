@@ -15,6 +15,8 @@ import 'package:saimpex_vendor/view/home/widgets/vendor_stats_section.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_status_tabs.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_success_dialog.dart';
 
+import '../../utils/Widgets/custom_app_bar.dart';
+
 class OrdersViewAll extends StatefulWidget {
   const OrdersViewAll({super.key});
 
@@ -142,11 +144,15 @@ class _OrdersViewAllState extends State<OrdersViewAll> {
             .expiresInDays(membership?.expiresInDays?.toString() ?? "0");
         return CommonBackground(
           resizeToAvoidBottomInset: false,
+          appBar: CustomAppBar(
+            title: "Orders",
+            onTap: () => Get.back(),
+          ),
           child: SizedBox.expand(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(height: 100),
+                const SizedBox(height: 20),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: layout.horizontalPadding,

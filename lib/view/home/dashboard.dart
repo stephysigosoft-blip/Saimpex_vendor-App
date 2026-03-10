@@ -7,6 +7,8 @@ import 'package:saimpex_vendor/controller/dashboard_controller.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_stat_card.dart';
 
+import '../../generated/l10n.dart';
+
 class Dashboard extends StatefulWidget {
   const Dashboard({super.key});
 
@@ -102,7 +104,7 @@ class _DashboardState extends State<Dashboard> {
                       const SizedBox(height: 32),
                       // Revenue Report Section
                       Text(
-                        "REVENUE REPORT",
+                        S.of(context).revenueReport,
                         style: GoogleFonts.rubik(
                           fontSize: 14,
                           fontWeight: FontWeight.bold,
