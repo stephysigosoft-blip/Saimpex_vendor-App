@@ -241,11 +241,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("RESTAURANT DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-<<<<<<< HEAD
                     height: MediaQuery.of(context).size.height * 0.4,
-=======
-                    height: MediaQuery.of(context).size.height * 0.35,
->>>>>>> 4d1022f (commit after ongoing api integrations on 10/03/2026)
                     child: Column(
                       children: [
                         _detailRow("Name", profile?.name ?? "Restaurant 1"),
@@ -714,12 +710,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     EdgeInsetsGeometry? padding,
   }) {
     return Container(
-<<<<<<< HEAD
       height: height,
-=======
-      width: MediaQuery.of(context).size.width * 0.9,
-      constraints: height != null ? BoxConstraints(minHeight: height) : null,
->>>>>>> 4d1022f (commit after ongoing api integrations on 10/03/2026)
       padding: padding ?? const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: Colors.white,
