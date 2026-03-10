@@ -6,7 +6,6 @@ import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/model/home_model.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
-import 'package:saimpex_vendor/view/home/orders_view_all.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_dashboard_button.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_home_top_bar.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_membership_card.dart';
@@ -16,14 +15,14 @@ import 'package:saimpex_vendor/view/home/widgets/vendor_stats_section.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_status_tabs.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_success_dialog.dart';
 
-class VendorHomeScreen extends StatefulWidget {
-  const VendorHomeScreen({super.key});
+class OrdersViewAll extends StatefulWidget {
+  const OrdersViewAll({super.key});
 
   @override
-  State<VendorHomeScreen> createState() => _VendorHomeScreenState();
+  State<OrdersViewAll> createState() => _OrdersViewAllState();
 }
 
-class _VendorHomeScreenState extends State<VendorHomeScreen> {
+class _OrdersViewAllState extends State<OrdersViewAll> {
   final VendorHomeController vendorHomeController =
       const VendorHomeController();
   final HomeController homeController = Get.find<HomeController>();
@@ -147,37 +146,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(height: layout.topOffset),
-                VendorHomeTopBar(horizontalPadding: layout.horizontalPadding),
-                const SizedBox(height: 28),
-                VendorMembershipCard(
-                  horizontalPadding: layout.horizontalPadding,
-                  width: size.width,
-                  height: layout.membershipCardHeight,
-                  membershipName: membershipName,
-                  expiryText: expiryText,
-                ),
-                const SizedBox(height: 24),
-                VendorStatsSection(
-                  horizontalPadding: layout.horizontalPadding,
-                  todayOrders: (summary?.todayOrders ?? 0).toString(),
-                  totalOrders: (summary?.totalOrders ?? 0).toString(),
-                  totalProducts: (summary?.totalProducts ?? 0).toString(),
-                ),
-                const SizedBox(height: 24),
-                VendorDashboardButton(
-                  horizontalPadding: layout.horizontalPadding,
-                  width: size.width,
-                  height: layout.dashboardButtonHeight,
-                ),
-                const SizedBox(height: 10),
-                VendorOrdersHeader(
-                  horizontalPadding: layout.horizontalPadding,
-                  onViewAllPressed: () {
-                    Get.to(() => const OrdersViewAll());
-                  },
-                ),
-                const SizedBox(height: 5),
+                const SizedBox(height: 100),
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: layout.horizontalPadding,

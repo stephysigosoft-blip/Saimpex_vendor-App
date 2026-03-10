@@ -3,10 +3,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
 
 class VendorOrdersHeader extends StatelessWidget {
-  const VendorOrdersHeader({super.key, required this.horizontalPadding});
+  const VendorOrdersHeader({
+    super.key,
+    required this.horizontalPadding,
+    required this.onViewAllPressed,
+  });
 
   final double horizontalPadding;
-
+  final VoidCallback onViewAllPressed;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -23,7 +27,7 @@ class VendorOrdersHeader extends StatelessWidget {
             ),
           ),
           TextButton(
-            onPressed: () {},
+            onPressed: onViewAllPressed,
             child: Text(
               S.of(context).viewAll,
               style: GoogleFonts.rubik(
