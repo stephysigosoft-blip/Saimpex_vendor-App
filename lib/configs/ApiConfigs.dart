@@ -30,4 +30,13 @@ class ApiEndPoints {
   static String addGroceryMenuItem = "addGroceryMenuItem";
   static String getRestaurantMenus = "getRestaurantMenus";
   static String restaurantMenuItems = "restaurantMenuItems";
+
+  static String acceptGroceryOrder = "acceptGroceryOrder";
+  static String cancelGroceryOrder = "cancelGroceryOrder";
+  static String prepareGroceryOrder = "prepareGroceryOrder";
+  static String markAsReadyGroceryOrder = "markAsReadyGroceryOrder";
+  static String acceptRestaurantOrder = "acceptRestaurantOrder";
+  static String cancelRestaurantOrder = "cancelRestaurantOrder";
+  static String prepareRestaurantOrder = "prepareRestaurantOrder";
+  static String markAsReadyRestaurantOrder = "markAsReadyRestaurantOrder";
 }

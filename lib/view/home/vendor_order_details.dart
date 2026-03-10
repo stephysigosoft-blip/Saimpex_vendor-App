@@ -74,26 +74,9 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
           }
 
           return CommonBackground(
-            appBar: AppBar(
-              backgroundColor: Colors.transparent,
-              elevation: 0,
-              leading: GestureDetector(
-                onTap: () => Get.back(),
-                child: const Icon(
-                  Icons.arrow_back_ios,
-                  color: Colors.black,
-                  size: 20,
-                ),
-              ),
-              title: Text(
-                S.of(context).orderDetails,
-                style: GoogleFonts.rubik(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFF1F1F1F),
-                ),
-              ),
-              centerTitle: true,
+            appBar: CustomAppBar(
+              title: S.of(context).orderDetails,
+              onTap: () => Get.back(),
             ),
             child: Stack(
               children: [
@@ -199,7 +182,23 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '4'
-                                                ? "READY"
+                                                ? "READY":
+                                            controller.orderData?.status
+                                                .toString() ==
+                                                '5'
+                                                ? "ASSIGNED":
+                                            controller.orderData?.status
+                                                .toString() ==
+                                                '6'
+                                                ? "REACHED RESTAURANT":
+                                            controller.orderData?.status
+                                                .toString() ==
+                                                '7'
+                                                ? "PICKED UP":
+                                            controller.orderData?.status
+                                                .toString() ==
+                                                '8'
+                                                ? "DELIVERING"
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '10'
@@ -329,25 +328,31 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                 ),
                               ),
                               controller.orderData!.deliveryBoyName
-                                          .toString() ==
-                                      "" ||
-                                  controller.orderData!.deliveryBoyName
-                                          .toString() ==
-                                      "null"?Container():
-                                const SizedBox(height: 24),
+                                              .toString() ==
+                                          "" ||
+                                      controller.orderData!.deliveryBoyName
+                                              .toString() ==
+                                          "null"
+                                  ? Container()
+                                  : const SizedBox(height: 24),
                               controller.orderData!.deliveryBoyName
-                                  .toString() ==
-                                  "" ||
-                                  controller.orderData!.deliveryBoyName
-                                      .toString() ==
-                                      "null"?Container():
-                                _driverDetails(
-                                  context,
-                                  controller.orderData!.deliveryBoyImage.toString(),
-                                  controller.orderData!.deliveryBoyName.toString(),
-                                  controller.orderData!.deliveryCountryCode.toString(),
-                                  controller.orderData!.deliveryBoyPhone.toString(),
-                                ),
+                                              .toString() ==
+                                          "" ||
+                                      controller.orderData!.deliveryBoyName
+                                              .toString() ==
+                                          "null"
+                                  ? Container()
+                                  : _driverDetails(
+                                      context,
+                                      controller.orderData!.deliveryBoyImage
+                                          .toString(),
+                                      controller.orderData!.deliveryBoyName
+                                          .toString(),
+                                      controller.orderData!.deliveryCountryCode
+                                          .toString(),
+                                      controller.orderData!.deliveryBoyPhone
+                                          .toString(),
+                                    ),
                               const SizedBox(height: 32),
                               Text(
                                 S.of(context).orderItems +
@@ -570,192 +575,211 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                 ),
                               ),
 
-                                const SizedBox(height: 32),
-                                // Order Overview / Order Duration Breakdown tabs
-                                Container(
-                                  width: 350,
-                                  height: 40,
-                                  decoration: BoxDecoration(
-                                    color: const Color(0xFFF1F5F9),
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            controller.selectedOrderTabIndex =
-                                                0;
-                                            controller.update();
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.all(0),
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  controller
-                                                          .selectedOrderTabIndex ==
-                                                      0
-                                                  ? colorPrimary
-                                                  : Colors.transparent,
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                S.of(context).orderTimeline,
-                                                style: GoogleFonts.rubik(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                  color:
-                                                      controller
-                                                              .selectedOrderTabIndex ==
-                                                          0
-                                                      ? Colors.white
-                                                      : const Color(0xFF64748B),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      Expanded(
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            controller.selectedOrderTabIndex =
-                                                1;
-                                            controller.update();
-                                          },
-                                          child: Container(
-                                            margin: const EdgeInsets.all(0),
-                                            decoration: BoxDecoration(
-                                              color:
-                                                  controller
-                                                          .selectedOrderTabIndex ==
-                                                      1
-                                                  ? colorPrimary
-                                                  : Colors.transparent,
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                            ),
-                                            child: Center(
-                                              child: Text(
-                                                S
-                                                    .of(context)
-                                                    .orderDurationBreakdown,
-                                                style: GoogleFonts.rubik(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w600,
-                                                  color:
-                                                      controller
-                                                              .selectedOrderTabIndex ==
-                                                          1
-                                                      ? Colors.white
-                                                      : const Color(0xFF64748B),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                              const SizedBox(height: 32),
+                              // Order Overview / Order Duration Breakdown tabs
+                              Container(
+                                width: 350,
+                                height: 40,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFF1F5F9),
+                                  borderRadius: BorderRadius.circular(20),
                                 ),
-                                const SizedBox(height: 16),
-                                // pending =1
-                                // accepted  =2
-                                // preparing =3
-                                // Ready=4
-                                // delivered = 9
-                                // cancelled = 10
-                                if (controller.selectedOrderTabIndex == 0) ...[
-                                  // Timeline items (Order Overview)
-                                  _timelineItem(
-                                    "Order Placed",
-                                    "Order successfully placed by "+controller.orderData!.userName.toString(),
-                                    controller.orderData!.statusLogs![0].updatedAt.toString(),
-                                    isCompleted: true,
-                                    isFirst: true,
-                                  ),
-                                  _timelineItem(
-                                    "Order Accepted",
-                                    "Order Accepted",
-                                    controller.orderData!.status! >=
-                                        2
-                                        ?
-                                    controller.orderData!.statusLogs![1].updatedAt.toString():"",
-                                    isCompleted:  controller.orderData!.status! >=
-                                        2
-                                        ?true:false,
-                                  ),
-                                  _timelineItem(
-                                    "Preparing Food",
-                                    "Order Preparation Started",
-                                    controller.orderData!.status! >=
-                                                3
-                                        ? controller.orderData!.statusLogs![2].updatedAt.toString()
-                                        : "",
-                                    isCompleted:
-                                    controller.orderData!.status! >= 3,
-                                    asset:
-                                        "lib/assets/images/Preparing food.png",
-                                  ),
-                                  _timelineItem(
-                                    "Ready",
-                                    "Order Ready",
-                                    controller.orderData!.status! >=
-                                        4
-                                        ? controller.orderData!.statusLogs![3].updatedAt.toString()
-                                        : "",
-                                    isCompleted:
-                                    controller.orderData!.status! >=
-                                        4,
-                                    asset: "lib/assets/images/Delivery.png",
-                                  ),
-                                  _timelineItem(
-                                    "Picked Up",
-                                    "Order Picked Up",
-                                    controller.orderData!.status! >=
-                                        7
-                                        ? controller.orderData!.statusLogs![4].updatedAt.toString()
-                                        : "",
-                                    isCompleted:
-                                    controller.orderData!.status! >=
-                                        7,
-                                    asset:
-                                        "lib/assets/images/Reached Restaurant.png",
-                                  ),
-                                  _timelineItem(
-                                    "Delivering",
-                                    "Delivery Started",
-                                    controller.orderData!.status! >=
-                                        8
-                                        ? controller.orderData!.statusLogs![5].updatedAt.toString()
-                                        : "",
-                                    asset:
-                                        "lib/assets/images/Order delivered.png",
-                                    isCompleted:
-                                    controller.orderData!.status! >=
-                                        8,
-                                  ),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          controller.selectedOrderTabIndex = 0;
+                                          controller.update();
+                                        },
+                                        child: Container(
+                                          margin: const EdgeInsets.all(0),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                controller
+                                                        .selectedOrderTabIndex ==
+                                                    0
+                                                ? colorPrimary
+                                                : Colors.transparent,
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              S.of(context).orderTimeline,
+                                              style: GoogleFonts.rubik(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    controller
+                                                            .selectedOrderTabIndex ==
+                                                        0
+                                                    ? Colors.white
+                                                    : const Color(0xFF64748B),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          controller.selectedOrderTabIndex = 1;
+                                          controller.update();
+                                        },
+                                        child: Container(
+                                          margin: const EdgeInsets.all(0),
+                                          decoration: BoxDecoration(
+                                            color:
+                                                controller
+                                                        .selectedOrderTabIndex ==
+                                                    1
+                                                ? colorPrimary
+                                                : Colors.transparent,
+                                            borderRadius: BorderRadius.circular(
+                                              16,
+                                            ),
+                                          ),
+                                          child: Center(
+                                            child: Text(
+                                              S
+                                                  .of(context)
+                                                  .orderDurationBreakdown,
+                                              style: GoogleFonts.rubik(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w600,
+                                                color:
+                                                    controller
+                                                            .selectedOrderTabIndex ==
+                                                        1
+                                                    ? Colors.white
+                                                    : const Color(0xFF64748B),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 16),
+                              // pending =1
+                              // accepted  =2
+                              // preparing =3
+                              // Ready=4
+                              // delivered = 9
+                              // cancelled = 10
+                              if (controller.selectedOrderTabIndex == 0) ...[
+                                // Timeline items (Order Overview)
+                                _timelineItem(
+                                  "Order Placed",
+                                  "Order successfully placed by " +
+                                      controller.orderData!.userName.toString(),
+                                  controller.orderData!.statusLogs![0].updatedAt
+                                      .toString(),
+                                  isCompleted: true,
+                                  isFirst: true,
+                                ),
+                                _timelineItem(
+                                  "Order Accepted",
+                                  "Order Accepted",
+                                  controller.orderData!.status! >= 2
+                                      ? controller
+                                            .orderData!
+                                            .statusLogs![1]
+                                            .updatedAt
+                                            .toString()
+                                      : "",
+                                  isCompleted:
+                                      controller.orderData!.status! >= 2
+                                      ? true
+                                      : false,
+                                ),
+                                _timelineItem(
+                                  "Preparing Food",
+                                  "Order Preparation Started",
+                                  controller.orderData!.status! >= 3
+                                      ? controller
+                                            .orderData!
+                                            .statusLogs![2]
+                                            .updatedAt
+                                            .toString()
+                                      : "",
+                                  isCompleted:
+                                      controller.orderData!.status! >= 3,
+                                  asset: "lib/assets/images/Preparing food.png",
+                                ),
+                                _timelineItem(
+                                  "Ready",
+                                  "Order Ready",
+                                  controller.orderData!.status! >= 4
+                                      ? controller
+                                            .orderData!
+                                            .statusLogs![3]
+                                            .updatedAt
+                                            .toString()
+                                      : "",
+                                  isCompleted:
+                                      controller.orderData!.status! >= 4,
+                                  asset: "lib/assets/images/Delivery.png",
+                                ),
+                                _timelineItem(
+                                  "Picked Up",
+                                  "Order Picked Up",
+                                  controller.orderData!.status! >= 7
+                                      ? controller
+                                            .orderData!
+                                            .statusLogs![4]
+                                            .updatedAt
+                                            .toString()
+                                      : "",
+                                  isCompleted:
+                                      controller.orderData!.status! >= 7,
+                                  asset:
+                                      "lib/assets/images/Reached Restaurant.png",
+                                ),
+                                _timelineItem(
+                                  "Delivering",
+                                  "Delivery Started",
+                                  controller.orderData!.status! >= 8
+                                      ? controller
+                                            .orderData!
+                                            .statusLogs![5]
+                                            .updatedAt
+                                            .toString()
+                                      : "",
+                                  asset:
+                                      "lib/assets/images/Order delivered.png",
+                                  isCompleted:
+                                      controller.orderData!.status! >= 8,
+                                ),
 
-                                  _timelineItem(
-                                    "Delivered",
-                                    "Delivery Completed",
-                                    controller.orderData!.status! >=
-                                        9
-                                        ? controller.orderData!.statusLogs![6].updatedAt.toString()
-                                        : "",
-                                    asset:
-                                    "lib/assets/images/Order delivered.png",
-                                    isCompleted:
-                                    controller.orderData!.status! >=
-                                        9,
-                                    isLast: true,
-                                  ),
-                                ],
-                                if (controller.selectedOrderTabIndex == 1) ...[
-                                  _buildOrderDurationBreakdown(context,controller),
-                                ],
+                                _timelineItem(
+                                  "Delivered",
+                                  "Delivery Completed",
+                                  controller.orderData!.status! >= 9
+                                      ? controller
+                                            .orderData!
+                                            .statusLogs![6]
+                                            .updatedAt
+                                            .toString()
+                                      : "",
+                                  asset:
+                                      "lib/assets/images/Order delivered.png",
+                                  isCompleted:
+                                      controller.orderData!.status! >= 9,
+                                  isLast: true,
+                                ),
+                              ],
+                              if (controller.selectedOrderTabIndex == 1) ...[
+                                _buildOrderDurationBreakdown(
+                                  context,
+                                  controller,
+                                ),
+                              ],
 
                               const SizedBox(height: 120),
                               // Spacing for bottom buttons
@@ -778,7 +802,20 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                     child: Container(
                                       height: 40,
                                       child: ElevatedButton(
-                                        onPressed: () => Get.back(),
+                                        onPressed: () async {
+                                          String vendorType = await getSavedObject("vendorType");
+                                          if (vendorType == "1") {
+                                            controller.cancelRestaurantOrder(
+                                              context,
+                                              widget.orderId,
+                                            );
+                                          } else {
+                                            controller.cancelGroceryOrder(
+                                              context,
+                                              widget.orderId,
+                                            );
+                                          }
+                                        },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: const Color(
                                             0xFFF1F5F9,
@@ -810,7 +847,20 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                     child: Container(
                                       height: 40,
                                       child: ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          String vendorType = await getSavedObject("vendorType");
+                                          if (vendorType == "1") {
+                                            controller.acceptRestaurantOrder(
+                                              context,
+                                              widget.orderId,
+                                            );
+                                          } else {
+                                            controller.acceptGroceryOrder(
+                                              context,
+                                              widget.orderId,
+                                            );
+                                          }
+                                        },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: const Color(
                                             0xFFFF5216,
@@ -838,20 +888,41 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                 ],
                               )
                             : (controller.orderData!.status.toString() ==
-                                      'accepted' ||
+                                      '2' ||
                                   controller.orderData!.status.toString() ==
-                                      'preparing')
+                                      '3')
                             ? SizedBox(
                                 width: double.infinity,
                                 height: 40,
                                 child: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    String vendorType = await getSavedObject(
+                                        "vendorType");
                                     if (controller.orderData!.status
-                                            .toString() ==
-                                        'accepted') {
-                                      showSuccessDialog(
-                                        "Order preparation started successfully",
-                                      );
+                                        .toString() ==
+                                        '3') {
+                                      if (vendorType == "1") {
+                                        controller.markAsReadyRestaurantOrder(
+                                          context,
+                                          widget.orderId,
+                                        );
+                                      } else {
+                                        controller.markAsReadyGroceryOrder(
+                                          context,
+                                          widget.orderId,
+                                        );
+                                      }
+                                    } else {
+                                      if (vendorType == "1") {
+                                        controller.prepareRestaurantOrder(
+                                          context,
+                                          widget.orderId,
+                                        );
+                                      } else {
+                                        controller.prepareGroceryOrder(
+                                          context,
+                                          widget.orderId,);
+                                      }
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -864,7 +935,7 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                   ),
                                   child: Text(
                                     controller.orderData!.status.toString() ==
-                                            'preparing'
+                                            '3'
                                         ? S.of(context).markAsReady
                                         : S.of(context).prepareOrder,
                                     style: GoogleFonts.rubik(
@@ -1174,9 +1245,10 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
     );
   }
 
-
-
-  Widget _buildOrderDurationBreakdown(BuildContext context,OrderDetailsController controller) {
+  Widget _buildOrderDurationBreakdown(
+    BuildContext context,
+    OrderDetailsController controller,
+  ) {
     return Container(
       width: 350,
       padding: const EdgeInsets.symmetric(vertical: 4),

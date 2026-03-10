@@ -3,6 +3,8 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
+import 'package:saimpex_vendor/model/OrderStatusModel.dart' as order;
+import 'package:saimpex_vendor/view/home/home.dart';
 
 import '../configs/ApiConfigs.dart';
 import '../configs/Dioclient.dart';
@@ -69,7 +71,6 @@ class OrderDetailsController extends GetxController {
     }
   }
 
-
   Future<void> getGroceryOrderDetails(BuildContext context, String order_id) async {
     try {
       isLoading = true;
@@ -108,6 +109,278 @@ class OrderDetailsController extends GetxController {
     } finally {
       isLoading = false;
       update();
+    }
+  }
+
+  Future<void> acceptRestaurantOrder(
+      BuildContext context,
+      String orderid) async {
+    try {
+      showLoadingDialog(context);
+      var token = await getSavedObject("token");
+      DioClient().updateToken(token);
+      final response = await DioClient().get(
+        ApiEndPoints.acceptRestaurantOrder,
+        query: {
+          "order_id": orderid,
+        },
+      );
+      order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
+      if (orderStatusModel.status.toString() == "true") {
+        Get.back();
+        showToast(context, orderStatusModel.message.toString());
+        Get.offAll(Home());
+      }
+    } catch (error,stackTrace) {
+      Get.back();
+      debugPrint("stackTrace: $stackTrace");
+      debugPrint("accept order Error restaurant: $error");
+      if (error.toString() == "Unauthorized") {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        showToast(context, S.of(context).youAreLoggedOutSuccessfully);
+        Get.offAll(LoginScreen());
+      }else{
+        showToast(context, error.toString());
+      }
+    }
+  }
+
+  Future<void> acceptGroceryOrder(
+      BuildContext context,
+      String orderid) async {
+    try {
+      showLoadingDialog(context);
+      var token = await getSavedObject("token");
+      DioClient().updateToken(token);
+      final response = await DioClient().get(
+        ApiEndPoints.acceptGroceryOrder,
+        query: {
+          "order_id": orderid,
+        },
+      );
+      order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
+      if (orderStatusModel.status.toString() == "true") {
+        Get.back();
+        showToast(context, orderStatusModel.message.toString());
+        Get.offAll(Home());
+      }
+    } catch (error,stackTrace) {
+      Get.back();
+      debugPrint("stackTrace: $stackTrace");
+      debugPrint("accept order Error restaurant: $error");
+      if (error.toString() == "Unauthorized") {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        showToast(context, S.of(context).youAreLoggedOutSuccessfully);
+        Get.offAll(LoginScreen());
+      }else{
+        showToast(context, error.toString());
+      }
+    }
+  }
+
+  Future<void> cancelRestaurantOrder(
+      BuildContext context,
+      String orderid) async {
+    try {
+      showLoadingDialog(context);
+      var token = await getSavedObject("token");
+      DioClient().updateToken(token);
+      final response = await DioClient().get(
+        ApiEndPoints.cancelRestaurantOrder,
+        query: {
+          "order_id": orderid,
+        },
+      );
+      order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
+      if (orderStatusModel.status.toString() == "true") {
+        Get.back();
+        showToast(context, orderStatusModel.message.toString());
+        Get.offAll(Home());
+      }
+    } catch (error,stackTrace) {
+      Get.back();
+      debugPrint("stackTrace: $stackTrace");
+      debugPrint("accept order Error restaurant: $error");
+      if (error.toString() == "Unauthorized") {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        showToast(context, S.of(context).youAreLoggedOutSuccessfully);
+        Get.offAll(LoginScreen());
+      }else{
+        showToast(context, error.toString());
+      }
+    }
+  }
+
+  Future<void> cancelGroceryOrder(
+      BuildContext context,
+      String orderid) async {
+    try {
+      showLoadingDialog(context);
+      var token = await getSavedObject("token");
+      DioClient().updateToken(token);
+      final response = await DioClient().get(
+        ApiEndPoints.cancelGroceryOrder,
+        query: {
+          "order_id": orderid,
+        },
+      );
+      order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
+      if (orderStatusModel.status.toString() == "true") {
+        Get.back();
+        showToast(context, orderStatusModel.message.toString());
+        Get.offAll(Home());
+      }
+    } catch (error,stackTrace) {
+      Get.back();
+      debugPrint("stackTrace: $stackTrace");
+      debugPrint("accept order Error restaurant: $error");
+      if (error.toString() == "Unauthorized") {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        showToast(context, S.of(context).youAreLoggedOutSuccessfully);
+        Get.offAll(LoginScreen());
+      }else{
+        showToast(context, error.toString());
+      }
+    }
+  }
+
+  Future<void> markAsReadyRestaurantOrder(
+      BuildContext context,
+      String orderid) async {
+    try {
+      showLoadingDialog(context);
+      var token = await getSavedObject("token");
+      DioClient().updateToken(token);
+      final response = await DioClient().get(
+        ApiEndPoints.markAsReadyRestaurantOrder,
+        query: {
+          "order_id": orderid,
+        },
+      );
+      order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
+      if (orderStatusModel.status.toString() == "true") {
+        Get.back();
+        showToast(context, orderStatusModel.message.toString());
+        Get.offAll(Home());
+      }
+    } catch (error,stackTrace) {
+      Get.back();
+      debugPrint("stackTrace: $stackTrace");
+      debugPrint("accept order Error restaurant: $error");
+      if (error.toString() == "Unauthorized") {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        showToast(context, S.of(context).youAreLoggedOutSuccessfully);
+        Get.offAll(LoginScreen());
+      }else{
+        showToast(context, error.toString());
+      }
+    }
+  }
+
+  Future<void> markAsReadyGroceryOrder(
+      BuildContext context,
+      String orderid) async {
+    try {
+      showLoadingDialog(context);
+      var token = await getSavedObject("token");
+      DioClient().updateToken(token);
+      final response = await DioClient().get(
+        ApiEndPoints.markAsReadyGroceryOrder,
+        query: {
+          "order_id": orderid,
+        },
+      );
+      order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
+      if (orderStatusModel.status.toString() == "true") {
+        Get.back();
+        showToast(context, orderStatusModel.message.toString());
+        Get.offAll(Home());
+      }
+    } catch (error,stackTrace) {
+      Get.back();
+      debugPrint("stackTrace: $stackTrace");
+      debugPrint("accept order Error restaurant: $error");
+      if (error.toString() == "Unauthorized") {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        showToast(context, S.of(context).youAreLoggedOutSuccessfully);
+        Get.offAll(LoginScreen());
+      }else{
+        showToast(context, error.toString());
+      }
+    }
+  }
+
+  Future<void> prepareRestaurantOrder(
+      BuildContext context,
+      String orderid) async {
+    try {
+      showLoadingDialog(context);
+      var token = await getSavedObject("token");
+      DioClient().updateToken(token);
+      final response = await DioClient().get(
+        ApiEndPoints.prepareRestaurantOrder,
+        query: {
+          "order_id": orderid,
+        },
+      );
+      order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
+      if (orderStatusModel.status.toString() == "true") {
+        Get.back();
+        showToast(context, orderStatusModel.message.toString());
+        Get.offAll(Home());
+      }
+    } catch (error,stackTrace) {
+      Get.back();
+      debugPrint("stackTrace: $stackTrace");
+      debugPrint("accept order Error restaurant: $error");
+      if (error.toString() == "Unauthorized") {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        showToast(context, S.of(context).youAreLoggedOutSuccessfully);
+        Get.offAll(LoginScreen());
+      }else{
+        showToast(context, error.toString());
+      }
+    }
+  }
+
+  Future<void> prepareGroceryOrder(
+      BuildContext context,
+      String orderid) async {
+    try {
+      showLoadingDialog(context);
+      var token = await getSavedObject("token");
+      DioClient().updateToken(token);
+      final response = await DioClient().get(
+        ApiEndPoints.prepareGroceryOrder,
+        query: {
+          "order_id": orderid,
+        },
+      );
+      order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
+      if (orderStatusModel.status.toString() == "true") {
+        Get.back();
+        showToast(context, orderStatusModel.message.toString());
+        Get.offAll(Home());
+      }
+    } catch (error,stackTrace) {
+      Get.back();
+      debugPrint("stackTrace: $stackTrace");
+      debugPrint("accept order Error restaurant: $error");
+      if (error.toString() == "Unauthorized") {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.clear();
+        showToast(context, S.of(context).youAreLoggedOutSuccessfully);
+        Get.offAll(LoginScreen());
+      }else{
+        showToast(context, error.toString());
+      }
     }
   }
 }
