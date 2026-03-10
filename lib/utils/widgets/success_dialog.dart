@@ -13,8 +13,8 @@ class SuccessDialog extends StatelessWidget {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       insetPadding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        width: 316,
-        height: 170,
+        width: MediaQuery.of(context).size.width * 0.8,
+        height: MediaQuery.of(context).size.height * 0.22,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Colors.white,

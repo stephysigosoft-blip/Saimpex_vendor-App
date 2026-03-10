@@ -4,8 +4,10 @@ import 'package:saimpex_vendor/controller/home_controller.dart';
 import 'package:saimpex_vendor/controller/vendor_home_controller.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/model/home_model.dart';
+import 'package:saimpex_vendor/utils/widgets/app_loader.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
+import 'package:saimpex_vendor/utils/widgets/no_data_widget.dart';
 import 'package:saimpex_vendor/view/home/orders_view_all.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_dashboard_button.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_home_top_bar.dart';
@@ -34,6 +36,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
     "Accepted": 0,
     "Preparing": 0,
     "Ready": 0,
+    "On Going": 0,
     "Delivered": 0,
     "Cancelled": 0,
   };
@@ -42,6 +45,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
     "Accepted",
     "Preparing",
     "Ready",
+    "On Going",
     "Delivered",
     "Cancelled",
   ];
@@ -64,6 +68,8 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
         return 3;
       case "Ready":
         return 4;
+      case "On Going":
+        return 8;
       case "Delivered":
         return 9;
       case "Cancelled":
@@ -83,6 +89,14 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
         return S.current.preparing;
       case 4:
         return S.current.ready;
+      case 5:
+        return S.current.assignedStatus;
+      case 6:
+        return S.current.reachedRestaurant;
+      case 7:
+        return S.current.pickedUp;
+      case 8:
+        return S.current.delivering;
       case 9:
         return S.current.delivered;
       case 10:
@@ -218,14 +232,13 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                 const SizedBox(height: 16),
                 Expanded(
                   child: controller.isFirstLoadRunning
-                      ? const Center(child: CircularProgressIndicator())
+                      ? const AppLoader()
                       : orders.isEmpty
-                      ? Padding(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: layout.horizontalPadding,
-                            vertical: 12,
-                          ),
-                          child: Text(S.of(context).noOrdersFound),
+                      ? NoDataWidget(
+                          context,
+                          S.of(context).noOrdersFound,
+                          "",
+                          "lib/assets/images/nodata.png",
                         )
                       : ListView.builder(
                           padding: const EdgeInsets.only(top: 8, bottom: 100),
@@ -245,6 +258,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                                 price: price,
                                 dateTime: order.placedAtFormatted ?? "",
                                 status: _statusLabel(order.status),
+                                deliveryBoyName: order.deliveryBoyName,
                                 onAccept: () => _showSuccessDialog(context),
                               ),
                             );

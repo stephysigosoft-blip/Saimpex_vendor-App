@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/controller/notification_controller.dart';
 import 'package:saimpex_vendor/model/notification_model.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
+import 'package:saimpex_vendor/utils/widgets/app_loader.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/no_data_widget.dart';
 import '../../generated/l10n.dart';
@@ -68,10 +69,7 @@ class Notifications extends StatelessWidget {
                       const SizedBox(height: 16),
                   itemBuilder: (context, index) {
                     if (index == controller.notificationList.length) {
-                      return const Padding(
-                        padding: EdgeInsets.all(16.0),
-                        child: Center(child: CircularProgressIndicator()),
-                      );
+                      return const AppLoader();
                     }
 
                     final notification = controller.notificationList[index];
@@ -91,8 +89,8 @@ class Notifications extends StatelessWidget {
     AppNotification notification,
   ) {
     return Container(
-      width: 350,
-      height: 171,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.2,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -178,8 +176,8 @@ class Notifications extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               SizedBox(
-                width: 154, // specification: 154px
-                height: 40,
+                width: MediaQuery.of(context).size.width * 0.4,
+                height: MediaQuery.of(context).size.height * 0.05,
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(
@@ -201,8 +199,8 @@ class Notifications extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                width: 154, // specification: 154px
-                height: 40,
+                width: MediaQuery.of(context).size.width * 0.4,
+                height: MediaQuery.of(context).size.height * 0.05,
                 child: ElevatedButton(
                   onPressed: () {},
                   style: ElevatedButton.styleFrom(

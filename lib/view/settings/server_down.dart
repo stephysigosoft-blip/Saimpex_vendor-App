@@ -17,7 +17,7 @@ class ServerDown extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
-          padding: const EdgeInsets.only(left: 15.0,right: 15,bottom: 50),
+          padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 50),
           child: Stack(
             children: [
               Column(
@@ -28,8 +28,8 @@ class ServerDown extends StatelessWidget {
                     child: Image.asset(
                       "lib/assets/images/serverdown.png",
                       // replace with your asset
-                      height: 200,
-                      width: 200,
+                      height: MediaQuery.of(context).size.height * 0.25,
+                      width: MediaQuery.of(context).size.width * 0.5,
                     ),
                   ),
 
@@ -41,7 +41,6 @@ class ServerDown extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-
                 ],
               ),
 
@@ -58,8 +57,6 @@ class ServerDown extends StatelessWidget {
                   ),
                 ),
               ),
-
-
             ],
           ),
         ),

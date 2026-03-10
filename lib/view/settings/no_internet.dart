@@ -6,7 +6,7 @@ import '../../resources/colors.dart';
 import '../../utils/Widgets/custom_button.dart';
 
 class NoInternet extends StatelessWidget {
-   NoInternet({super.key});
+  NoInternet({super.key});
   final localization = FlutterLocalization.instance;
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class NoInternet extends StatelessWidget {
       child: Scaffold(
         backgroundColor: Colors.white,
         body: Padding(
-          padding: const EdgeInsets.only(left: 15.0,right: 15,bottom: 50),
+          padding: const EdgeInsets.only(left: 15.0, right: 15, bottom: 50),
           child: Stack(
             children: [
               Column(
@@ -27,7 +27,7 @@ class NoInternet extends StatelessWidget {
                     child: Image.asset(
                       "lib/assets/images/no_internet.png",
                       // replace with your asset
-                      height: 180,
+                      height: MediaQuery.of(context).size.height * 0.25,
                     ),
                   ),
 
@@ -68,8 +68,6 @@ class NoInternet extends StatelessWidget {
                   ),
                 ),
               ),
-
-
             ],
           ),
         ),

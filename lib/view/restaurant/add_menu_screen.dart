@@ -232,8 +232,8 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
             GestureDetector(
               onTap: _pickImages,
               child: Container(
-                width: 358,
-                height: 117,
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.15,
                 padding: const EdgeInsets.all(32),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -334,7 +334,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
               children: [
                 // Reset
                 SizedBox(
-                  width: 119,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   height: 40,
                   child: OutlinedButton(
                     onPressed: _reset,
@@ -361,7 +361,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
                 const SizedBox(width: 16),
                 // Submit
                 SizedBox(
-                  width: 189,
+                  width: MediaQuery.of(context).size.width * 0.48,
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {
@@ -446,7 +446,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
     TextInputType keyboardType = TextInputType.text,
   }) {
     return SizedBox(
-      width: 358,
+      width: MediaQuery.of(context).size.width * 0.9,
       height: 52,
       child: TextFormField(
         controller: controller,
@@ -488,7 +488,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
     required String hint,
   }) {
     return SizedBox(
-      width: 358,
+      width: MediaQuery.of(context).size.width * 0.9,
       height: 89,
       child: TextFormField(
         controller: controller,
@@ -534,7 +534,7 @@ class _AddMenuScreenState extends State<AddMenuScreen> {
     bool fullWidth = false,
   }) {
     return SizedBox(
-      width: fullWidth ? 358 : null,
+      width: fullWidth ? MediaQuery.of(context).size.width * 0.9 : null,
       height: height,
       child: DropdownButtonFormField<String>(
         value: value,

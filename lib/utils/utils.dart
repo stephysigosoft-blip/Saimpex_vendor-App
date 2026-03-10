@@ -210,8 +210,8 @@ void showLoadingDialog(BuildContext context) {
           children: [
             Lottie.asset(
               'lib/assets/images/loader.json',
-              width: 100,
-              height: 100,
+              width: MediaQuery.of(context).size.width * 0.2,
+              height: MediaQuery.of(context).size.width * 0.2,
             ),
             // SizedBox(height: 10),
             // Text("Loading...", style: TextStyle(color: Colors.white)),
@@ -260,9 +260,7 @@ String formatDurationToMinutes(String? value) {
     final h = int.tryParse(parts[0].trim()) ?? 0;
     final m = int.tryParse(parts[1].trim()) ?? 0;
     final s = int.tryParse(parts[2].trim()) ?? 0;
-    final totalMinutes = (h == 0 && m == 0)
-        ? s
-        : (h * 60 + m + s / 60).round();
+    final totalMinutes = (h == 0 && m == 0) ? s : (h * 60 + m + s / 60).round();
     return totalMinutes == 1 ? '1 minute' : '$totalMinutes minutes';
   }
   if (parts.length == 2) {
@@ -281,7 +279,8 @@ String formatDurationToMinutes(String? value) {
 String formatOrderPlacedAt(DateTime? dateTime) {
   if (dateTime == null) return '';
   final now = DateTime.now();
-  final isToday = dateTime.year == now.year &&
+  final isToday =
+      dateTime.year == now.year &&
       dateTime.month == now.month &&
       dateTime.day == now.day;
   if (isToday) {
@@ -427,8 +426,8 @@ void showConfirmationBottomSheet({
     ),
     builder: (context) {
       return Container(
-        width: 390,
-        height: 270,
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height * 0.35,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -486,7 +485,7 @@ void showConfirmationBottomSheet({
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    width: 163,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     height: 45,
                     child: ElevatedButton(
                       onPressed: () => Navigator.pop(context),
@@ -508,7 +507,7 @@ void showConfirmationBottomSheet({
                     ),
                   ),
                   SizedBox(
-                    width: 163,
+                    width: MediaQuery.of(context).size.width * 0.4,
                     height: 45,
                     child: ElevatedButton(
                       onPressed: () {

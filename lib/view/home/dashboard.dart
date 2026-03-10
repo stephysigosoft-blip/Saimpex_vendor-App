@@ -4,8 +4,10 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/configs/ApiConfigs.dart';
 import 'package:saimpex_vendor/controller/dashboard_controller.dart';
+import 'package:saimpex_vendor/utils/widgets/app_loader.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_stat_card.dart';
+import 'package:saimpex_vendor/view/home/popular_items_view_all.dart';
 
 import '../../generated/l10n.dart';
 
@@ -50,12 +52,7 @@ class _DashboardState extends State<Dashboard> {
             centerTitle: true,
           ),
           child: controller.isLoading
-              ? const Center(
-                  child: Padding(
-                    padding: EdgeInsets.all(40.0),
-                    child: CircularProgressIndicator(color: Color(0xFFFF5216)),
-                  ),
-                )
+              ? const AppLoader()
               : SingleChildScrollView(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
@@ -127,7 +124,15 @@ class _DashboardState extends State<Dashboard> {
                             ),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const PopularItemsViewAll(),
+                                ),
+                              );
+                            },
                             child: Text(
                               "View All",
                               style: GoogleFonts.rubik(
@@ -161,7 +166,7 @@ class _DashboardState extends State<Dashboard> {
 
     return Container(
       width: double.infinity,
-      height: 60.25,
+      height: MediaQuery.of(context).size.height * 0.075,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -314,7 +319,7 @@ class _DashboardState extends State<Dashboard> {
             alignment: Alignment.topRight,
             children: [
               SizedBox(
-                height: 150,
+                height: MediaQuery.of(context).size.height * 0.18,
                 width: double.infinity,
                 child: CustomPaint(
                   painter: RevenueChartPainter(
@@ -431,8 +436,10 @@ class _DashboardState extends State<Dashboard> {
                 name: name,
                 subtitle: subtitle,
                 orders: orders,
-                imageUrl: item.image != null
-                    ? ApiConfigs.IMAGE_URL + item.image!
+                imageUrl: item.image != null && item.image!.isNotEmpty
+                    ? (item.image!.startsWith('http')
+                          ? item.image!
+                          : ApiConfigs.IMAGE_URL + item.image!)
                     : "",
               ),
               if (index < items.length - 1)
@@ -459,13 +466,13 @@ class _DashboardState extends State<Dashboard> {
             child: imageUrl.startsWith('http')
                 ? Image.network(
                     imageUrl,
-                    width: 50,
-                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.12,
+                    height: MediaQuery.of(context).size.width * 0.12,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        width: 50,
-                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.12,
+                        height: MediaQuery.of(context).size.width * 0.12,
                         color: Colors.grey[200],
                         child: const Icon(Icons.fastfood, color: Colors.grey),
                       );
@@ -475,13 +482,13 @@ class _DashboardState extends State<Dashboard> {
                     imageUrl.isNotEmpty
                         ? imageUrl
                         : "lib/assets/images/Food vendor.png",
-                    width: 50,
-                    height: 50,
+                    width: MediaQuery.of(context).size.width * 0.12,
+                    height: MediaQuery.of(context).size.width * 0.12,
                     fit: BoxFit.cover,
                     errorBuilder: (context, error, stackTrace) {
                       return Container(
-                        width: 50,
-                        height: 50,
+                        width: MediaQuery.of(context).size.width * 0.12,
+                        height: MediaQuery.of(context).size.width * 0.12,
                         color: Colors.grey[200],
                         child: const Icon(Icons.fastfood, color: Colors.grey),
                       );

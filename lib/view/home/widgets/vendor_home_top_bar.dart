@@ -4,10 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/view/notifications/notifications.dart';
 
 class VendorHomeTopBar extends StatelessWidget {
-  const VendorHomeTopBar({
-    super.key,
-    required this.horizontalPadding,
-  });
+  const VendorHomeTopBar({super.key, required this.horizontalPadding});
 
   final double horizontalPadding;
 
@@ -43,9 +40,7 @@ class VendorHomeTopBar extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: Colors.white,
                 shape: BoxShape.circle,
-                boxShadow: [
-                  BoxShadow(color: Colors.black12, blurRadius: 4),
-                ],
+                boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
               ),
               child: const Icon(
                 Icons.notifications_none,

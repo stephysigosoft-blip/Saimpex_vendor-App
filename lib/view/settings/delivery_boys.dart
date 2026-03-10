@@ -6,7 +6,9 @@ import 'package:saimpex_vendor/configs/ApiConfigs.dart';
 import 'package:saimpex_vendor/controller/delivery_boys_controller.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/model/delivery_boys_model.dart';
+import 'package:saimpex_vendor/utils/widgets/app_loader.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
+import 'package:saimpex_vendor/utils/widgets/no_data_widget.dart';
 
 class DeliveryBoysScreen extends StatefulWidget {
   const DeliveryBoysScreen({super.key});
@@ -68,7 +70,7 @@ class _DeliveryBoysScreenState extends State<DeliveryBoysScreen> {
                   CustomSearchBox(
                     hintText: S.of(context).searchNameOrMobileNumber,
                     boxColor: Colors.white,
-                    width: 357,
+                    width: MediaQuery.of(context).size.width * 0.9,
                     controller: searchController,
                     onChanged: (value) {
                       controller.filterBoys(value);
@@ -76,20 +78,13 @@ class _DeliveryBoysScreenState extends State<DeliveryBoysScreen> {
                   ),
                   const SizedBox(height: 16),
                   if (controller.isLoading)
-                    const Center(
-                      child: Padding(
-                        padding: EdgeInsets.all(20.0),
-                        child: CircularProgressIndicator(
-                          color: Color(0xFFFF5216),
-                        ),
-                      ),
-                    )
+                    const AppLoader()
                   else if (controller.filteredList.isEmpty)
-                    Center(
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Text(S.of(context).noDeliveryBoysFound),
-                      ),
+                    NoDataWidget(
+                      context,
+                      S.of(context).noDeliveryBoysFound,
+                      "",
+                      "lib/assets/images/nodata.png",
                     )
                   else
                     ...controller.filteredList
@@ -106,8 +101,8 @@ class _DeliveryBoysScreenState extends State<DeliveryBoysScreen> {
 
   Widget _buildDeliveryBoyTile(DeliveryBoy data) {
     return Container(
-      width: 357,
-      height: 98,
+      width: MediaQuery.of(context).size.width * 0.9,
+      height: MediaQuery.of(context).size.height * 0.12,
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -127,8 +122,8 @@ class _DeliveryBoysScreenState extends State<DeliveryBoysScreen> {
           Stack(
             children: [
               Container(
-                width: 60,
-                height: 60,
+                width: MediaQuery.of(context).size.width * 0.15,
+                height: MediaQuery.of(context).size.width * 0.15,
                 decoration: BoxDecoration(
                   color: const Color(0xFFE5E7EB),
                   borderRadius: BorderRadius.circular(15),

@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 class ShimmerLoadingRestaurants extends StatefulWidget {
   @override
-  State<ShimmerLoadingRestaurants> createState() => _ShimmerLoadingRestaurantsState();
+  State<ShimmerLoadingRestaurants> createState() =>
+      _ShimmerLoadingRestaurantsState();
 }
 
 class _ShimmerLoadingRestaurantsState extends State<ShimmerLoadingRestaurants>
@@ -18,9 +19,10 @@ class _ShimmerLoadingRestaurantsState extends State<ShimmerLoadingRestaurants>
       vsync: this,
     )..repeat();
 
-    _animation = Tween<double>(begin: -2.0, end: 2.0).animate(
-      CurvedAnimation(parent: _controller, curve: Curves.easeInOut),
-    );
+    _animation = Tween<double>(
+      begin: -2.0,
+      end: 2.0,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
   }
 
   @override
@@ -69,14 +71,10 @@ class _ShimmerLoadingRestaurantsState extends State<ShimmerLoadingRestaurants>
         children: [
           _buildShimmerContainer(
             height: 20,
-            width: 120,
+            width: MediaQuery.of(context).size.width * 0.3,
             borderRadius: 4,
           ),
-          _buildShimmerContainer(
-            height: 16,
-            width: 60,
-            borderRadius: 4,
-          ),
+          _buildShimmerContainer(height: 16, width: 60, borderRadius: 4),
         ],
       ),
     );
@@ -100,7 +98,7 @@ class _ShimmerLoadingRestaurantsState extends State<ShimmerLoadingRestaurants>
               topRight: Radius.circular(16),
             ),
             child: _buildShimmerContainer(
-              height: 150,
+              height: MediaQuery.of(context).size.height * 0.18,
               width: double.infinity,
               borderRadius: 0,
             ),
@@ -119,7 +117,7 @@ class _ShimmerLoadingRestaurantsState extends State<ShimmerLoadingRestaurants>
                     Expanded(
                       child: _buildShimmerContainer(
                         height: 18,
-                        width: 150,
+                        width: MediaQuery.of(context).size.width * 0.4,
                         borderRadius: 4,
                       ),
                     ),
@@ -156,7 +154,7 @@ class _ShimmerLoadingRestaurantsState extends State<ShimmerLoadingRestaurants>
                 // Offer shimmer
                 _buildShimmerContainer(
                   height: 14,
-                  width: 100,
+                  width: MediaQuery.of(context).size.width * 0.25,
                   borderRadius: 4,
                 ),
               ],
@@ -183,11 +181,7 @@ class _ShimmerLoadingRestaurantsState extends State<ShimmerLoadingRestaurants>
         gradient: LinearGradient(
           begin: Alignment(_animation.value - 1, 0),
           end: Alignment(_animation.value, 0),
-          colors: [
-            Colors.grey[300]!,
-            Colors.grey[100]!,
-            Colors.grey[300]!,
-          ],
+          colors: [Colors.grey[300]!, Colors.grey[100]!, Colors.grey[300]!],
           stops: const [0.0, 0.5, 1.0],
         ),
       ),

@@ -69,7 +69,7 @@ class _SettingsState extends State<Settings> {
                 left: -context.width * 0.2,
                 right: -context.width * 0.2,
                 child: Container(
-                  height: 600,
+                  height: MediaQuery.of(context).size.height * 0.7,
                   decoration: const BoxDecoration(
                     color: Color(0xFFFEF2E2),
                     shape: BoxShape.circle,
@@ -80,7 +80,9 @@ class _SettingsState extends State<Settings> {
               SingleChildScrollView(
                 child: Column(
                   children: [
-                    const SizedBox(height: 120), // Spacing for the curve
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.15,
+                    ), // Spacing for the curve
                     // Profile R1 Icon
                     Center(
                       child: Container(
@@ -137,7 +139,7 @@ class _SettingsState extends State<Settings> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: Container(
-                        width: 350,
+                        width: MediaQuery.of(context).size.width * 0.9,
                         padding: const EdgeInsets.all(18),
                         decoration: BoxDecoration(
                           color: Colors.white,
@@ -216,7 +218,7 @@ class _SettingsState extends State<Settings> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       child: Container(
-                        width: 354,
+                        width: MediaQuery.of(context).size.width * 0.9,
                         height: 45,
                         decoration: BoxDecoration(
                           color: const Color(
@@ -239,7 +241,7 @@ class _SettingsState extends State<Settings> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 18),
                       child: Container(
-                        width: 354,
+                        width: MediaQuery.of(context).size.width * 0.9,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 12,
                           vertical: 8,
@@ -333,7 +335,7 @@ class _SettingsState extends State<Settings> {
                         onTap: () =>
                             _showLogoutBottomSheet(context, controller),
                         child: SizedBox(
-                          width: 314,
+                          width: MediaQuery.of(context).size.width * 0.8,
                           height: 33,
                           child: Row(
                             children: [

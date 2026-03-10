@@ -20,9 +20,11 @@ class VendorStatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 105,
-      constraints: const BoxConstraints(minHeight: 102),
-      padding: const EdgeInsets.only(top: 8, right: 13, bottom: 8, left: 13),
+      width: MediaQuery.of(context).size.width * 0.3,
+      constraints: BoxConstraints(
+        minHeight: MediaQuery.of(context).size.height * 0.12,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(12),
@@ -42,20 +44,23 @@ class VendorStatCard extends StatelessWidget {
             ),
             child: Icon(icon, color: iconDecorationColor, size: 16),
           ),
-          const SizedBox(height: 10), // Gap 10px
-          Text(
-            value,
-            style: GoogleFonts.rubik(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F1F1F),
+          const SizedBox(height: 10),
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(
+              value,
+              style: GoogleFonts.rubik(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: const Color(0xFF1F1F1F),
+              ),
             ),
           ),
           const SizedBox(height: 4),
           Text(
             title,
             textAlign: TextAlign.center,
-            maxLines: 1,
+            maxLines: 2,
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.rubik(
               fontSize: 9,

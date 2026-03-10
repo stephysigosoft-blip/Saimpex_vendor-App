@@ -227,7 +227,7 @@ class _EditMenuScreenState extends State<EditMenuScreen> {
               items: _tags,
               onChanged: (v) => setState(() => _selectedTag = v!),
               height: 46,
-              width: 358,
+              width: MediaQuery.of(context).size.width * 0.9,
             ),
             const SizedBox(height: 16),
 
@@ -283,8 +283,8 @@ class _EditMenuScreenState extends State<EditMenuScreen> {
             GestureDetector(
               onTap: _pickImages,
               child: Container(
-                width: 358,
-                height: 117,
+                width: MediaQuery.of(context).size.width * 0.9,
+                height: MediaQuery.of(context).size.height * 0.15,
                 padding: const EdgeInsets.all(32),
                 decoration: BoxDecoration(
                   color: Colors.white,
@@ -389,7 +389,7 @@ class _EditMenuScreenState extends State<EditMenuScreen> {
               children: [
                 // Reset
                 SizedBox(
-                  width: 119,
+                  width: MediaQuery.of(context).size.width * 0.3,
                   height: 40,
                   child: OutlinedButton(
                     onPressed: () {
@@ -428,7 +428,7 @@ class _EditMenuScreenState extends State<EditMenuScreen> {
                 const SizedBox(width: 16),
                 // Submit
                 SizedBox(
-                  width: 189,
+                  width: MediaQuery.of(context).size.width * 0.48,
                   height: 40,
                   child: ElevatedButton(
                     onPressed: () {
@@ -480,7 +480,7 @@ class _EditMenuScreenState extends State<EditMenuScreen> {
     TextAlign textAlign = TextAlign.start,
   }) {
     return SizedBox(
-      width: 358,
+      width: MediaQuery.of(context).size.width * 0.9,
       height: 52,
       child: TextFormField(
         controller: controller,
@@ -524,7 +524,7 @@ class _EditMenuScreenState extends State<EditMenuScreen> {
     TextAlign textAlign = TextAlign.start,
   }) {
     return SizedBox(
-      width: 358,
+      width: MediaQuery.of(context).size.width * 0.9,
       height: 89,
       child: TextFormField(
         controller: controller,

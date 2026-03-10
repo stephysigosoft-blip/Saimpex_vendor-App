@@ -176,7 +176,7 @@ Widget _buildContent(
                       },
                       hintText: S.of(context).searchCategories,
                       boxColor: Colors.white,
-                      width: 293,
+                      width: MediaQuery.of(context).size.width * 0.75,
                     ),
                   ),
                 ),
@@ -195,8 +195,8 @@ Widget _buildContent(
                 Center(
                   child: Image.asset(
                     'lib/assets/images/line.png',
-                    height: 15,
-                    width: 70,
+                    height: MediaQuery.of(context).size.height * 0.02,
+                    width: MediaQuery.of(context).size.width * 0.2,
                   ),
                 ),
 
@@ -243,8 +243,16 @@ Widget _buildContent(
                                         item.image != null &&
                                             item.image!.isNotEmpty
                                         ? CachedNetworkImage(
-                                            height: 60,
-                                            width: 70,
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                0.08,
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                0.18,
                                             imageUrl:
                                                 // ApiConfigs.IMAGE_URL +
                                                 item.image.toString(),
@@ -261,8 +269,16 @@ Widget _buildContent(
                                           )
                                         : Image.asset(
                                             'lib/assets/images/logo.png',
-                                            height: 60,
-                                            width: 70,
+                                            height:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.height *
+                                                0.08,
+                                            width:
+                                                MediaQuery.of(
+                                                  context,
+                                                ).size.width *
+                                                0.18,
                                             fit: BoxFit.cover,
                                           ),
                                   ),

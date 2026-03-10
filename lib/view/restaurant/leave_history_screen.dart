@@ -81,6 +81,7 @@ class LeaveHistoryScreen extends StatelessWidget {
                   (leave) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: _buildLeaveTile(
+                      context: context,
                       dateRange: _formatLeaveDate(leave.date),
                       reason: leave.reason ?? "Leave",
                       status: "SCHEDULED",
@@ -104,6 +105,7 @@ class LeaveHistoryScreen extends StatelessWidget {
                   (leave) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
                     child: _buildLeaveTile(
+                      context: context,
                       dateRange: _formatLeaveDate(leave.date),
                       reason: leave.reason ?? "Leave",
                       status: "COMPLETED",
@@ -125,13 +127,14 @@ class LeaveHistoryScreen extends StatelessWidget {
   }
 
   Widget _buildLeaveTile({
+    required BuildContext context,
     required String dateRange,
     required String reason,
     required String status,
     required bool isUpcoming,
   }) {
     return Container(
-      width: 350,
+      width: MediaQuery.of(context).size.width * 0.9,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
