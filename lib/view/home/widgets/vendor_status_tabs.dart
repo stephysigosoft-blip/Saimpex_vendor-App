@@ -91,11 +91,7 @@ class VendorStatusTabs extends StatelessWidget {
                 ),
                 if (isSelected && tab != "Delivered" && tab != "Cancelled")
                   Positioned(
-<<<<<<< HEAD
                     top: 1,
-=======
-                    //top: 0,
->>>>>>> 4d1022f (commit after ongoing api integrations on 10/03/2026)
                     right: 0,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
