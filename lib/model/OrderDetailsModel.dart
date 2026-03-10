@@ -159,9 +159,9 @@ class Data {
 class OrderDurations {
   final int? id;
   final int? orderId;
-  final String? restaurantAcceptanceDuration;
-  final String? preparationStartDuration;
-  final String? preparationDuration;
+  final dynamic restaurantAcceptanceDuration;
+  final dynamic preparationStartDuration;
+  final dynamic preparationDuration;
   final dynamic deliveryPartnerToRestaurantDuration;
   final dynamic pickupWaitDuration;
   final dynamic restaurantToCustomerDuration;
@@ -217,12 +217,14 @@ class OrderItem {
   final String? unitPrice;
   final int? quantity;
   final String? price;
+  final dynamic image;
 
   OrderItem({
     this.orderItem,
     this.unitPrice,
     this.quantity,
     this.price,
+    this.image,
   });
 
   factory OrderItem.fromJson(Map<String, dynamic> json) => OrderItem(
@@ -230,6 +232,7 @@ class OrderItem {
     unitPrice: json["unit_price"],
     quantity: json["quantity"],
     price: json["price"],
+    image: json["image"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -237,6 +240,7 @@ class OrderItem {
     "unit_price": unitPrice,
     "quantity": quantity,
     "price": price,
+    "image": image,
   };
 }
 

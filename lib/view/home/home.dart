@@ -9,6 +9,7 @@ import 'package:saimpex_vendor/view/home/vendor_home_screen.dart';
 import 'package:saimpex_vendor/view/restaurant/vendor_restaurant_screen.dart';
 import 'package:saimpex_vendor/view/settings/settings.dart';
 import 'package:saimpex_vendor/view/chat/ChatListing.dart';
+import 'package:saimpex_vendor/controller/profile_controller.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, this.isGuest = false, this.initialIndex});
@@ -33,6 +34,7 @@ class _HomeState extends State<Home> {
   void initState() {
     super.initState();
     homescreenController = Get.put(HomeController());
+    Get.put(ProfileController());
     if (widget.initialIndex != null) {
       homescreenController.selectedcurrentIndex = widget.initialIndex!;
       homescreenController.update();

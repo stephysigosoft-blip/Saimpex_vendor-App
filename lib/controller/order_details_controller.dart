@@ -4,11 +4,11 @@ import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/extension_navigation.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 
-import '../Utils/Utils.dart';
 import '../configs/ApiConfigs.dart';
 import '../configs/Dioclient.dart';
 import '../generated/l10n.dart';
 import '../model/OrderDetailsModel.dart';
+import '../utils/utils.dart';
 import '../view/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -19,7 +19,7 @@ class OrderDetailsController extends GetxController {
   Data? orderData;
   /// 0 = Order Overview (timeline), 1 = Order Duration Breakdown
   int selectedOrderTabIndex = 0;
-
+  List<({String label, String value})> durationBreakdownItems = [];
 
   @override
   void onInit() {
@@ -42,6 +42,14 @@ class OrderDetailsController extends GetxController {
         final orderDetailsModel = OrderDetailsModel.fromJson(response.data);
         if (orderDetailsModel.status.toString() == "true") {
           orderData = orderDetailsModel.data;
+          final d = orderData!.orderDurations;
+          durationBreakdownItems = [
+            (label: 'Restaurant acceptance time', value: formatDurationToMinutes(d?.restaurantAcceptanceDuration?.toString())),
+            (label: 'Prepare food Duration', value: formatDurationToMinutes(d?.preparationDuration?.toString())),
+            (label: 'Delivery/Pickup to Restaurant', value: formatDurationToMinutes(d?.deliveryPartnerToRestaurantDuration?.toString())),
+            (label: 'Pickup/Wait Duration', value: formatDurationToMinutes(d?.pickupWaitDuration?.toString())),
+            (label: 'Restaurant to Customer Duration', value: formatDurationToMinutes(d?.restaurantToCustomerDuration?.toString())),
+          ];
         }
       }
     } catch (error, stackTrace) {
@@ -76,6 +84,14 @@ class OrderDetailsController extends GetxController {
         final orderDetailsModel = OrderDetailsModel.fromJson(response.data);
         if (orderDetailsModel.status.toString() == "true") {
           orderData = orderDetailsModel.data;
+          final d = orderData!.orderDurations;
+          durationBreakdownItems = [
+            (label: 'Restaurant acceptance time', value: formatDurationToMinutes(d?.restaurantAcceptanceDuration?.toString())),
+            (label: 'Prepare food Duration', value: formatDurationToMinutes(d?.preparationDuration?.toString())),
+            (label: 'Delivery/Pickup to Restaurant', value: formatDurationToMinutes(d?.deliveryPartnerToRestaurantDuration?.toString())),
+            (label: 'Pickup/Wait Duration', value: formatDurationToMinutes(d?.pickupWaitDuration?.toString())),
+            (label: 'Restaurant to Customer Duration', value: formatDurationToMinutes(d?.restaurantToCustomerDuration?.toString())),
+          ];
         }
       }
     } catch (error, stackTrace) {

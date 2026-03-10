@@ -548,6 +548,8 @@
   "@language": {},
   "home": "Home",
   "@home": {},
+  "account": "Account",
+  "@account": {},
   "myRestaurant": "My Restaurant",
   "@myRestaurant": {},
   "workingHours": "Working Hours",
