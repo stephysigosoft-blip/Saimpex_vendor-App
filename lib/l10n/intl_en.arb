@@ -932,6 +932,12 @@
   "@foodPermit": {},
   "preparingFood": "Preparing Food",
   "ongoing": "Ongoing",
+  "welcomeToSaimpexVendor": "Welcome to Saimpex Vendor!",
+  "pleaseSigninToYourAccountAndStartTheAdventure": "Please sign-in to your account and start the adventure",
+  "userName": "User Name",
+  "enterYourUsername": "Enter your username",
+  "password": "Password",
+  "enterYourPassword": "Enter your password",
   "assigned": "ASSIGNED",
   "reachedRestaurant": "REACHED RESTAURANT",
   "pickedUp": "PICKED UP",
@@ -943,5 +949,6 @@
   "orderReady": "Order Ready",
   "orderPickedUp": "Order Picked Up",
   "deliveryStarted": "Delivery Started",
-  "deliveryCompleted": "Delivery Completed"
+  "deliveryCompleted": "Delivery Completed",
+  "welcomeTo": "Welcome to"
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:saimpex_vendor/utils/localization_service.dart';
-import 'package:saimpex_vendor/utils/utils.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/view/login/widgets/login_form_card.dart';
 import 'package:saimpex_vendor/view/login/widgets/login_language_dropdown.dart';
@@ -33,17 +32,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: SizedBox.expand(
               child: Stack(
                 children: [
-                  LoginLanguageDropdown(
-                    topPadding: mediaQuery.padding.top,
-                    currentLanguageCode:
-                        localization.currentLocale!.languageCode,
-                    onLanguageChanged: (val) async {
-                      await LocalizationService().updateLocale(val);
-                      if (mounted) {
-                        setState(() {});
-                      }
-                    },
-                  ),
                   LoginLogo(size: size),
                   LoginFormCard(
                     size: size,
@@ -54,6 +42,17 @@ class _LoginScreenState extends State<LoginScreen> {
                         loginController.userNameController.text,
                         loginController.passwordController.text,
                       );
+                    },
+                  ),
+                  LoginLanguageDropdown(
+                    topPadding: mediaQuery.padding.top,
+                    currentLanguageCode:
+                        localization.currentLocale!.languageCode,
+                    onLanguageChanged: (val) async {
+                      await LocalizationService().updateLocale(val);
+                      if (mounted) {
+                        setState(() {});
+                      }
                     },
                   ),
                 ],

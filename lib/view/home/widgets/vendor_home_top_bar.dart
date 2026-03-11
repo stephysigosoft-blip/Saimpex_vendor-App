@@ -3,10 +3,13 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/view/notifications/notifications.dart';
 
+import '../../../generated/l10n.dart';
+
 class VendorHomeTopBar extends StatelessWidget {
-  const VendorHomeTopBar({super.key, required this.horizontalPadding});
+  const VendorHomeTopBar({super.key, required this.horizontalPadding, required this.userName});
 
   final double horizontalPadding;
+  final dynamic userName;
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +24,8 @@ class VendorHomeTopBar extends StatelessWidget {
                 Image.asset('lib/assets/images/logo.png', height: 50),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: Text(
-                    "Welcome to Saimpex Vendor!",
+                  child: userName.toString()=="null"?Container():Text(
+                    S.of(context).welcomeTo+" "+userName.toString(),
                     style: GoogleFonts.rubik(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,

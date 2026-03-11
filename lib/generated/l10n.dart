@@ -4540,6 +4540,66 @@ class S {
     );
   }
 
+  /// `Welcome to Saimpex Vendor!`
+  String get welcomeToSaimpexVendor {
+    return Intl.message(
+      'Welcome to Saimpex Vendor!',
+      name: 'welcomeToSaimpexVendor',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please sign-in to your account and start the adventure`
+  String get pleaseSigninToYourAccountAndStartTheAdventure {
+    return Intl.message(
+      'Please sign-in to your account and start the adventure',
+      name: 'pleaseSigninToYourAccountAndStartTheAdventure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `User Name`
+  String get userName {
+    return Intl.message(
+      'User Name',
+      name: 'userName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your username`
+  String get enterYourUsername {
+    return Intl.message(
+      'Enter your username',
+      name: 'enterYourUsername',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message(
+      'Password',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Enter your password`
+  String get enterYourPassword {
+    return Intl.message(
+      'Enter your password',
+      name: 'enterYourPassword',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `ASSIGNED`
   String get assigned {
     return Intl.message(
@@ -4655,6 +4715,16 @@ class S {
     return Intl.message(
       'Delivery Completed',
       name: 'deliveryCompleted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Welcome to`
+  String get welcomeTo {
+    return Intl.message(
+      'Welcome to',
+      name: 'welcomeTo',
       desc: '',
       args: [],
     );

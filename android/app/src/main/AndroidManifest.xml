@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="saimpex_vendor"
+        android:label="Saimpex Vendor"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 

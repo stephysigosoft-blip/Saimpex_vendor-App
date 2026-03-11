@@ -208,7 +208,10 @@ class ProfileController extends GetxController {
         DioClient().updateToken(token);
       }
 
-      final response = await DioClient().get(ApiEndPoints.getRestaurantMenus);
+      final response = await DioClient().get(
+        ApiEndPoints.restaurantMenuItems,
+        query: {"limit": 10, "page": 1},
+      );
 
       final model = RestaurantMenusModel.fromJson(response.data);
       if (model.status == true) {
