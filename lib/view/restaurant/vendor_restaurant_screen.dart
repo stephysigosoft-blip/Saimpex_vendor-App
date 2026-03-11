@@ -10,7 +10,6 @@ import 'edit_items_screen.dart';
 import 'menu_item_details_screen.dart';
 import 'basket_details_screen.dart';
 import 'rating_reviews_screen.dart';
-import 'leave_history_screen.dart';
 import 'Widgets/vendor_restaurant_reusable_widgets.dart';
 import '../../controller/profile_controller.dart';
 import '../../Utils/Utils.dart';
@@ -330,16 +329,16 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                       _sectionHeader("LEAVES HISTORY"),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => LeaveHistoryScreen(
-                                upcomingLeaves:
-                                    profileController.upcomingLeaves,
-                                leaveHistory: profileController.leaveHistory,
-                              ),
-                            ),
-                          );
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //     builder: (context) => LeaveHistoryScreen(
+                          //       upcomingLeaves:
+                          //           profileController.upcomingLeaves,
+                          //       leaveHistory: profileController.leaveHistory,
+                          //     ),
+                          //   ),
+                          // );
                         },
                         child: Text(
                           S.of(context).viewAll,

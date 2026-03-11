@@ -411,7 +411,7 @@ class VendorReviewItem extends StatelessWidget {
               color: const Color(0xFF4B5563),
             ),
           ),
-          const Spacer(),
+          const SizedBox(height: 12),
           Container(
             width: double.infinity,
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
