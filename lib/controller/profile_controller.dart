@@ -57,11 +57,19 @@ class ProfileController extends GetxController {
   double points = 0.0;
   double redeemableAmount = 0.0;
 
+  bool isLoadMoreLeaveLoading = false;
+  int currentLeavePage = 1;
+  bool hasMoreLeaveHistory = true;
+
   List<LeaveData> upcomingLeaves = [];
   List<LeaveData> leaveHistory = [];
+  List<WorkingHour> workingHours = [];
 
   RatingReviewData? ratingReviewData;
   bool isRatingReviewLoading = false;
+  bool isLoadMoreRatingLoading = false;
+  int currentRatingPage = 1;
+  bool hasMoreReviews = true;
 
   List<GroceryMenu> groceryMenus = [];
   bool isGroceryMenusLoading = false;
@@ -77,11 +85,19 @@ class ProfileController extends GetxController {
 
   Future<void> getRatingsReviews(
     BuildContext context, {
-    String vendorType = "2",
+    String? vendorType,
     int limit = 10,
+    int page = 1,
+    bool isLoadMore = false,
   }) async {
     try {
-      isRatingReviewLoading = true;
+      if (isLoadMore) {
+        isLoadMoreRatingLoading = true;
+      } else {
+        isRatingReviewLoading = true;
+        currentRatingPage = 1;
+        hasMoreReviews = true;
+      }
       update();
 
       var token = await getSavedObject("token");
@@ -91,15 +107,40 @@ class ProfileController extends GetxController {
         DioClient().updateToken("");
       }
 
+      var savedVendorType = await getSavedObject("vendorType");
+      var finalVendorType = vendorType ?? savedVendorType?.toString() ?? "1";
+
       final response = await DioClient().get(
         ApiEndPoints.ratingsReviews,
-        query: {"limit": limit, "vendor_type": vendorType},
+        query: {"limit": limit, "vendor_type": finalVendorType, "page": page},
       );
 
       if (response.data['status'] == 'true' ||
           response.data['status'] == true) {
         final ratingReviewModel = RatingReviewModel.fromJson(response.data);
-        ratingReviewData = ratingReviewModel.data;
+        if (isLoadMore) {
+          if (ratingReviewModel.data?.reviews != null) {
+            final newReviews = ratingReviewModel.data!.reviews!;
+            if (newReviews.isEmpty) {
+              hasMoreReviews = false;
+            } else {
+              ratingReviewData = RatingReviewData(
+                rating: ratingReviewModel.data!.rating,
+                totalReviews: ratingReviewModel.data!.totalReviews,
+                reviews: [...(ratingReviewData?.reviews ?? []), ...newReviews],
+              );
+              currentRatingPage = page;
+            }
+          } else {
+            hasMoreReviews = false;
+          }
+        } else {
+          ratingReviewData = ratingReviewModel.data;
+          if (ratingReviewData?.reviews == null ||
+              ratingReviewData!.reviews!.length < limit) {
+            hasMoreReviews = false;
+          }
+        }
       } else {
         if (context.mounted) {
           showToast(
@@ -115,6 +156,7 @@ class ProfileController extends GetxController {
       }
     } finally {
       isRatingReviewLoading = false;
+      isLoadMoreRatingLoading = false;
       update();
     }
   }
@@ -438,8 +480,10 @@ class ProfileController extends GetxController {
         DioClient().updateToken("");
       }
 
+      var vendorType = await getSavedObject("vendorType");
+
       var formData = {
-        "vendor_type": "1",
+        "vendor_type": vendorType ?? "1",
         "from_date": fromDate,
         "to_date": toDate,
         if (reason.isNotEmpty) "reason": reason,
@@ -485,9 +529,20 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> getProfile(BuildContext context) async {
+  Future<void> getProfile(
+    BuildContext context, {
+    int page = 1,
+    int limit = 10,
+    bool isLoadMore = false,
+  }) async {
     try {
-      isProfileLoading = true;
+      if (isLoadMore) {
+        isLoadMoreLeaveLoading = true;
+      } else {
+        isProfileLoading = true;
+        currentLeavePage = 1;
+        hasMoreLeaveHistory = true;
+      }
       update();
 
       var token = await getSavedObject("token");
@@ -501,23 +556,50 @@ class ProfileController extends GetxController {
 
       final response = await DioClient().get(
         ApiEndPoints.profile,
-        query: {"vendor_type": vendorType ?? 1},
+        query: {
+          "vendor_type": vendorType ?? "1",
+          "limit": limit,
+          "page": page,
+        },
       );
 
       ProfileModel profileModel = ProfileModel.fromJson(response.data);
       if (profileModel.status == true) {
-        profileData = profileModel.data;
-        upcomingLeaves = profileModel.upcomingLeaves ?? [];
-        leaveHistory = profileModel.leaveHistory ?? [];
-        nameController.text = profileData?.name ?? "";
-        phoneController.text = profileData?.mobile ?? "";
-        countryCode = profileData?.countryCode ?? "";
-        profilePicture = profileData?.image ?? "";
+        if (isLoadMore) {
+          if (profileModel.leaveHistory != null) {
+            final newLeaves = profileModel.leaveHistory!;
+            if (newLeaves.isEmpty) {
+              hasMoreLeaveHistory = false;
+            } else {
+              leaveHistory.addAll(newLeaves);
+              currentLeavePage = page;
+              if (newLeaves.length < limit) {
+                hasMoreLeaveHistory = false;
+              }
+            }
+          } else {
+            hasMoreLeaveHistory = false;
+          }
+        } else {
+          profileData = profileModel.data;
+          upcomingLeaves = profileModel.upcomingLeaves ?? [];
+          leaveHistory = profileModel.leaveHistory ?? [];
+          workingHours = profileModel.workingHours ?? [];
+          nameController.text = profileData?.name ?? "";
+          phoneController.text = profileData?.mobile ?? "";
+          countryCode = profileData?.countryCode ?? "";
+          profilePicture = profileData?.image ?? "";
+
+          if (leaveHistory.length < limit) {
+            hasMoreLeaveHistory = false;
+          }
+        }
       }
     } catch (error) {
       debugPrint("getProfile Error: $error");
     } finally {
       isProfileLoading = false;
+      isLoadMoreLeaveLoading = false;
       update();
     }
   }

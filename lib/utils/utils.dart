@@ -230,11 +230,16 @@ void printFormData(FormData formData) {
   debugPrint(formDataMap.toString());
 }
 
-int versionToCode(String version) {
+int versionToCode(String? version) {
+  if (version == null || version.isEmpty) return 0;
   final parts = version.split('.');
-  final major = int.parse(parts[0]);
-  final minor = int.parse(parts[1]);
-  final patch = int.parse(parts[2]);
+  int major = 0;
+  int minor = 0;
+  int patch = 0;
+
+  if (parts.isNotEmpty) major = int.tryParse(parts[0]) ?? 0;
+  if (parts.length > 1) minor = int.tryParse(parts[1]) ?? 0;
+  if (parts.length > 2) patch = int.tryParse(parts[2]) ?? 0;
 
   return major * 10000 + minor * 100 + patch;
 }
@@ -506,7 +511,7 @@ void showConfirmationBottomSheet({
                       ),
                     ),
                   ),
-                  SizedBox(width: 10,),
+                  SizedBox(width: 10),
                   Expanded(
                     child: SizedBox(
                       height: 45,

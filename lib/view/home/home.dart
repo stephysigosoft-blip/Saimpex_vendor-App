@@ -35,10 +35,8 @@ class _HomeState extends State<Home> {
     super.initState();
     homescreenController = Get.put(HomeController());
     Get.put(ProfileController());
-    if (widget.initialIndex != null) {
-      homescreenController.selectedcurrentIndex = widget.initialIndex!;
-      homescreenController.update();
-    }
+    homescreenController.selectedcurrentIndex = widget.initialIndex ?? 0;
+    homescreenController.update();
   }
 
   Future<bool> _onWillPop() async {

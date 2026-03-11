@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
-import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../generated/l10n.dart';
+import '../../utils/localization_service.dart';
 
 import '../../controller/settings_controller.dart';
 import '../../view/shimmer_loading/shimmer_text_content.dart';
@@ -12,11 +13,8 @@ class AboutUs extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localization = FlutterLocalization.instance;
     return Directionality(
-      textDirection: localization.currentLocale!.languageCode == "ar"
-          ? TextDirection.rtl
-          : TextDirection.ltr,
+      textDirection: LocalizationService().getTextDirection(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -33,7 +31,7 @@ class AboutUs extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            "About Us",
+            S.of(context).aboutUs,
             style: GoogleFonts.rubik(
               fontSize: 18,
               fontWeight: FontWeight.w700,

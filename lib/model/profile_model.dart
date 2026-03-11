@@ -4,6 +4,7 @@ class ProfileModel {
   final ProfileMessage? message;
   final List<LeaveData>? upcomingLeaves;
   final List<LeaveData>? leaveHistory;
+  final List<WorkingHour>? workingHours;
 
   ProfileModel({
     this.status,
@@ -11,6 +12,7 @@ class ProfileModel {
     this.message,
     this.upcomingLeaves,
     this.leaveHistory,
+    this.workingHours,
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic>? json) {
@@ -35,6 +37,11 @@ class ProfileModel {
       leaveHistory: json['data']?['leave_history'] != null
           ? (json['data']['leave_history'] as List)
                 .map((i) => LeaveData.fromJson(i))
+                .toList()
+          : null,
+      workingHours: json['data']?['working_hours'] != null
+          ? (json['data']['working_hours'] as List)
+                .map((i) => WorkingHour.fromJson(i))
                 .toList()
           : null,
     );
@@ -216,7 +223,60 @@ class LeaveData {
           ? int.tryParse(json['vendor_id'].toString())
           : null,
       date: json['date']?.toString(),
-      reason: json['reason']?.toString(),
+    );
+  }
+}
+
+class WorkingHour {
+  final int? id;
+  final String? day;
+  final String? openingTime;
+  final String? closingTime;
+  final bool? isClosed;
+
+  WorkingHour({
+    this.id,
+    this.day,
+    this.openingTime,
+    this.closingTime,
+    this.isClosed,
+  });
+
+  factory WorkingHour.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return WorkingHour();
+
+    String? openTime =
+        json['opening_time']?.toString() ??
+        json['open_time']?.toString() ??
+        json['start_time']?.toString() ??
+        json['from_time']?.toString();
+    String? closeTime =
+        json['closing_time']?.toString() ??
+        json['close_time']?.toString() ??
+        json['end_time']?.toString() ??
+        json['to_time']?.toString();
+
+    bool closed = false;
+    if (json['is_closed'] != null) {
+      closed =
+          json['is_closed'].toString() == '1' ||
+          json['is_closed'].toString().toLowerCase() == 'true';
+    } else if (json['status'] != null) {
+      closed =
+          json['status'].toString() == '0' ||
+          json['status'].toString().toLowerCase() == 'false' ||
+          json['status'].toString().toLowerCase() == 'closed';
+    }
+
+    return WorkingHour(
+      id: json['id'] != null ? int.tryParse(json['id'].toString()) : null,
+      day:
+          json['day']?.toString() ??
+          json['day_name']?.toString() ??
+          json['name']?.toString(),
+      openingTime: openTime,
+      closingTime: closeTime,
+      isClosed: closed,
     );
   }
 }

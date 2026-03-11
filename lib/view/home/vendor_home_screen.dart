@@ -16,7 +16,7 @@ import 'package:saimpex_vendor/view/home/widgets/vendor_order_list_item.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_orders_header.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_stats_section.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_status_tabs.dart';
-import 'package:saimpex_vendor/view/home/widgets/vendor_success_dialog.dart';
+import 'package:saimpex_vendor/controller/order_details_controller.dart';
 
 class VendorHomeScreen extends StatefulWidget {
   const VendorHomeScreen({super.key});
@@ -29,8 +29,9 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
   final VendorHomeController vendorHomeController =
       const VendorHomeController();
   final HomeController homeController = Get.find<HomeController>();
+  final OrderDetailsController detailsController = Get.put(OrderDetailsController());
   String selectedTab = "Pending";
-  static const int _defaultLimit = 10;
+  static const int _defaultLimit = 5;
   final Map<String, int> _tabCounts = {
     "Pending": 0,
     "Accepted": 0,
@@ -127,11 +128,35 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
     });
   }
 
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => const VendorSuccessDialog(),
-    );
+
+  void _handleAcceptOrder(String orderId) {
+    final vendorType =
+        homeController.homeData?.data?.vendor?.vendorType?.toString() ?? "0";
+    if (vendorType == "1") {
+      detailsController.acceptRestaurantOrder(context, orderId);
+    } else {
+      detailsController.acceptGroceryOrder(context, orderId);
+    }
+  }
+
+  void _handleCancelOrder(String orderId) {
+    final vendorType =
+        homeController.homeData?.data?.vendor?.vendorType?.toString() ?? "0";
+    if (vendorType == "1") {
+      detailsController.cancelRestaurantOrder(context, orderId);
+    } else {
+      detailsController.cancelGroceryOrder(context, orderId);
+    }
+  }
+
+  void _handleMarkAsReady(String orderId) {
+    final vendorType =
+        homeController.homeData?.data?.vendor?.vendorType?.toString() ?? "0";
+    if (vendorType == "1") {
+      detailsController.markAsReadyRestaurantOrder(context, orderId);
+    } else {
+      detailsController.markAsReadyGroceryOrder(context, orderId);
+    }
   }
 
   @override
@@ -242,7 +267,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                         )
                       : ListView.builder(
                           padding: const EdgeInsets.only(top: 8, bottom: 100),
-                          itemCount: orders.length,
+                          itemCount: orders.length > 5 ? 5 : orders.length,
                           itemBuilder: (context, index) {
                             final order = orders[index];
                             final price =
@@ -259,7 +284,10 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                                 dateTime: order.placedAtFormatted ?? "",
                                 status: _statusLabel(order.status),
                                 deliveryBoyName: order.deliveryBoyName,
-                                onAccept: () => _showSuccessDialog(context),
+                                cancelReason: order.cancelReason,
+                                onAccept: () => _handleAcceptOrder(order.id?.toString() ?? ""),
+                                onReject: () => _handleCancelOrder(order.id?.toString() ?? ""),
+                                onMarkAsReady: () => _handleMarkAsReady(order.id?.toString() ?? ""),
                               ),
                             );
                           },

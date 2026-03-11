@@ -11,6 +11,7 @@ import '../configs/Dioclient.dart';
 import '../generated/l10n.dart';
 import '../model/OrderDetailsModel.dart';
 import '../utils/utils.dart';
+import '../utils/widgets/success_dialog.dart';
 import '../view/login/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -128,8 +129,8 @@ class OrderDetailsController extends GetxController {
       order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
       if (orderStatusModel.status.toString() == "true") {
         Get.back();
-        showToast(context, orderStatusModel.message.toString());
         Get.offAll(Home());
+        showSuccessDialog(orderStatusModel.message.toString());
       }
     } catch (error,stackTrace) {
       Get.back();
@@ -162,13 +163,13 @@ class OrderDetailsController extends GetxController {
       order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
       if (orderStatusModel.status.toString() == "true") {
         Get.back();
-        showToast(context, orderStatusModel.message.toString());
         Get.offAll(Home());
+        showSuccessDialog(orderStatusModel.message.toString());
       }
     } catch (error,stackTrace) {
       Get.back();
       debugPrint("stackTrace: $stackTrace");
-      debugPrint("accept order Error restaurant: $error");
+      debugPrint("accept order Error grocery: $error");
       if (error.toString() == "Unauthorized") {
         final prefs = await SharedPreferences.getInstance();
         await prefs.clear();
@@ -264,8 +265,8 @@ class OrderDetailsController extends GetxController {
       order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
       if (orderStatusModel.status.toString() == "true") {
         Get.back();
-        showToast(context, orderStatusModel.message.toString());
         Get.offAll(Home());
+        showSuccessDialog(orderStatusModel.message.toString());
       }
     } catch (error,stackTrace) {
       Get.back();
@@ -298,8 +299,8 @@ class OrderDetailsController extends GetxController {
       order.OrderStatusModel orderStatusModel = order.OrderStatusModel.fromJson(response.data);
       if (orderStatusModel.status.toString() == "true") {
         Get.back();
-        showToast(context, orderStatusModel.message.toString());
         Get.offAll(Home());
+        showSuccessDialog(orderStatusModel.message.toString());
       }
     } catch (error,stackTrace) {
       Get.back();

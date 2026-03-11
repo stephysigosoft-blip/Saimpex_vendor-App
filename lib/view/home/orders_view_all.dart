@@ -8,14 +8,9 @@ import 'package:saimpex_vendor/utils/widgets/app_loader.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
 import 'package:saimpex_vendor/utils/widgets/no_data_widget.dart';
-import 'package:saimpex_vendor/view/home/widgets/vendor_dashboard_button.dart';
-import 'package:saimpex_vendor/view/home/widgets/vendor_home_top_bar.dart';
-import 'package:saimpex_vendor/view/home/widgets/vendor_membership_card.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_order_list_item.dart';
-import 'package:saimpex_vendor/view/home/widgets/vendor_orders_header.dart';
-import 'package:saimpex_vendor/view/home/widgets/vendor_stats_section.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_status_tabs.dart';
-import 'package:saimpex_vendor/view/home/widgets/vendor_success_dialog.dart';
+import 'package:saimpex_vendor/controller/order_details_controller.dart';
 
 import '../../utils/Widgets/custom_app_bar.dart';
 
@@ -30,8 +25,11 @@ class _OrdersViewAllState extends State<OrdersViewAll> {
   final VendorHomeController vendorHomeController =
       const VendorHomeController();
   final HomeController homeController = Get.find<HomeController>();
+  final OrderDetailsController detailsController = Get.put(
+    OrderDetailsController(),
+  );
   String selectedTab = "Pending";
-  static const int _defaultLimit = 10;
+  static const int _defaultLimit = 15;
   final Map<String, int> _tabCounts = {
     "Pending": 0,
     "Accepted": 0,
@@ -51,12 +49,59 @@ class _OrdersViewAllState extends State<OrdersViewAll> {
     "Cancelled",
   ];
 
+  final ScrollController _scrollController = ScrollController();
+  int _currentPage = 1;
+  bool _isLoadMore = false;
+  bool _hasNextPage = true;
+
   @override
   void initState() {
     super.initState();
+    _scrollController.addListener(_loadMore);
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _fetchOrders();
     });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _loadMore() async {
+    if (_hasNextPage &&
+        !homeController.isFirstLoadRunning &&
+        !_isLoadMore &&
+        _scrollController.position.extentAfter < 200) {
+      if (mounted) {
+        setState(() {
+          _isLoadMore = true;
+        });
+      }
+      _currentPage++;
+      await homeController.fetchHome(
+        context,
+        orderStatus: _statusValue(selectedTab),
+        keyword: homeController.searchController.text.trim(),
+        limit: _defaultLimit,
+        page: _currentPage,
+        isLoadMore: true,
+      );
+
+      final currentOrders = homeController.homeData?.data?.orders;
+      if (currentOrders != null) {
+        if ((currentOrders.currentPage ?? 1) >= (currentOrders.lastPage ?? 1)) {
+          _hasNextPage = false;
+        }
+      }
+
+      if (mounted) {
+        setState(() {
+          _isLoadMore = false;
+        });
+      }
+    }
   }
 
   int _statusValue(String tab) {
@@ -108,6 +153,8 @@ class _OrdersViewAllState extends State<OrdersViewAll> {
   }
 
   Future<void> _fetchOrders({String? keyword}) async {
+    _currentPage = 1;
+    _hasNextPage = true;
     await homeController.fetchHome(
       context,
       orderStatus: _statusValue(selectedTab),
@@ -128,11 +175,34 @@ class _OrdersViewAllState extends State<OrdersViewAll> {
     });
   }
 
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (context) => const VendorSuccessDialog(),
-    );
+  void _handleAcceptOrder(String orderId) {
+    final vendorType =
+        homeController.homeData?.data?.vendor?.vendorType?.toString() ?? "0";
+    if (vendorType == "1") {
+      detailsController.acceptRestaurantOrder(context, orderId);
+    } else {
+      detailsController.acceptGroceryOrder(context, orderId);
+    }
+  }
+
+  void _handleCancelOrder(String orderId) {
+    final vendorType =
+        homeController.homeData?.data?.vendor?.vendorType?.toString() ?? "0";
+    if (vendorType == "1") {
+      detailsController.cancelRestaurantOrder(context, orderId);
+    } else {
+      detailsController.cancelGroceryOrder(context, orderId);
+    }
+  }
+
+  void _handleMarkAsReady(String orderId) {
+    final vendorType =
+        homeController.homeData?.data?.vendor?.vendorType?.toString() ?? "0";
+    if (vendorType == "1") {
+      detailsController.markAsReadyRestaurantOrder(context, orderId);
+    } else {
+      detailsController.markAsReadyGroceryOrder(context, orderId);
+    }
   }
 
   @override
@@ -158,10 +228,7 @@ class _OrdersViewAllState extends State<OrdersViewAll> {
             .expiresInDays(membership?.expiresInDays?.toString() ?? "0");
         return CommonBackground(
           resizeToAvoidBottomInset: false,
-          appBar: CustomAppBar(
-            title: "Orders",
-            onTap: () => Get.back(),
-          ),
+          appBar: CustomAppBar(title: "Orders", onTap: () => Get.back()),
           child: SizedBox.expand(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -214,30 +281,59 @@ class _OrdersViewAllState extends State<OrdersViewAll> {
                           S.of(context).noOrdersFound,
                           "",
                           "lib/assets/images/nodata.png",
+                          imgHeight: MediaQuery.of(context).size.height * 0.25,
+                          imgWidth: MediaQuery.of(context).size.width * 0.6,
+                          fontSize: 18,
                         )
-                      : ListView.builder(
-                          padding: const EdgeInsets.only(top: 8, bottom: 100),
-                          itemCount: orders.length,
-                          itemBuilder: (context, index) {
-                            final order = orders[index];
-                            final price =
-                                double.tryParse(order.total ?? "0") ?? 0;
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: VendorOrderListItem(
-                                horizontalPadding: layout.horizontalPadding,
-                                orderId: order.id?.toString() ?? "NA",
-                                customerName:
-                                    order.userName ?? S.of(context).unknown,
-                                itemsCount: order.orderItemsCount ?? 0,
-                                price: price,
-                                dateTime: order.placedAtFormatted ?? "",
-                                status: _statusLabel(order.status),
-                                deliveryBoyName: order.deliveryBoyName,
-                                onAccept: () => _showSuccessDialog(context),
+                      : Column(
+                          children: [
+                            Expanded(
+                              child: ListView.builder(
+                                controller: _scrollController,
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 20,
+                                ),
+                                itemCount: orders.length,
+                                itemBuilder: (context, index) {
+                                  final order = orders[index];
+                                  final price =
+                                      double.tryParse(order.total ?? "0") ?? 0;
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: VendorOrderListItem(
+                                      horizontalPadding:
+                                          layout.horizontalPadding,
+                                      orderId: order.id?.toString() ?? "NA",
+                                      customerName:
+                                          order.userName ??
+                                          S.of(context).unknown,
+                                      itemsCount: order.orderItemsCount ?? 0,
+                                      price: price,
+                                      dateTime: order.placedAtFormatted ?? "",
+                                      status: _statusLabel(order.status),
+                                      deliveryBoyName: order.deliveryBoyName,
+                                      cancelReason: order.cancelReason,
+                                      onAccept: () => _handleAcceptOrder(
+                                        order.id?.toString() ?? "",
+                                      ),
+                                      onReject: () => _handleCancelOrder(
+                                        order.id?.toString() ?? "",
+                                      ),
+                                      onMarkAsReady: () => _handleMarkAsReady(
+                                        order.id?.toString() ?? "",
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
-                            );
-                          },
+                            ),
+                            if (_isLoadMore)
+                              const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 16),
+                                child: AppLoader(size: 40),
+                              ),
+                          ],
                         ),
                 ),
               ],
