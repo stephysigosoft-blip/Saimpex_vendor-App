@@ -98,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "areYouSureYouWantToPlaceThisOrder":
             MessageLookupByLibrary.simpleMessage(
                 "Are you sure you want to place this order?"),
+        "assigned": MessageLookupByLibrary.simpleMessage("ASSIGNED"),
         "assignedDeliveryPartner":
             MessageLookupByLibrary.simpleMessage("Assigned Delivery Partner"),
         "assignedStatus": MessageLookupByLibrary.simpleMessage("Assigned"),
@@ -199,12 +200,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleteCart": MessageLookupByLibrary.simpleMessage("Delete Cart"),
         "deleteChat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
         "delivered": MessageLookupByLibrary.simpleMessage("Delivered"),
+        "delivering": MessageLookupByLibrary.simpleMessage("DELIVERING"),
         "deliveryAddress":
             MessageLookupByLibrary.simpleMessage("DELIVERY ADDRESS"),
         "deliveryBoys": MessageLookupByLibrary.simpleMessage("Delivery Boys"),
+        "deliveryCompleted":
+            MessageLookupByLibrary.simpleMessage("Delivery Completed"),
         "deliveryFee": MessageLookupByLibrary.simpleMessage("Delivery Fee"),
         "deliveryLocation":
             MessageLookupByLibrary.simpleMessage("Delivery Location"),
+        "deliveryStarted":
+            MessageLookupByLibrary.simpleMessage("Delivery Started"),
         "descriptionEnglishLabel":
             MessageLookupByLibrary.simpleMessage("Description (English)"),
         "didntGetTheOtp":
@@ -389,6 +395,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ongoing": MessageLookupByLibrary.simpleMessage("Ongoing"),
         "onlinePayment": MessageLookupByLibrary.simpleMessage("Online Payment"),
         "order": MessageLookupByLibrary.simpleMessage("ORDER"),
+        "orderAccepted": MessageLookupByLibrary.simpleMessage("Order Accepted"),
         "orderColon": MessageLookupByLibrary.simpleMessage("Order: "),
         "orderDetails": MessageLookupByLibrary.simpleMessage("Order Details"),
         "orderDetailsNotFound":
@@ -397,8 +404,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Order Duration Breakdown"),
         "orderIdLabel": m4,
         "orderItems": MessageLookupByLibrary.simpleMessage("ORDER ITEMS"),
+        "orderPickedUp":
+            MessageLookupByLibrary.simpleMessage("Order Picked Up"),
+        "orderPlaced": MessageLookupByLibrary.simpleMessage("Order Placed"),
         "orderPlacedSuccessfully":
             MessageLookupByLibrary.simpleMessage("Order placed successfully!"),
+        "orderPreparationStarted":
+            MessageLookupByLibrary.simpleMessage("Order Preparation Started"),
+        "orderReady": MessageLookupByLibrary.simpleMessage("Order Ready"),
+        "orderSuccessfullyPlacedBy": MessageLookupByLibrary.simpleMessage(
+            "Order successfully placed by"),
         "orderTimeline": MessageLookupByLibrary.simpleMessage("Order Timeline"),
         "ordered": MessageLookupByLibrary.simpleMessage("Ordered"),
         "orderedItems": MessageLookupByLibrary.simpleMessage("Ordered Items"),
@@ -432,6 +447,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "pickYourFavouritesAndStartYourFeast":
             MessageLookupByLibrary.simpleMessage(
                 "Pick your favourites and start your feast!"),
+        "pickedUp": MessageLookupByLibrary.simpleMessage("PICKED UP"),
         "placeOrder": MessageLookupByLibrary.simpleMessage("Place Order"),
         "pleaseAddYourItemsToCart": MessageLookupByLibrary.simpleMessage(
             "Please add your items to cart"),
@@ -496,6 +512,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Rate Your Order"),
         "ratingReviews":
             MessageLookupByLibrary.simpleMessage("RATING & REVIEWS"),
+        "reachedRestaurant":
+            MessageLookupByLibrary.simpleMessage("REACHED RESTAURANT"),
         "ready": MessageLookupByLibrary.simpleMessage("Ready"),
         "reasonColonLabel": m6,
         "reasonForLeave":
