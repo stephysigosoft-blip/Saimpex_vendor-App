@@ -113,6 +113,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return CommonBackground(
       child: GetBuilder<ProfileController>(
         builder: (profileController) {
@@ -125,7 +126,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                 const SizedBox(height: 60),
                 // Header Card
                 Container(
-                  width: MediaQuery.of(context).size.width * 0.9,
+                  width: size.width * 0.9,
                   padding: const EdgeInsets.symmetric(vertical: 24),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -143,8 +144,8 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                     children: [
                       // Logo R1
                       Container(
-                        width: MediaQuery.of(context).size.width * 0.2,
-                        height: MediaQuery.of(context).size.width * 0.2,
+                        width: size.width * 0.2,
+                        height: size.width * 0.2,
                         padding: const EdgeInsets.only(bottom: 12),
                         decoration: BoxDecoration(
                           color: const Color(0xFFEEF2FF),
@@ -215,21 +216,21 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   child: Row(
                     children: [
                       _buildMenuButton("Account"),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       _buildMenuButton("Working Hours"),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       _buildMenuButton("Leaves"),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       _buildMenuButton("Menu"),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       _buildMenuButton("Items"),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       _buildMenuButton("Menu Bulk Import"),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       _buildMenuButton("Basket"),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       _buildMenuButton("Received Payouts"),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 8),
                       _buildMenuButton("Restaurant Reports"),
                     ],
                   ),
@@ -240,7 +241,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("RESTAURANT DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.35,
+                    height: size.height * 0.35,
                     child: Column(
                       children: [
                         _detailRow("Name", profile?.name ?? "Restaurant 1"),
@@ -273,7 +274,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("BANK DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.18,
+                    height: size.height * 0.18,
                     child: Column(
                       children: [
                         _detailRow(
@@ -292,7 +293,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("ABOUT THE RESTAURANT"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.085,
+                    height: size.height * 0.085,
                     child: _detailRow(
                       "Category",
                       profile?.restaurantType == 1
@@ -306,7 +307,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("REGISTRATION DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.155,
+                    height: size.height * 0.155,
                     child: Column(
                       children: [
                         _detailRow(
@@ -325,7 +326,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("PAYMENT DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.12,
+                    height: size.height * 0.12,
                     child: Column(
                       children: [
                         _detailRow(
@@ -346,14 +347,14 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("OWNER IDENTITY PROOF"),
                   const SizedBox(height: 12),
                   _buildImageCard(
-                    height: MediaQuery.of(context).size.height * 0.14,
+                    height: size.height * 0.14,
                     imageUrl: profile?.ownerIdProof,
                   ),
                   const SizedBox(height: 24),
                   _sectionHeader("CERTIFICATES"),
                   const SizedBox(height: 12),
                   _buildImageCard(
-                    height: MediaQuery.of(context).size.height * 0.14,
+                    height: size.height * 0.14,
                     imageUrl: profile?.certificate,
                   ),
                   const SizedBox(height: 24),
@@ -453,17 +454,19 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                   const SizedBox(height: 12),
                   if (profileController.upcomingLeaves.isNotEmpty)
-                    ...profileController.upcomingLeaves.take(3).map(
-                      (leave) => Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: _buildLeaveTile(
-                          dateRange: _formatLeaveDate(leave.date),
-                          reason: leave.reason ?? "Leave",
-                          status: "SCHEDULED",
-                          isUpcoming: true,
-                        ),
-                      ),
-                    )
+                    ...profileController.upcomingLeaves
+                        .take(3)
+                        .map(
+                          (leave) => Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: _buildLeaveTile(
+                              dateRange: _formatLeaveDate(leave.date),
+                              reason: leave.reason ?? "Leave",
+                              status: "SCHEDULED",
+                              isUpcoming: true,
+                            ),
+                          ),
+                        )
                   else
                     NoDataWidget(
                       context,
@@ -482,17 +485,19 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                   const SizedBox(height: 12),
                   if (profileController.leaveHistory.isNotEmpty)
-                    ...profileController.leaveHistory.take(3).map(
-                      (leave) => Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: _buildLeaveTile(
-                          dateRange: _formatLeaveDate(leave.date),
-                          reason: leave.reason ?? "Leave",
-                          status: "COMPLETED",
-                          isUpcoming: false,
-                        ),
-                      ),
-                    )
+                    ...profileController.leaveHistory
+                        .take(3)
+                        .map(
+                          (leave) => Padding(
+                            padding: const EdgeInsets.only(bottom: 12),
+                            child: _buildLeaveTile(
+                              dateRange: _formatLeaveDate(leave.date),
+                              reason: leave.reason ?? "Leave",
+                              status: "COMPLETED",
+                              isUpcoming: false,
+                            ),
+                          ),
+                        )
                   else
                     NoDataWidget(
                       context,
@@ -542,7 +547,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _buildPayoutsList(),
                   const SizedBox(height: 20),
                 ],
-                SizedBox(height: MediaQuery.of(context).size.height * 0.12),
+                SizedBox(height: size.height * 0.12),
               ],
             ),
           );
@@ -905,6 +910,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               borderRadius: BorderRadius.circular(12),
               child: Image.network(
                 fullUrl,
+                cacheHeight: 300,
                 fit: BoxFit.contain, // Change to contain for small image effect
                 errorBuilder: (context, error, stackTrace) => const Center(
                   child: Icon(
@@ -1563,18 +1569,20 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                                 width: MediaQuery.of(context).size.width * 0.22,
                                 height:
                                     MediaQuery.of(context).size.width * 0.22,
+                                cacheWidth: 200,
+                                cacheHeight: 200,
                                 fit: BoxFit.cover,
                                 errorBuilder: (_, __, ___) => _defaultImage(),
                                 loadingBuilder:
                                     (context, child, loadingProgress) {
-                                  if (loadingProgress == null) return child;
-                                  return const Center(
-                                    child: CircularProgressIndicator(
-                                      color: Color(0xFFFF5216),
-                                      strokeWidth: 2,
-                                    ),
-                                  );
-                                },
+                                      if (loadingProgress == null) return child;
+                                      return const Center(
+                                        child: CircularProgressIndicator(
+                                          color: Color(0xFFFF5216),
+                                          strokeWidth: 2,
+                                        ),
+                                      );
+                                    },
                               )
                             : _defaultImage(),
                       ),
