@@ -3,15 +3,19 @@ class RestaurantMenusModel {
   List<RestaurantMenu>? data;
   RestaurantMenusData? payload;
   String? message;
+
   RestaurantMenusModel({this.status, this.data, this.payload, this.message});
+
   factory RestaurantMenusModel.fromJson(Map<String, dynamic>? json) {
     if (json == null) return RestaurantMenusModel();
+
     final rawData = json['data'];
     RestaurantMenusData? parsedPayload;
     List<RestaurantMenu> parsedMenus = [];
+
     if (rawData is Map<String, dynamic>) {
       parsedPayload = RestaurantMenusData.fromJson(rawData);
-      parsedMenus = parsedPayload.restaurantMenuItems?.data ?? [];
+      parsedMenus = parsedPayload.restaurantMenus?.data ?? [];
     } else if (rawData is List) {
       parsedMenus =
           rawData
@@ -29,14 +33,14 @@ class RestaurantMenusModel {
 }
 
 class RestaurantMenusData {
-  RestaurantMenusPagination? restaurantMenuItems;
+  RestaurantMenusPagination? restaurantMenus;
   String? limit;
   String? page;
   int? total;
   int? totalPages;
 
   RestaurantMenusData({
-    this.restaurantMenuItems,
+    this.restaurantMenus,
     this.limit,
     this.page,
     this.total,
@@ -47,9 +51,9 @@ class RestaurantMenusData {
     if (json == null) return RestaurantMenusData();
 
     return RestaurantMenusData(
-      restaurantMenuItems: json['restaurant_menu_items'] != null
+      restaurantMenus: json['restaurant_menus'] != null
           ? RestaurantMenusPagination.fromJson(
-              json['restaurant_menu_items'] as Map<String, dynamic>?,
+              json['restaurant_menus'] as Map<String, dynamic>?,
             )
           : null,
       limit: json['limit']?.toString(),
@@ -70,7 +74,7 @@ class RestaurantMenusPagination {
   int? from;
   int? lastPage;
   String? lastPageUrl;
-  List<RestaurantMenusPaginationLink>? links;
+  List<PaginationLink>? links;
   String? nextPageUrl;
   String? path;
   int? perPage;
@@ -110,11 +114,7 @@ class RestaurantMenusPagination {
       lastPageUrl: json['last_page_url']?.toString() ?? '',
       links:
           (json['links'] as List?)
-              ?.map(
-                (e) => RestaurantMenusPaginationLink.fromJson(
-                  e as Map<String, dynamic>?,
-                ),
-              )
+              ?.map((e) => PaginationLink.fromJson(e as Map<String, dynamic>?))
               .toList() ??
           [],
       nextPageUrl: json['next_page_url']?.toString() ?? '',
@@ -128,28 +128,6 @@ class RestaurantMenusPagination {
 
   static int _toInt(dynamic value) =>
       value is int ? value : int.tryParse(value?.toString() ?? '') ?? 0;
-}
-
-class RestaurantMenusPaginationLink {
-  String? url;
-  String? label;
-  int? page;
-  bool? active;
-
-  RestaurantMenusPaginationLink({this.url, this.label, this.page, this.active});
-
-  factory RestaurantMenusPaginationLink.fromJson(Map<String, dynamic>? json) {
-    if (json == null) return RestaurantMenusPaginationLink();
-
-    return RestaurantMenusPaginationLink(
-      url: json['url']?.toString() ?? '',
-      label: json['label']?.toString() ?? '',
-      page: json['page'] is int
-          ? json['page'] as int
-          : int.tryParse(json['page']?.toString() ?? ''),
-      active: json['active'] as bool? ?? false,
-    );
-  }
 }
 
 class RestaurantMenu {
@@ -167,21 +145,10 @@ class RestaurantMenu {
   int? approvalStatus;
   String? createdAt;
   String? updatedAt;
-  int? restaurantMenuItemId;
-  String? price;
-  String? discountPrice;
-  int? restaurantAttributeId;
-  int? itemStatus;
-  int? availableStatus;
-  String? attributeNameEn;
-  String? attributeNameAr;
-  String? attributeNameFr;
-  String? itemCreatedAt;
-  String? itemUpdatedAt;
   String? categoryNameEn;
   String? categoryNameAr;
   String? categoryNameFr;
-  List<dynamic>? categories;
+  List<CategoryData>? categories;
 
   RestaurantMenu({
     this.id,
@@ -198,17 +165,6 @@ class RestaurantMenu {
     this.approvalStatus,
     this.createdAt,
     this.updatedAt,
-    this.restaurantMenuItemId,
-    this.price,
-    this.discountPrice,
-    this.restaurantAttributeId,
-    this.itemStatus,
-    this.availableStatus,
-    this.attributeNameEn,
-    this.attributeNameAr,
-    this.attributeNameFr,
-    this.itemCreatedAt,
-    this.itemUpdatedAt,
     this.categoryNameEn,
     this.categoryNameAr,
     this.categoryNameFr,
@@ -233,21 +189,14 @@ class RestaurantMenu {
       approvalStatus: _toInt(json['approval_status']),
       createdAt: json['created_at']?.toString(),
       updatedAt: json['updated_at']?.toString(),
-      restaurantMenuItemId: _toNullableInt(json['restaurant_menu_item_id']),
-      price: json['price']?.toString() ?? '0',
-      discountPrice: json['discount_price']?.toString() ?? '0',
-      restaurantAttributeId: _toNullableInt(json['restaurant_attribute_id']),
-      itemStatus: _toNullableInt(json['item_status']),
-      availableStatus: _toNullableInt(json['available_status']),
-      attributeNameEn: json['attribute_name_en']?.toString() ?? '',
-      attributeNameAr: json['attribute_name_ar']?.toString() ?? '',
-      attributeNameFr: json['attribute_name_fr']?.toString() ?? '',
-      itemCreatedAt: json['item_created_at']?.toString(),
-      itemUpdatedAt: json['item_updated_at']?.toString(),
       categoryNameEn: json['category_name_en']?.toString() ?? '',
       categoryNameAr: json['category_name_ar']?.toString() ?? '',
       categoryNameFr: json['category_name_fr']?.toString() ?? '',
-      categories: (json['categories'] as List?) ?? [],
+      categories:
+          (json['categories'] as List?)
+              ?.map((e) => CategoryData.fromJson(e as Map<String, dynamic>?))
+              .toList() ??
+          [],
     );
   }
 
@@ -258,5 +207,67 @@ class RestaurantMenu {
     if (value == null) return null;
     if (value is int) return value;
     return int.tryParse(value.toString());
+  }
+}
+
+class CategoryData {
+  int? id;
+  String? nameEn;
+  String? nameAr;
+  String? nameFr;
+  String? image;
+  int? status;
+  String? createdAt;
+  String? updatedAt;
+
+  CategoryData({
+    this.id,
+    this.nameEn,
+    this.nameAr,
+    this.nameFr,
+    this.image,
+    this.status,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  factory CategoryData.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return CategoryData();
+
+    return CategoryData(
+      id: _toInt(json['id']),
+      nameEn: json['name_en']?.toString() ?? '',
+      nameAr: json['name_ar']?.toString() ?? '',
+      nameFr: json['name_fr']?.toString() ?? '',
+      image: json['image']?.toString() ?? '',
+      status: _toInt(json['status']),
+      createdAt: json['created_at']?.toString(),
+      updatedAt: json['updated_at']?.toString(),
+    );
+  }
+
+  static int _toInt(dynamic value) =>
+      value is int ? value : int.tryParse(value?.toString() ?? '') ?? 0;
+}
+
+class PaginationLink {
+  String? url;
+  String? label;
+  int? page;
+  bool? active;
+
+  PaginationLink({this.url, this.label, this.page, this.active});
+
+  factory PaginationLink.fromJson(Map<String, dynamic>? json) {
+    if (json == null) return PaginationLink();
+
+    return PaginationLink(
+      url: json['url']?.toString() ?? '',
+      label: json['label']?.toString() ?? '',
+      page: json['page'] is int
+          ? json['page'] as int
+          : int.tryParse(json['page']?.toString() ?? ''),
+      active: json['active'] as bool? ?? false,
+    );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
@@ -29,6 +31,17 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   DateTime? _fromDate;
   DateTime? _toDate;
   final TextEditingController _reasonController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+  String _searchKeyword = "";
+  Timer? _searchDebounce;
+
+  @override
+  void dispose() {
+    _searchDebounce?.cancel();
+    _reasonController.dispose();
+    _searchController.dispose();
+    super.dispose();
+  }
 
   String _formatLeaveDate(String? dateStr) {
     if (dateStr == null || dateStr.isEmpty) return "";
@@ -102,6 +115,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         builder: (profileController) {
           final profile = profileController.profileData;
           return SingleChildScrollView(
+            controller: profileController.scrollController,
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -468,7 +482,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         if (title == "Menu") {
           final profileController = Get.find<ProfileController>();
           profileController.fetchGroceryMenus();
-          profileController.fetchRestaurantMenus();
+          profileController.fetchRestaurantMenus(keyword: _searchKeyword);
         } else if (title == "Items") {
           final profileController = Get.find<ProfileController>();
           profileController.fetchGroceryMenuItems();
@@ -578,8 +592,39 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
       return const AppLoader();
     }
 
-    if (profileController.groceryMenus.isEmpty && 
-        profileController.restaurantMenus.isEmpty) {
+    final query = _searchKeyword.trim().toLowerCase();
+    final filteredGroceryMenus = profileController.groceryMenus.where((menu) {
+      if (query.isEmpty) return true;
+      final lang = profileController.localization.currentLocale?.languageCode;
+      final name = lang == 'fr'
+          ? (menu.nameFr ?? menu.nameEn ?? "")
+          : lang == 'ar'
+          ? (menu.nameAr ?? menu.nameEn ?? "")
+          : (menu.nameEn ?? "");
+      final category = lang == 'fr'
+          ? (menu.categoryNameFr ?? menu.categoryNameEn ?? "")
+          : lang == 'ar'
+          ? (menu.categoryNameAr ?? menu.categoryNameEn ?? "")
+          : (menu.categoryNameEn ?? "");
+      return name.toLowerCase().contains(query) ||
+          category.toLowerCase().contains(query) ||
+          (menu.id?.toString() ?? "").contains(query);
+    }).toList();
+
+    final filteredRestaurantMenus = profileController.restaurantMenus.where((menu) {
+      if (query.isEmpty) return true;
+      final lang = profileController.localization.currentLocale?.languageCode;
+      final name = lang == 'fr'
+          ? (menu.nameFr ?? menu.nameEn ?? "")
+          : lang == 'ar'
+          ? (menu.nameAr ?? menu.nameEn ?? "")
+          : (menu.nameEn ?? "");
+      return name.toLowerCase().contains(query) ||
+          (menu.categoryId ?? "").toLowerCase().contains(query) ||
+          (menu.id?.toString() ?? "").contains(query);
+    }).toList();
+
+    if (filteredGroceryMenus.isEmpty && filteredRestaurantMenus.isEmpty) {
       return NoDataWidget(
         context,
         "No menus found.",
@@ -590,7 +635,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
 
     return Column(
       children: [
-        ...profileController.groceryMenus.map((menu) {
+        ...filteredGroceryMenus.map((menu) {
           final lang =
               profileController.localization.currentLocale?.languageCode;
           final name = lang == 'fr'
@@ -611,7 +656,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
             imageUrl: menu.image,
           );
         }).toList(),
-        ...profileController.restaurantMenus.map((menu) {
+        ...filteredRestaurantMenus.map((menu) {
           final lang =
               profileController.localization.currentLocale?.languageCode;
           final name = lang == 'fr'
@@ -626,12 +671,35 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
             imageUrl: menu.image,
           );
         }).toList(),
+        if (profileController.isLoadMoreRunning)
+          const Padding(
+            padding: EdgeInsets.symmetric(vertical: 10),
+            child: Center(
+              child: CircularProgressIndicator(color: Color(0xFFFF5216)),
+            ),
+          ),
       ],
     );
   }
 
   Widget _buildSearchRow() {
-    return const VendorSearchRow();
+    return VendorSearchRow(
+      controller: _searchController,
+      onChanged: (value) {
+        setState(() {
+          _searchKeyword = value;
+        });
+        if (selectedMenu == "Menu") {
+          _searchDebounce?.cancel();
+          _searchDebounce = Timer(const Duration(milliseconds: 400), () {
+            if (!mounted) return;
+            Get.find<ProfileController>().fetchRestaurantMenus(
+              keyword: _searchKeyword.trim(),
+            );
+          });
+        }
+      },
+    );
   }
 
   Widget _buildCategoryAddRow() {
@@ -712,14 +780,43 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
 
   Widget _buildItemsList() {
     final profileController = Get.find<ProfileController>();
-
     if (profileController.isGroceryMenuItemsLoading ||
         profileController.isRestaurantMenuItemsLoading) {
       return const AppLoader();
     }
+    final query = _searchKeyword.trim().toLowerCase();
+    final filteredGroceryItems = profileController.groceryMenuItems.where((item) {
+      if (query.isEmpty) return true;
+      final lang = profileController.localization.currentLocale?.languageCode;
+      final name = lang == 'fr'
+          ? (item.nameFr ?? item.nameEn ?? "")
+          : lang == 'ar'
+          ? (item.nameAr ?? item.nameEn ?? "")
+          : (item.nameEn ?? "");
+      final category = lang == 'fr'
+          ? (item.categoryNameFr ?? item.categoryNameEn ?? "")
+          : lang == 'ar'
+          ? (item.categoryNameAr ?? item.categoryNameEn ?? "")
+          : (item.categoryNameEn ?? "");
+      return name.toLowerCase().contains(query) ||
+          category.toLowerCase().contains(query) ||
+          (item.id?.toString() ?? "").contains(query);
+    }).toList();
 
-    if (profileController.groceryMenuItems.isEmpty &&
-        profileController.restaurantMenuItems.isEmpty) {
+    final filteredRestaurantItems = profileController.restaurantMenuItems.where((item) {
+      if (query.isEmpty) return true;
+      final lang = profileController.localization.currentLocale?.languageCode;
+      final name = lang == 'fr'
+          ? (item.nameFr ?? item.nameEn ?? "")
+          : lang == 'ar'
+          ? (item.nameAr ?? item.nameEn ?? "")
+          : (item.nameEn ?? "");
+      return name.toLowerCase().contains(query) ||
+          (item.categoryId?.toString() ?? "").toLowerCase().contains(query) ||
+          (item.id?.toString() ?? "").contains(query);
+    }).toList();
+
+    if (filteredGroceryItems.isEmpty && filteredRestaurantItems.isEmpty) {
       return Column(
         children: [
           NoDataWidget(
@@ -733,11 +830,9 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         ],
       );
     }
-
     return Column(
       children: [
-        // Grocery Menu Items
-        ...profileController.groceryMenuItems.map((item) {
+        ...filteredGroceryItems.map((item) {
           final lang =
               profileController.localization.currentLocale?.languageCode;
           final name = lang == 'fr'
@@ -751,7 +846,6 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               ? (item.categoryNameAr ?? item.categoryNameEn ?? "")
               : (item.categoryNameEn ?? "");
           final price = "${item.price} MRU";
-
           return _foodItem(
             name,
             price,
@@ -760,9 +854,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
             category: category,
           );
         }).toList(),
-
-        // Restaurant Menu Items
-        ...profileController.restaurantMenuItems.map((item) {
+        ...filteredRestaurantItems.map((item) {
           final lang =
               profileController.localization.currentLocale?.languageCode;
           final name = lang == 'fr'
@@ -771,7 +863,6 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               ? (item.nameAr ?? item.nameEn ?? "")
               : (item.nameEn ?? "");
           final price = "${item.price} MRU";
-
           return _foodItem(
             name,
             price,
@@ -780,7 +871,6 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
             category: item.categoryId?.toString() ?? "",
           );
         }).toList(),
-
         const SizedBox(height: 20),
         _addNewItemButton(),
       ],

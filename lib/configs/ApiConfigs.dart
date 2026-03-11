@@ -29,7 +29,7 @@ class ApiEndPoints {
   static String addGroceryMenu = "addGroceryMenu";
   static String groceryMenuItems = "groceryMenuItems";
   static String addGroceryMenuItem = "addGroceryMenuItem";
-  static String getRestaurantMenus = "getRestaurantMenus";
+  static String restaurantMenus = "restaurantMenus";
   static String restaurantMenuItems = "restaurantMenuItems";
 
   static String acceptGroceryOrder = "acceptGroceryOrder";

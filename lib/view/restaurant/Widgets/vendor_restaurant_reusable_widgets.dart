@@ -560,7 +560,10 @@ class VendorLeaveTile extends StatelessWidget {
 }
 
 class VendorSearchRow extends StatelessWidget {
-  const VendorSearchRow({super.key});
+  final TextEditingController? controller;
+  final ValueChanged<String>? onChanged;
+
+  const VendorSearchRow({super.key, this.controller, this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -570,6 +573,8 @@ class VendorSearchRow extends StatelessWidget {
           child: CustomSearchBox(
             hintText: S.of(context).searchByIdName,
             boxColor: Colors.white,
+            controller: controller,
+            onChanged: onChanged,
           ),
         ),
         const SizedBox(width: 12),

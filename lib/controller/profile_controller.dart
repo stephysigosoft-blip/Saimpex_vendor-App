@@ -39,11 +39,13 @@ class ProfileController extends GetxController {
   @override
   void onInit() {
     getAppVersion();
+    scrollController.addListener(_loadMore);
     super.onInit();
   }
 
   @override
   void onClose() {
+    scrollController.dispose();
     super.onClose();
   }
 
@@ -76,6 +78,14 @@ class ProfileController extends GetxController {
 
   List<RestaurantMenu> restaurantMenus = [];
   bool isRestaurantMenusLoading = false;
+  int _page = 0;
+  int _limit = 10;
+  bool _hasNextPage = true;
+  bool _canLoadMoreMenus = false;
+  String _currentMenuKeyword = '';
+  bool isFirstLoadRunning = false;
+  bool isLoadMoreRunning = false;
+  ScrollController scrollController = ScrollController();
 
   List<GroceryMenuItem> groceryMenuItems = [];
   bool isGroceryMenuItemsLoading = false;
@@ -198,30 +208,87 @@ class ProfileController extends GetxController {
     }
   }
 
-  Future<void> fetchRestaurantMenus() async {
-    try {
+  Future<void> fetchRestaurantMenus({
+    bool isLoadMore = false,
+    String keyword = '',
+  }) async {
+    if (isLoadMore) {
+      if (!_canLoadMoreMenus ||
+          !_hasNextPage ||
+          isFirstLoadRunning ||
+          isLoadMoreRunning) {
+        return;
+      }
+      isLoadMoreRunning = true;
+      _page += _limit;
+    } else {
+      _currentMenuKeyword = keyword.trim();
+      _canLoadMoreMenus = true;
+      _page = 0;
+      _limit = 10;
+      _hasNextPage = true;
+      isFirstLoadRunning = true;
       isRestaurantMenusLoading = true;
-      update();
-
+      restaurantMenus = [];
+    }
+    update();
+    try {
       var token = await getSavedObject("token");
       if (token != null) {
         DioClient().updateToken(token);
       }
-
       final response = await DioClient().get(
-        ApiEndPoints.restaurantMenuItems,
-        query: {"limit": 10, "page": 1},
+        ApiEndPoints.restaurantMenus,
+        query: {
+          "limit": _limit,
+          "page": _page,
+          if (_currentMenuKeyword.isNotEmpty) "keyword": _currentMenuKeyword,
+        },
       );
-
       final model = RestaurantMenusModel.fromJson(response.data);
       if (model.status == true) {
-        restaurantMenus = model.data ?? [];
+        final fetchedMenus = model.data ?? [];
+        if (isLoadMore) {
+          if (fetchedMenus.isNotEmpty) {
+            restaurantMenus.addAll(fetchedMenus);
+          } else {
+            _hasNextPage = false;
+          }
+        } else {
+          restaurantMenus = fetchedMenus;
+        }
+
+        if (fetchedMenus.length < _limit) {
+          _hasNextPage = false;
+        }
       }
     } catch (error) {
+      if (isLoadMore) {
+        _page = (_page - _limit).clamp(0, 1 << 31);
+      }
       debugPrint("fetchRestaurantMenus Error: $error");
     } finally {
-      isRestaurantMenusLoading = false;
+      if (isLoadMore) {
+        isLoadMoreRunning = false;
+      } else {
+        isRestaurantMenusLoading = false;
+        isFirstLoadRunning = false;
+      }
       update();
+    }
+  }
+
+  void _loadMore() async {
+    if (_canLoadMoreMenus &&
+        _hasNextPage &&
+        !isFirstLoadRunning &&
+        !isLoadMoreRunning &&
+        scrollController.hasClients &&
+        scrollController.position.extentAfter < 300) {
+      await fetchRestaurantMenus(
+        isLoadMore: true,
+        keyword: _currentMenuKeyword,
+      );
     }
   }
 
