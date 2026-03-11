@@ -676,6 +676,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "viewDetails": MessageLookupByLibrary.simpleMessage("View Details"),
         "viewOrders": MessageLookupByLibrary.simpleMessage("View Orders"),
         "wednesday": MessageLookupByLibrary.simpleMessage("Wednesday"),
+        "welcomeTo": MessageLookupByLibrary.simpleMessage("Welcome to"),
         "welcomeToSaimpexVendor":
             MessageLookupByLibrary.simpleMessage("Welcome to Saimpex Vendor!"),
         "wellBeBackSoon":

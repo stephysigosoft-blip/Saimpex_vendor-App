@@ -949,5 +949,6 @@
   "orderReady": "Order Ready",
   "orderPickedUp": "Order Picked Up",
   "deliveryStarted": "Delivery Started",
-  "deliveryCompleted": "Delivery Completed"
+  "deliveryCompleted": "Delivery Completed",
+  "welcomeTo": "Welcome to"
 }
