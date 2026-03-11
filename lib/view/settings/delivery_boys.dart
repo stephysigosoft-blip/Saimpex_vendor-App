@@ -101,8 +101,7 @@ class _DeliveryBoysScreenState extends State<DeliveryBoysScreen> {
 
   Widget _buildDeliveryBoyTile(DeliveryBoy data) {
     return Container(
-      width: MediaQuery.of(context).size.width * 0.9,
-      height: MediaQuery.of(context).size.height * 0.12,
+      height: MediaQuery.of(context).size.height * 0.13,
       margin: const EdgeInsets.only(bottom: 16),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(

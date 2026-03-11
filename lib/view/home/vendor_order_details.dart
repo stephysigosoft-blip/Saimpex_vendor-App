@@ -161,7 +161,11 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                                           .toString() ==
                                                       '10'
                                                 ? const Color(0xFFEF4444)
-                                                : const Color(0xFF0F552A),
+                                                : controller.orderData?.status
+                                                          .toString() ==
+                                                      '9'
+                                                ? const Color(0xFF0F552A)
+                                                : const Color(0xFF22C55E),
                                             borderRadius: BorderRadius.circular(
                                               8,
                                             ),
@@ -1054,8 +1058,7 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
     BuildContext context,
   ) {
     return Container(
-      width: 350,
-      height: 98,
+      height: 100,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -1270,7 +1273,6 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
     OrderDetailsController controller,
   ) {
     return Container(
-      width: 350,
       padding: const EdgeInsets.symmetric(vertical: 4),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -1334,7 +1336,6 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
     String? phone,
   ) {
     return Container(
-      width: 350,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.white,
