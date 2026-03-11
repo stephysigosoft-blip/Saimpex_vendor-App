@@ -9,6 +9,7 @@ class VendorMembershipCard extends StatelessWidget {
     required this.height,
     required this.membershipName,
     required this.expiryText,
+    this.isWarning = true,
   });
 
   final double horizontalPadding;
@@ -16,6 +17,7 @@ class VendorMembershipCard extends StatelessWidget {
   final double height;
   final String membershipName;
   final String expiryText;
+  final bool isWarning;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,9 @@ class VendorMembershipCard extends StatelessWidget {
             const SizedBox(width: 12),
             Expanded(
               child: Text(
-                membershipName,
+                membershipName.toLowerCase().contains("member")
+                    ? membershipName
+                    : "$membershipName Member",
                 style: GoogleFonts.rubik(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
@@ -54,7 +58,9 @@ class VendorMembershipCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: const Color(0xFFFFE5E5),
+                color: isWarning
+                    ? const Color(0xFFFFE5E5)
+                    : const Color(0xFFE5FFE5),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Text(
@@ -62,7 +68,7 @@ class VendorMembershipCard extends StatelessWidget {
                 style: GoogleFonts.rubik(
                   fontSize: 10,
                   fontWeight: FontWeight.w600,
-                  color: Colors.red,
+                  color: isWarning ? Colors.red : Colors.green,
                 ),
               ),
             ),

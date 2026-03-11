@@ -9,6 +9,8 @@ import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 import 'package:saimpex_vendor/view/home/widgets/vendor_stat_card.dart';
 import 'package:saimpex_vendor/view/home/popular_items_view_all.dart';
 
+import 'package:saimpex_vendor/view/home/widgets/vendor_membership_card.dart';
+import '../../utils/Widgets/custom_app_bar.dart';
 import '../../generated/l10n.dart';
 
 class Dashboard extends StatefulWidget {
@@ -30,26 +32,9 @@ class _DashboardState extends State<Dashboard> {
       },
       builder: (controller) {
         return CommonBackground(
-          appBar: AppBar(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            leading: GestureDetector(
-              onTap: () => Navigator.pop(context),
-              child: const Icon(
-                Icons.arrow_back_ios,
-                color: Colors.black,
-                size: 20,
-              ),
-            ),
-            title: Text(
-              "Dashboard",
-              style: GoogleFonts.rubik(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1F1F1F),
-              ),
-            ),
-            centerTitle: true,
+          appBar: CustomAppBar(
+            title: "Dashboard",
+            onTap: () => Get.back(),
           ),
           child: controller.isLoading
               ? const AppLoader()
@@ -160,67 +145,14 @@ class _DashboardState extends State<Dashboard> {
         FlutterLocalization.instance.currentLocale?.languageCode ?? 'en';
     final subName = controller.getSubscriptionName(locale);
     final daysLeft = controller.subscriptionDaysLeft;
-    final endDate =
-        controller.dashboardData?.subscriptionDetails?.subscriptionEndDate ??
-        "";
 
-    return Container(
+    return VendorMembershipCard(
+      horizontalPadding: 0,
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * 0.075,
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE5E5E5), width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          Image.asset(
-            'lib/assets/images/Silver.png',
-            width: 30,
-            height: 30,
-            errorBuilder: (_, __, ___) =>
-                const Icon(Icons.star, color: Colors.amber, size: 30),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Text(
-              subName.isNotEmpty ? "$subName Member" : "Member",
-              style: GoogleFonts.rubik(
-                fontSize: 14,
-                fontWeight: FontWeight.w600,
-                color: const Color(0xFF1F1F1F),
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-            decoration: BoxDecoration(
-              color: daysLeft <= 30
-                  ? const Color(0xFFFFE5E5)
-                  : const Color(0xFFE5FFE5),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              daysLeft > 0
-                  ? "Expires in $daysLeft days"
-                  : (endDate.isNotEmpty ? "Expires $endDate" : ""),
-              style: GoogleFonts.rubik(
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
-                color: daysLeft <= 30 ? Colors.red : Colors.green,
-              ),
-            ),
-          ),
-        ],
-      ),
+      height: MediaQuery.of(context).size.height * 0.08,
+      membershipName: subName.isNotEmpty ? subName : S.of(context).membership,
+      expiryText: S.of(context).expiresInDays(daysLeft.toString()),
+      isWarning: daysLeft <= 10,
     );
   }
 

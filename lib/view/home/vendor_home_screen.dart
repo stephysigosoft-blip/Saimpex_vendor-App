@@ -195,6 +195,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                   height: layout.membershipCardHeight,
                   membershipName: membershipName,
                   expiryText: expiryText,
+                  isWarning: (membership?.expiresInDays ?? 0) <= 10,
                 ),
                 const SizedBox(height: 24),
                 VendorStatsSection(
