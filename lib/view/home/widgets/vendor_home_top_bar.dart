@@ -20,6 +20,8 @@ class VendorHomeTopBar extends StatelessWidget {
         children: [
           Expanded(
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.asset('lib/assets/images/logo.png', height: 50),
                 const SizedBox(width: 12),
