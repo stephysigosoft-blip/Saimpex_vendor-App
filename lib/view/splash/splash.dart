@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:get/get_navigation/get_navigation.dart';
+import 'package:get/get.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 
 import 'package:saimpex_vendor/view/Login/login.dart';
 
+import 'package:saimpex_vendor/controller/home_controller.dart';
 import '../../Utils/Utils.dart';
 import '../home/home.dart';
 
@@ -42,7 +42,9 @@ class _SplashState extends State<Splash> {
 
   splashNavigation() async {
     isFirstLaunch = await getSavedObject("@isFirstLaunch");
+    final homeController = Get.put(HomeController());
     Timer(const Duration(seconds: 3), () async {
+      await homeController.maintenance(context);
       if (isFirstLaunch == null) {
         await savename("@isFirstLaunch", "true");
       } else {

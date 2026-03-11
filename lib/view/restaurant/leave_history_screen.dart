@@ -1,17 +1,49 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:get/get.dart';
 import '../../utils/widgets/common_background.dart';
-import '../../model/profile_model.dart';
+import '../../utils/widgets/no_data_widget.dart';
+import '../../controller/profile_controller.dart';
+import '../../generated/l10n.dart';
+import '../../utils/widgets/app_loader.dart';
 
-class LeaveHistoryScreen extends StatelessWidget {
-  final List<LeaveData> upcomingLeaves;
-  final List<LeaveData> leaveHistory;
+class LeaveHistoryScreen extends StatefulWidget {
+  const LeaveHistoryScreen({super.key});
 
-  const LeaveHistoryScreen({
-    super.key,
-    required this.upcomingLeaves,
-    required this.leaveHistory,
-  });
+  @override
+  State<LeaveHistoryScreen> createState() => _LeaveHistoryScreenState();
+}
+
+class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      final profileController = Get.find<ProfileController>();
+      if (!profileController.isLoadMoreLeaveLoading &&
+          profileController.hasMoreLeaveHistory) {
+        profileController.getProfile(
+          context,
+          page: profileController.currentLeavePage + 1,
+          isLoadMore: true,
+        );
+      }
+    }
+  }
 
   String _formatLeaveDate(String? dateStr) {
     if (dateStr == null || dateStr.isEmpty) return "";
@@ -52,7 +84,7 @@ class LeaveHistoryScreen extends StatelessWidget {
           ),
         ),
         title: Text(
-          "Leaves History",
+          S.of(context).leavesHistory,
           style: GoogleFonts.rubik(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -61,22 +93,42 @@ class LeaveHistoryScreen extends StatelessWidget {
         ),
         centerTitle: false,
       ),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+      child: GetBuilder<ProfileController>(
+        builder: (profileController) {
+          final upcomingLeaves = profileController.upcomingLeaves;
+          final leaveHistory = profileController.leaveHistory;
+
+          if (profileController.isProfileLoading &&
+              upcomingLeaves.isEmpty &&
+              leaveHistory.isEmpty) {
+            return const AppLoader();
+          }
+
+          if (upcomingLeaves.isEmpty && leaveHistory.isEmpty) {
+            return Center(
+              child: NoDataWidget(
+                context,
+                "No leave history found.",
+                "",
+                "lib/assets/images/nodata.png",
+              ),
+            );
+          }
+
+          return ListView(
+            controller: _scrollController,
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             children: [
-              if (upcomingLeaves.isNotEmpty) ...[
-                Text(
-                  "Upcoming Leaves",
-                  style: GoogleFonts.rubik(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: const Color.fromARGB(255, 95, 145, 245),
-                  ),
+              Text(
+                S.of(context).upcomingLeaves,
+                style: GoogleFonts.rubik(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: const Color.fromARGB(255, 95, 145, 245),
                 ),
-                const SizedBox(height: 12),
+              ),
+              const SizedBox(height: 12),
+              if (upcomingLeaves.isNotEmpty)
                 ...upcomingLeaves.map(
                   (leave) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
@@ -88,19 +140,25 @@ class LeaveHistoryScreen extends StatelessWidget {
                       isUpcoming: true,
                     ),
                   ),
+                )
+              else
+                NoDataWidget(
+                  context,
+                  "No upcoming leaves found.",
+                  "",
+                  "lib/assets/images/nodata.png",
                 ),
-                const SizedBox(height: 12),
-              ],
-              if (leaveHistory.isNotEmpty) ...[
-                Text(
-                  "Completed Leaves",
-                  style: GoogleFonts.rubik(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w500,
-                    color: const Color.fromARGB(255, 35, 208, 102),
-                  ),
+              const SizedBox(height: 24),
+              Text(
+                S.of(context).completedLeaves,
+                style: GoogleFonts.rubik(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w500,
+                  color: const Color.fromARGB(255, 35, 208, 102),
                 ),
-                const SizedBox(height: 12),
+              ),
+              const SizedBox(height: 12),
+              if (leaveHistory.isNotEmpty)
                 ...leaveHistory.map(
                   (leave) => Padding(
                     padding: const EdgeInsets.only(bottom: 12),
@@ -112,16 +170,22 @@ class LeaveHistoryScreen extends StatelessWidget {
                       isUpcoming: false,
                     ),
                   ),
+                )
+              else
+                NoDataWidget(
+                  context,
+                  "No completed leaves found.",
+                  "",
+                  "lib/assets/images/nodata.png",
                 ),
-              ],
-              if (upcomingLeaves.isEmpty && leaveHistory.isEmpty)
-                Text(
-                  "No leave history found.",
-                  style: GoogleFonts.rubik(color: Colors.grey, fontSize: 13),
+              if (profileController.isLoadMoreLeaveLoading)
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Center(child: CircularProgressIndicator()),
                 ),
             ],
-          ),
-        ),
+          );
+        },
       ),
     );
   }

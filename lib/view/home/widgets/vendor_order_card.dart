@@ -12,8 +12,10 @@ class VendorOrderCard extends StatelessWidget {
   final String status;
   final VoidCallback onReject;
   final VoidCallback onAccept;
+  final VoidCallback? onMarkAsReady;
   final VoidCallback? onTap;
   final String? deliveryBoyName;
+  final String? cancelReason;
 
   const VendorOrderCard({
     super.key,
@@ -25,8 +27,10 @@ class VendorOrderCard extends StatelessWidget {
     required this.status,
     required this.onReject,
     required this.onAccept,
+    this.onMarkAsReady,
     this.onTap,
     this.deliveryBoyName,
+    this.cancelReason,
   });
 
   @override
@@ -268,16 +272,18 @@ class VendorOrderCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 12),
-              Text(
-                S.of(context).reasonColonLabel("Changed mind"),
-                style: GoogleFonts.rubik(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: const Color(0xFFEF4444),
+              if (cancelReason != null && cancelReason!.trim().isNotEmpty) ...[
+                Text(
+                  S.of(context).reasonColonLabel(cancelReason!),
+                  style: GoogleFonts.rubik(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w400,
+                    color: const Color(0xFFEF4444),
+                  ),
                 ),
-              ),
+              ],
             ],
-            const SizedBox(height: 12),
+            const SizedBox(height: 24),
             if (status.toLowerCase() == 'pending')
               Row(
                 children: [
@@ -345,7 +351,7 @@ class VendorOrderCard extends StatelessWidget {
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: onMarkAsReady,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFF5216),
                         foregroundColor: Colors.white,

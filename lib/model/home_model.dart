@@ -120,6 +120,7 @@ class OrderData {
   final int? orderItemsCount;
   final String? placedAtFormatted;
   final String? deliveryBoyName;
+  final String? cancelReason;
 
   OrderData({
     this.orderCode,
@@ -133,6 +134,7 @@ class OrderData {
     this.orderItemsCount,
     this.placedAtFormatted,
     this.deliveryBoyName,
+    this.cancelReason,
   });
 
   factory OrderData.fromJson(Map<String, dynamic>? json) {
@@ -149,6 +151,7 @@ class OrderData {
       userMobile: json['user_mobile']?.toString(),
       orderItemsCount: json['order_items_count'],
       placedAtFormatted: json['placed_at_formatted']?.toString(),
+      cancelReason: json['cancel_reason']?.toString(),
       deliveryBoyName:
           (json['delivery_boy_name']?.toString() ??
                   json['delivery_boy']?['name']?.toString() ??

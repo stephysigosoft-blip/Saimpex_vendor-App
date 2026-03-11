@@ -14,6 +14,7 @@ class ApiConfigs {
 class ApiEndPoints {
   static String login = "login";
   static String settings = "settings";
+  static String vendorappSettings = "vendorappSettings";
   static String home = "home";
   static String restaurantOrderDetails = "restaurantOrderDetail";
   static String groceryOrderDetails = "groceryOrderDetail";
@@ -39,4 +40,8 @@ class ApiEndPoints {
   static String cancelRestaurantOrder = "cancelRestaurantOrder";
   static String prepareRestaurantOrder = "prepareRestaurantOrder";
   static String markAsReadyRestaurantOrder = "markAsReadyRestaurantOrder";
+  static String getTermsandConditions = "getTermsandConditions";
+  static String getPrivacyPolicy = "getPrivacyPolicy";
+  static String getContact = "getContact";
+  static String getAbout = "getAbout";
 }

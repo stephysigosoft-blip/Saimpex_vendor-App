@@ -23,6 +23,7 @@ class DashboardController extends GetxController {
       update();
 
       var token = await getSavedObject("token");
+      var vendorType = await getSavedObject("vendorType");
       if (token != null) {
         DioClient().updateToken(token);
       } else {
@@ -31,7 +32,7 @@ class DashboardController extends GetxController {
 
       final response = await DioClient().get(
         ApiEndPoints.dashboard,
-        query: {"vendor_type": 1, "revenue_year": selectedYear},
+        query: {"vendor_type": vendorType ?? "1", "revenue_year": selectedYear},
       );
 
       DashboardModel model = DashboardModel.fromJson(response.data);

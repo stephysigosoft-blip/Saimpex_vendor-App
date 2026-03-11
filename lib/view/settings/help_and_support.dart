@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/controller/settings_controller.dart';
+import 'package:saimpex_vendor/generated/l10n.dart';
+import 'package:saimpex_vendor/utils/localization_service.dart';
 import 'package:saimpex_vendor/view/shimmer_loading/shimmer_text_content.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -11,11 +12,8 @@ class HelpAndSupport extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final localization = FlutterLocalization.instance;
     return Directionality(
-      textDirection: localization.currentLocale!.languageCode == "ar"
-          ? TextDirection.rtl
-          : TextDirection.ltr,
+      textDirection: LocalizationService().getTextDirection(),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -32,7 +30,7 @@ class HelpAndSupport extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            "Help & Support",
+            S.of(context).helpSupport,
             style: GoogleFonts.rubik(
               fontSize: 18,
               fontWeight: FontWeight.w700,
@@ -59,7 +57,7 @@ class HelpAndSupport extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Call us",
+                        S.of(context).callUs,
                         style: GoogleFonts.rubik(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
@@ -69,10 +67,18 @@ class HelpAndSupport extends StatelessWidget {
                       const SizedBox(height: 10),
                       GestureDetector(
                         onTap: () async {
-                          await launchUrl(Uri.parse("tel:+22245123456"));
+                          if (controller.contactMobile.isNotEmpty) {
+                            await launchUrl(
+                              Uri.parse(
+                                "tel:${controller.contactMobile.replaceAll(' ', '')}",
+                              ),
+                            );
+                          }
                         },
                         child: Text(
-                          "+222 45 12 34 56",
+                          controller.contactMobile.isNotEmpty
+                              ? controller.contactMobile
+                              : "N/A",
                           style: GoogleFonts.rubik(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,
@@ -82,7 +88,7 @@ class HelpAndSupport extends StatelessWidget {
                       ),
                       const SizedBox(height: 25),
                       Text(
-                        "Email us",
+                        S.of(context).emailUs,
                         style: GoogleFonts.rubik(
                           fontSize: 14,
                           fontWeight: FontWeight.w400,
@@ -92,12 +98,16 @@ class HelpAndSupport extends StatelessWidget {
                       const SizedBox(height: 10),
                       GestureDetector(
                         onTap: () async {
-                          await launchUrl(
-                            Uri.parse("mailto:saimpex@gmail.com"),
-                          );
+                          if (controller.contactEmail.isNotEmpty) {
+                            await launchUrl(
+                              Uri.parse("mailto:${controller.contactEmail}"),
+                            );
+                          }
                         },
                         child: Text(
-                          "saimpex@gmail.com",
+                          controller.contactEmail.isNotEmpty
+                              ? controller.contactEmail
+                              : "N/A",
                           style: GoogleFonts.rubik(
                             fontSize: 16,
                             fontWeight: FontWeight.w700,

@@ -5,10 +5,39 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/configs/ApiConfigs.dart';
 import 'package:saimpex_vendor/controller/dashboard_controller.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
+import 'package:saimpex_vendor/utils/widgets/app_loader.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 
-class PopularItemsViewAll extends StatelessWidget {
+class PopularItemsViewAll extends StatefulWidget {
   const PopularItemsViewAll({super.key});
+
+  @override
+  State<PopularItemsViewAll> createState() => _PopularItemsViewAllState();
+}
+
+class _PopularItemsViewAllState extends State<PopularItemsViewAll> {
+  final ScrollController _scrollController = ScrollController();
+  int _currentMax = 15;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(() {
+      if (_scrollController.position.extentAfter < 200) {
+        if (mounted) {
+          setState(() {
+            _currentMax += 15;
+          });
+        }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,19 +78,35 @@ class PopularItemsViewAll extends StatelessWidget {
               );
             }
 
+            final paginatedItems = items.take(_currentMax).toList();
+
             return Padding(
               padding: const EdgeInsets.only(top: kToolbarHeight + 40),
               child: ListView.separated(
+                controller: _scrollController,
                 padding: const EdgeInsets.only(bottom: 40),
-                itemCount: items.length,
-                separatorBuilder: (context, index) => const Divider(
-                  indent: 70,
-                  endIndent: 20,
-                  height: 1,
-                  color: Color(0xFFF3F4F6),
-                ),
+                itemCount:
+                    paginatedItems.length +
+                    (items.length > paginatedItems.length ? 1 : 0),
+                separatorBuilder: (context, index) {
+                  if (index == paginatedItems.length)
+                    return const SizedBox.shrink();
+                  return const Divider(
+                    indent: 70,
+                    endIndent: 20,
+                    height: 1,
+                    color: Color(0xFFF3F4F6),
+                  );
+                },
                 itemBuilder: (context, index) {
-                  final item = items[index];
+                  if (index == paginatedItems.length) {
+                    return const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 20.0),
+                      child: Center(child: AppLoader(size: 40)),
+                    );
+                  }
+
+                  final item = paginatedItems[index];
                   final name = controller.getItemName(item, locale);
                   final attrName = controller.getAttributeName(item, locale);
                   final orders = "${item.orderCount ?? 0} Orders";

@@ -8,8 +8,43 @@ import '../../model/rating_review_model.dart';
 import '../../utils/widgets/app_loader.dart';
 import '../../utils/widgets/no_data_widget.dart';
 
-class RatingReviewsScreen extends StatelessWidget {
+class RatingReviewsScreen extends StatefulWidget {
   const RatingReviewsScreen({super.key});
+
+  @override
+  State<RatingReviewsScreen> createState() => _RatingReviewsScreenState();
+}
+
+class _RatingReviewsScreenState extends State<RatingReviewsScreen> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      final profileController = Get.find<ProfileController>();
+      if (!profileController.isLoadMoreRatingLoading &&
+          profileController.hasMoreReviews) {
+        profileController.getRatingsReviews(
+          context,
+          page: profileController.currentRatingPage + 1,
+          isLoadMore: true,
+        );
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +61,7 @@ class RatingReviewsScreen extends StatelessWidget {
           ),
         ),
         title: Text(
-          "Rating & Reviewa",
+          S.of(context).ratingReviews,
           style: GoogleFonts.rubik(
             fontSize: 18,
             fontWeight: FontWeight.w600,
@@ -38,7 +73,7 @@ class RatingReviewsScreen extends StatelessWidget {
       child: GetBuilder<ProfileController>(
         builder: (profileController) {
           final reviews = profileController.ratingReviewData?.reviews ?? [];
-          if (profileController.isRatingReviewLoading) {
+          if (profileController.isRatingReviewLoading && reviews.isEmpty) {
             return const AppLoader();
           }
           if (reviews.isEmpty) {
@@ -47,14 +82,26 @@ class RatingReviewsScreen extends StatelessWidget {
               "No reviews found.",
               "",
               "lib/assets/images/nodata.png",
+              imgHeight: MediaQuery.of(context).size.height * 0.25,
+              imgWidth: MediaQuery.of(context).size.width * 0.6,
+              fontSize: 18,
             );
           }
           return ListView.separated(
+            controller: _scrollController,
             padding: const EdgeInsets.all(20),
-            itemCount: reviews.length,
+            itemCount:
+                reviews.length + (profileController.hasMoreReviews ? 1 : 0),
             separatorBuilder: (context, index) => const SizedBox(height: 12),
             itemBuilder: (context, index) {
-              return _buildReviewTile(context, reviews[index]);
+              if (index < reviews.length) {
+                return _buildReviewTile(context, reviews[index]);
+              } else {
+                return const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 20),
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
             },
           );
         },

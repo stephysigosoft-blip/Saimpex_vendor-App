@@ -59,8 +59,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   }
 
   String _formatLongText(String? text) {
-    if (text == null || text.length <= 20) return text ?? "-";
-    return "${text.substring(0, 20)}\n${text.substring(20)}";
+    return text ?? "-";
   }
 
   Future<void> _selectDate(BuildContext context, bool isFromDate) async {
@@ -241,7 +240,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("RESTAURANT DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.4,
+                    height: MediaQuery.of(context).size.height * 0.35,
                     child: Column(
                       children: [
                         _detailRow("Name", profile?.name ?? "Restaurant 1"),
@@ -274,7 +273,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("BANK DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.2,
+                    height: MediaQuery.of(context).size.height * 0.18,
                     child: Column(
                       children: [
                         _detailRow(
@@ -293,7 +292,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("ABOUT THE RESTAURANT"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.1,
+                    height: MediaQuery.of(context).size.height * 0.085,
                     child: _detailRow(
                       "Category",
                       profile?.restaurantType == 1
@@ -307,7 +306,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("REGISTRATION DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.19,
+                    height: MediaQuery.of(context).size.height * 0.155,
                     child: Column(
                       children: [
                         _detailRow(
@@ -326,7 +325,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("PAYMENT DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.15,
+                    height: MediaQuery.of(context).size.height * 0.12,
                     child: Column(
                       children: [
                         _detailRow(
@@ -390,7 +389,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   else if (profileController.ratingReviewData?.reviews !=
                           null &&
                       profileController.ratingReviewData!.reviews!.isNotEmpty)
-                    ...profileController.ratingReviewData!.reviews!.take(5).map(
+                    ...profileController.ratingReviewData!.reviews!.take(3).map(
                       (review) {
                         return Padding(
                           padding: const EdgeInsets.only(bottom: 12),
@@ -428,11 +427,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => LeaveHistoryScreen(
-                                upcomingLeaves:
-                                    profileController.upcomingLeaves,
-                                leaveHistory: profileController.leaveHistory,
-                              ),
+                              builder: (context) => const LeaveHistoryScreen(),
                             ),
                           );
                         },
@@ -458,7 +453,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                   const SizedBox(height: 12),
                   if (profileController.upcomingLeaves.isNotEmpty)
-                    ...profileController.upcomingLeaves.map(
+                    ...profileController.upcomingLeaves.take(3).map(
                       (leave) => Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: _buildLeaveTile(
@@ -468,6 +463,13 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                           isUpcoming: true,
                         ),
                       ),
+                    )
+                  else
+                    NoDataWidget(
+                      context,
+                      "No upcoming leaves.",
+                      "",
+                      "lib/assets/images/nodata.png",
                     ),
                   const SizedBox(height: 12),
                   Text(
@@ -480,7 +482,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                   const SizedBox(height: 12),
                   if (profileController.leaveHistory.isNotEmpty)
-                    ...profileController.leaveHistory.map(
+                    ...profileController.leaveHistory.take(3).map(
                       (leave) => Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: _buildLeaveTile(
@@ -550,6 +552,72 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   }
 
   Widget _buildWorkingHoursList() {
+    final profileController = Get.find<ProfileController>();
+    if (profileController.isProfileLoading) {
+      return const Padding(
+        padding: EdgeInsets.symmetric(vertical: 20.0),
+        child: AppLoader(),
+      );
+    }
+
+    if (profileController.workingHours.isNotEmpty) {
+      return Column(
+        children: profileController.workingHours.map((wh) {
+          final isClosed = wh.isClosed == true;
+          final timeText = isClosed
+              ? "Closed"
+              : "${wh.openingTime ?? ''} - ${wh.closingTime ?? ''}";
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 12),
+            child: _buildDetailCard(
+              height: MediaQuery.of(context).size.height * 0.08,
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Text(
+                      wh.day ?? '',
+                      style: GoogleFonts.rubik(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFF1F1F1F),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 6,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isClosed
+                          ? const Color(0xFFF1F5F9)
+                          : const Color(0xFFFFF1EE),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Text(
+                      timeText.isNotEmpty && timeText != " - "
+                          ? timeText
+                          : S.of(context).hr24,
+                      style: GoogleFonts.rubik(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: isClosed
+                            ? const Color(0xFF64748B)
+                            : const Color(0xFFFF5216),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+      );
+    }
+
     final days = [
       S.of(context).monday,
       S.of(context).tuesday,
@@ -621,6 +689,11 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
           final profileController = Get.find<ProfileController>();
           profileController.fetchGroceryMenuItems();
           profileController.fetchRestaurantMenuItems();
+        } else if (title == "Working Hours") {
+          final profileController = Get.find<ProfileController>();
+          if (profileController.workingHours.isEmpty) {
+            profileController.getProfile(context);
+          }
         }
       },
       child: Container(
@@ -763,7 +836,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
       localizedLabel = S.of(context).nationalIdNumber;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
+      padding: const EdgeInsets.only(bottom: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -798,8 +871,6 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
             Expanded(
               child: Text(
                 value,
-                overflow: TextOverflow.ellipsis,
-                maxLines: 2,
                 textAlign: TextAlign.right,
                 style: GoogleFonts.rubik(
                   fontSize: 14,
@@ -844,7 +915,12 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                 ),
                 loadingBuilder: (context, child, loadingProgress) {
                   if (loadingProgress == null) return child;
-                  return const AppLoader();
+                  return const Center(
+                    child: CircularProgressIndicator(
+                      color: Color(0xFFFF5216),
+                      strokeWidth: 2,
+                    ),
+                  );
                 },
               ),
             )
@@ -1081,7 +1157,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 13),
           Text(
             "Reason For Leave",
             style: GoogleFonts.rubik(
@@ -1489,6 +1565,16 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                                     MediaQuery.of(context).size.width * 0.22,
                                 fit: BoxFit.cover,
                                 errorBuilder: (_, __, ___) => _defaultImage(),
+                                loadingBuilder:
+                                    (context, child, loadingProgress) {
+                                  if (loadingProgress == null) return child;
+                                  return const Center(
+                                    child: CircularProgressIndicator(
+                                      color: Color(0xFFFF5216),
+                                      strokeWidth: 2,
+                                    ),
+                                  );
+                                },
                               )
                             : _defaultImage(),
                       ),
@@ -1601,7 +1687,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                 ],
               ),
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
               // View Details Button
               SizedBox(
                 width: double.infinity,

@@ -5,8 +5,11 @@ Widget NoDataWidget(
   BuildContext context,
   String title,
   String content,
-  String image,
-) {
+  String image, {
+  double? imgHeight,
+  double? imgWidth,
+  double? fontSize,
+}) {
   return Center(
     child: Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -15,15 +18,16 @@ Widget NoDataWidget(
         const SizedBox(height: 20),
         Image.asset(
           image,
-          height: MediaQuery.of(context).size.height * 0.1,
-          width: MediaQuery.of(context).size.width * 0.3,
+          height: imgHeight ?? MediaQuery.of(context).size.height * 0.15,
+          width: imgWidth ?? MediaQuery.of(context).size.width * 0.4,
           fit: BoxFit.contain,
         ),
         // SizedBox(height: 5),
+        // const SizedBox(height: 10),
         Text(
           title,
           style: GoogleFonts.rubik(
-            fontSize: 10,
+            fontSize: fontSize ?? 15,
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),

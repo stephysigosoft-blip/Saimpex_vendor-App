@@ -307,45 +307,44 @@ class HomeController extends GetxController {
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
       String buildNumber = packageInfo.version;
-      final response = await DioClient().get(ApiEndPoints.settings);
+      final response = await DioClient().get(ApiEndPoints.vendorappSettings);
       SettingsModel model = SettingsModel.fromJson(response.data);
-      debugPrint("settings model: $response.data");
-      debugPrint("current version delivery: $buildNumber");
+      debugPrint("settings model: ${response.data}");
+      debugPrint("current version vendor: $buildNumber");
       if (model.status == true) {
         if (Platform.isAndroid &&
-            model.data?.settings?[0].maintenanceAndroidDelivery.toString() ==
+            model.data?.settings?[0].maintenanceAndroidVendor.toString() ==
                 "1") {
           Get.offAll(
             Maintenance(
-              serverDownReason: model
-                  .data
-                  ?.settings?[0]
-                  .maintenanceReasonAndroidDelivery
+              serverDownReason: model.data?.settings?[0]
+                  .maintenanceReasonAndroidVendor
                   .toString(),
             ),
           );
         } else if (Platform.isIOS &&
-            model.data?.settings?[0].maintenanceIos.toString() == "1") {
+            model.data?.settings?[0].maintenanceIosVendor.toString() == "1") {
           Get.offAll(
             Maintenance(
-              serverDownReason: model.data?.settings?[0].maintenanceReasonIos
+              serverDownReason: model.data?.settings?[0].maintenanceReasonIosVendor
                   .toString(),
             ),
           );
         } else if (Platform.isAndroid &&
-            (model.data?.settings?[0].playStoreUpdateDelivery.toString() ==
+            (model.data?.settings?[0].playStoreUpdateVendor.toString() ==
                     "1" &&
                 versionToCode(
-                      model.data?.settings?[0].playStoreVersionDelivery
+                      model.data?.settings?[0].playStoreVersionVendor
                               .toString() ??
                           "",
                     ) >
                     versionToCode(buildNumber.toString()))) {
           Get.offAll(() => NeedAnUpdate());
         } else if (Platform.isIOS &&
-            (model.data?.settings?[0].appStoreUpdate.toString() == "1" &&
+            (model.data?.settings?[0].appStoreUpdateVendor.toString() == "1" &&
                 versionToCode(
-                      model.data?.settings?[0].appStoreVersion.toString() ?? "",
+                      model.data?.settings?[0].appStoreVersionVendor.toString() ??
+                          "",
                     ) >
                     versionToCode(buildNumber.toString()))) {
           Get.offAll(() => NeedAnUpdate());
@@ -374,30 +373,82 @@ class HomeController extends GetxController {
     required int orderStatus,
     String keyword = "",
     int limit = 5,
+    int page = 1,
+    bool isLoadMore = false,
   }) async {
     try {
-      isFirstLoadRunning = true;
-      update();
+      if (!isLoadMore) {
+        isFirstLoadRunning = true;
+        update();
+      } else {
+        isLoadMoreRunning = true;
+        update();
+      }
       var token = await getSavedObject("token");
       if (token != null) {
         DioClient().updateToken(token);
       } else {
         DioClient().updateToken("");
       }
+
+      Map<String, dynamic> queryParams = {
+        "order_status": orderStatus,
+        "keyword": keyword,
+        "limit": limit,
+      };
+      if (page > 1) {
+        queryParams["page"] = page;
+      }
+
       final response = await DioClient().get(
         ApiEndPoints.home,
-        query: {
-          "order_status": orderStatus,
-          "keyword": keyword,
-          "limit": limit,
-        },
+        query: queryParams,
       );
-      homeData = HomeModel.fromJson(response.data as Map<String, dynamic>?);
+
+      if (isLoadMore && homeData?.data != null) {
+        HomeModel newHomeData = HomeModel.fromJson(
+          response.data as Map<String, dynamic>?,
+        );
+
+        if (newHomeData.data?.orders?.data != null &&
+            homeData!.data!.orders != null) {
+          List<OrderData> existingOrders = List.from(
+            homeData!.data!.orders!.data ?? [],
+          );
+          existingOrders.addAll(newHomeData.data!.orders!.data!);
+
+          Orders updatedOrders = Orders(
+            currentPage: newHomeData.data!.orders!.currentPage,
+            lastPage: newHomeData.data!.orders!.lastPage,
+            total: newHomeData.data!.orders!.total,
+            data: existingOrders,
+          );
+
+          HomeData updatedData = HomeData(
+            membership: homeData!.data!.membership,
+            summary: homeData!.data!.summary,
+            vendor: homeData!.data!.vendor,
+            orders: updatedOrders,
+          );
+
+          homeData = HomeModel(
+            status: homeData!.status,
+            message: homeData!.message,
+            data: updatedData,
+          );
+        }
+      } else {
+        homeData = HomeModel.fromJson(response.data as Map<String, dynamic>?);
+      }
       debugPrint("home model: ${response.data}");
     } catch (error) {
       debugPrint("home Error: $error");
     } finally {
-      isFirstLoadRunning = false;
+      if (!isLoadMore) {
+        isFirstLoadRunning = false;
+      } else {
+        isLoadMoreRunning = false;
+      }
       update();
     }
   }

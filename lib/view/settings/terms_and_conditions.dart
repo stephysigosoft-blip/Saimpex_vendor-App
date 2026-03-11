@@ -3,6 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../generated/l10n.dart';
 
 import '../../controller/settings_controller.dart';
 import '../../view/shimmer_loading/shimmer_text_content.dart';
@@ -33,7 +34,7 @@ class TermsandConditions extends StatelessWidget {
             onPressed: () => Navigator.pop(context),
           ),
           title: Text(
-            "Terms & Conditions",
+            S.of(context).termsConditions,
             style: GoogleFonts.rubik(
               fontSize: 18,
               fontWeight: FontWeight.w700,
