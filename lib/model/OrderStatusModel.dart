@@ -20,9 +20,9 @@ class OrderStatusModel {
   });
 
   factory OrderStatusModel.fromJson(Map<String, dynamic> json) => OrderStatusModel(
-    status: json["status"],
+    status: json["status"]?.toString(),
     data: json["data"] == null ? null : Data.fromJson(json["data"]),
-    message: json["message"],
+    message: json["message"]?.toString(),
   );
 
   Map<String, dynamic> toJson() => {

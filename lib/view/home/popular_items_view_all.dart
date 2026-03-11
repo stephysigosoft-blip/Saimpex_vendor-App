@@ -7,6 +7,7 @@ import 'package:saimpex_vendor/controller/dashboard_controller.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/app_loader.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
+import '../../utils/Widgets/custom_app_bar.dart';
 
 class PopularItemsViewAll extends StatefulWidget {
   const PopularItemsViewAll({super.key});
@@ -46,20 +47,9 @@ class _PopularItemsViewAllState extends State<PopularItemsViewAll> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      appBar: AppBar(
-        title: Text(
-          "Popular Items", // Alternatively S.of(context).popularItems if it exists
-          style: GoogleFonts.rubik(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
-          onPressed: () => Navigator.pop(context),
-        ),
+      appBar: CustomAppBar(
+        title: "Popular Items",
+        onTap: () => Get.back(),
       ),
       body: CommonBackground(
         child: GetBuilder<DashboardController>(

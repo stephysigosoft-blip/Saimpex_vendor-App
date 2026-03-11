@@ -170,6 +170,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
     );
     return GetBuilder<HomeController>(
       builder: (controller) {
+        dynamic userName = controller.homeData?.data?.vendor?.nameEn;
         final membership = controller.homeData?.data?.membership;
         final summary = controller.homeData?.data?.summary;
         final List<OrderData> orders =
@@ -187,7 +188,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: layout.topOffset),
-                VendorHomeTopBar(horizontalPadding: layout.horizontalPadding),
+                VendorHomeTopBar(horizontalPadding: layout.horizontalPadding,userName:userName),
                 const SizedBox(height: 28),
                 VendorMembershipCard(
                   horizontalPadding: layout.horizontalPadding,
@@ -195,6 +196,7 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                   height: layout.membershipCardHeight,
                   membershipName: membershipName,
                   expiryText: expiryText,
+                  isWarning: (membership?.expiresInDays ?? 0) <= 10,
                 ),
                 const SizedBox(height: 24),
                 VendorStatsSection(

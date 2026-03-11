@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
-import 'package:lottie/lottie.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -201,22 +201,10 @@ extension PasswordValidator on String {
 void showLoadingDialog(BuildContext context) {
   showDialog(
     context: context,
-    barrierDismissible: false, // Prevent closing when tapping outside
+    barrierDismissible: false,
     builder: (context) {
-      return Dialog(
-        backgroundColor: Colors.transparent, // No background
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Lottie.asset(
-              'lib/assets/images/loader.json',
-              width: MediaQuery.of(context).size.width * 0.2,
-              height: MediaQuery.of(context).size.width * 0.2,
-            ),
-            // SizedBox(height: 10),
-            // Text("Loading...", style: TextStyle(color: Colors.white)),
-          ],
-        ),
+      return const Center(
+        child: CircularProgressIndicator(color: Color(0xFFFF5216)),
       );
     },
   );
