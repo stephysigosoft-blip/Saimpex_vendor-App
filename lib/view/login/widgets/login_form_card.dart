@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/view/home/home.dart';
 
 import '../../../controller/login_controller.dart';
+import '../../../generated/l10n.dart';
 
 class LoginFormCard extends StatelessWidget {
   const LoginFormCard({
@@ -48,7 +49,7 @@ class LoginFormCard extends StatelessWidget {
               child: Column(
                 children: [
                   Text(
-                    "Welcome to Saimpex Vendor!",
+                    S.of(context).welcomeToSaimpexVendor,
                     style: GoogleFonts.rubik(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -57,7 +58,7 @@ class LoginFormCard extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    "Please sign-in to your account and start the adventure",
+                    S.of(context).pleaseSigninToYourAccountAndStartTheAdventure,
                     textAlign: TextAlign.center,
                     style: GoogleFonts.rubik(
                       fontSize: 12,
@@ -69,7 +70,7 @@ class LoginFormCard extends StatelessWidget {
             ),
             const SizedBox(height: 24),
             Text(
-              "User Name",
+              S.of(context).userName,
               style: GoogleFonts.rubik(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -80,7 +81,7 @@ class LoginFormCard extends StatelessWidget {
             TextField(
               controller: loginController.userNameController,
               decoration: InputDecoration(
-                hintText: "Enter your username",
+                hintText: S.of(context).enterYourUsername,
                 hintStyle: GoogleFonts.rubik(fontSize: 14, color: Colors.grey),
                 filled: true,
                 fillColor: Colors.white,
@@ -100,7 +101,7 @@ class LoginFormCard extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              "Password",
+              S.of(context).password,
               style: GoogleFonts.rubik(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
@@ -112,7 +113,7 @@ class LoginFormCard extends StatelessWidget {
               controller: loginController.passwordController,
               obscureText: !loginController.isPasswordVisible,
               decoration: InputDecoration(
-                hintText: "Enter your password",
+                hintText: S.of(context).enterYourPassword,
                 hintStyle: GoogleFonts.rubik(fontSize: 14, color: Colors.grey),
                 filled: true,
                 fillColor: Colors.white,
@@ -152,7 +153,7 @@ class LoginFormCard extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  "Login",
+                  S.of(context).login,
                   style: GoogleFonts.rubik(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,

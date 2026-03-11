@@ -239,8 +239,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Enter serial number"),
         "enterYourName":
             MessageLookupByLibrary.simpleMessage("Enter your name"),
+        "enterYourPassword":
+            MessageLookupByLibrary.simpleMessage("Enter your password"),
         "enterYourQuantityHere":
             MessageLookupByLibrary.simpleMessage("Enter your quantity here"),
+        "enterYourUsername":
+            MessageLookupByLibrary.simpleMessage("Enter your username"),
         "enterYourWhatsappNumber":
             MessageLookupByLibrary.simpleMessage("Enter your whatsapp number"),
         "expiresInDays": m3,
@@ -415,6 +419,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ownerName": MessageLookupByLibrary.simpleMessage("Owner Name"),
         "ownerPhone": MessageLookupByLibrary.simpleMessage("Owner Phone"),
         "packagingCost": MessageLookupByLibrary.simpleMessage("Packaging Cost"),
+        "password": MessageLookupByLibrary.simpleMessage("Password"),
         "pay": MessageLookupByLibrary.simpleMessage("Pay"),
         "paymentDetails":
             MessageLookupByLibrary.simpleMessage("Payment Details"),
@@ -460,6 +465,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "pleaseLogin": MessageLookupByLibrary.simpleMessage("Please login"),
         "pleaseLoginToUseThisFeature": MessageLookupByLibrary.simpleMessage(
             "Please login to use this feature"),
+        "pleaseSigninToYourAccountAndStartTheAdventure":
+            MessageLookupByLibrary.simpleMessage(
+                "Please sign-in to your account and start the adventure"),
         "points": MessageLookupByLibrary.simpleMessage("points"),
         "pointsLabel": MessageLookupByLibrary.simpleMessage("POINTS"),
         "popularItems": MessageLookupByLibrary.simpleMessage("Popular Items"),
@@ -637,6 +645,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "uploadImageHint":
             MessageLookupByLibrary.simpleMessage("Upload image here"),
         "upto": MessageLookupByLibrary.simpleMessage("Upto"),
+        "userName": MessageLookupByLibrary.simpleMessage("User Name"),
         "username": MessageLookupByLibrary.simpleMessage("Username"),
         "vatGstNumber": MessageLookupByLibrary.simpleMessage("Vat/Gst Number"),
         "vegBurger": MessageLookupByLibrary.simpleMessage("Veg Burger"),
@@ -649,6 +658,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "viewDetails": MessageLookupByLibrary.simpleMessage("View Details"),
         "viewOrders": MessageLookupByLibrary.simpleMessage("View Orders"),
         "wednesday": MessageLookupByLibrary.simpleMessage("Wednesday"),
+        "welcomeToSaimpexVendor":
+            MessageLookupByLibrary.simpleMessage("Welcome to Saimpex Vendor!"),
         "wellBeBackSoon":
             MessageLookupByLibrary.simpleMessage("We\'ll be back soon"),
         "weveSentAVerificationCodeToYourWhatsapp":

@@ -12,14 +12,18 @@ class LoginLanguageDropdown extends StatelessWidget {
   final String currentLanguageCode;
   final ValueChanged<String> onLanguageChanged;
 
-  String _getLanguageName(String code) {
-    if (code == 'ar') return 'Arabic';
-    if (code == 'fr') return 'French';
-    return 'English';
-  }
+  static const Map<String, String> _languageLabels = {
+    'en': 'English',
+    'fr': 'French',
+    'ar': 'Arabic',
+  };
 
   @override
   Widget build(BuildContext context) {
+    final selectedCode = _languageLabels.containsKey(currentLanguageCode)
+        ? currentLanguageCode
+        : 'en';
+
     return Positioned(
       top: topPadding + 10,
       right: 20,
@@ -31,39 +35,27 @@ class LoginLanguageDropdown extends StatelessWidget {
         ),
         child: DropdownButtonHideUnderline(
           child: DropdownButton<String>(
-            value: _getLanguageName(currentLanguageCode),
-            items: const [
-              DropdownMenuItem(
-                value: 'English',
-                child: Text(
-                  'English ',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
+            value: selectedCode,
+            dropdownColor: Colors.white,
+            elevation: 4,
+            style: const TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            items: _languageLabels.entries
+                .map(
+                  (entry) => DropdownMenuItem<String>(
+                    value: entry.key,
+                    child: Text(
+                      entry.value,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              DropdownMenuItem(
-                value: 'Arabic',
-                child: Text(
-                  'Arabic',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              DropdownMenuItem(
-                value: 'French',
-                child: Text(
-                  'French',
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ],
+                )
+                .toList(),
             onChanged: (value) {
               if (value != null) {
                 onLanguageChanged(value);

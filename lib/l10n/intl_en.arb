@@ -931,5 +931,11 @@
   "foodPermit": "Food Permit",
   "@foodPermit": {},
   "preparingFood": "Preparing Food",
-  "ongoing": "Ongoing"
+  "ongoing": "Ongoing",
+  "welcomeToSaimpexVendor": "Welcome to Saimpex Vendor!",
+  "pleaseSigninToYourAccountAndStartTheAdventure": "Please sign-in to your account and start the adventure",
+  "userName": "User Name",
+  "enterYourUsername": "Enter your username",
+  "password": "Password",
+  "enterYourPassword": "Enter your password"
 }
