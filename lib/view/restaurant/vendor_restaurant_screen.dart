@@ -10,6 +10,7 @@ import 'edit_items_screen.dart';
 import 'menu_item_details_screen.dart';
 import 'basket_details_screen.dart';
 import 'rating_reviews_screen.dart';
+import 'leave_history_screen.dart';
 import 'Widgets/vendor_restaurant_reusable_widgets.dart';
 import '../../controller/profile_controller.dart';
 import '../../Utils/Utils.dart';
@@ -329,16 +330,12 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                       _sectionHeader("LEAVES HISTORY"),
                       TextButton(
                         onPressed: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) => LeaveHistoryScreen(
-                          //       upcomingLeaves:
-                          //           profileController.upcomingLeaves,
-                          //       leaveHistory: profileController.leaveHistory,
-                          //     ),
-                          //   ),
-                          // );
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LeaveHistoryScreen(),
+                            ),
+                          );
                         },
                         child: Text(
                           S.of(context).viewAll,
@@ -362,7 +359,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                   const SizedBox(height: 12),
                   if (profileController.upcomingLeaves.isNotEmpty)
-                    ...profileController.upcomingLeaves.map(
+                    ...profileController.upcomingLeaves.take(3).map(
                       (leave) => Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: _buildLeaveTile(
@@ -372,6 +369,13 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                           isUpcoming: true,
                         ),
                       ),
+                    )
+                  else
+                    NoDataWidget(
+                      context,
+                      "No upcoming leaves found.",
+                      "",
+                      "lib/assets/images/nodata.png",
                     ),
                   const SizedBox(height: 12),
                   Text(
@@ -384,7 +388,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   ),
                   const SizedBox(height: 12),
                   if (profileController.leaveHistory.isNotEmpty)
-                    ...profileController.leaveHistory.map(
+                    ...profileController.leaveHistory.take(3).map(
                       (leave) => Padding(
                         padding: const EdgeInsets.only(bottom: 12),
                         child: _buildLeaveTile(
@@ -398,7 +402,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   else
                     NoDataWidget(
                       context,
-                      "No completed leaves.",
+                      "No completed leaves found.",
                       "",
                       "lib/assets/images/nodata.png",
                     ),

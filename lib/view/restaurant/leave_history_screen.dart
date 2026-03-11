@@ -111,6 +111,9 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
                 "No leave history found.",
                 "",
                 "lib/assets/images/nodata.png",
+                imgHeight: MediaQuery.of(context).size.height * 0.25,
+                imgWidth: MediaQuery.of(context).size.width * 0.6,
+                fontSize: 18,
               ),
             );
           }
@@ -147,6 +150,9 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
                   "No upcoming leaves found.",
                   "",
                   "lib/assets/images/nodata.png",
+                  imgHeight: MediaQuery.of(context).size.height * 0.25,
+                  imgWidth: MediaQuery.of(context).size.width * 0.6,
+                  fontSize: 18,
                 ),
               const SizedBox(height: 24),
               Text(
@@ -177,6 +183,9 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
                   "No completed leaves found.",
                   "",
                   "lib/assets/images/nodata.png",
+                  imgHeight: MediaQuery.of(context).size.height * 0.25,
+                  imgWidth: MediaQuery.of(context).size.width * 0.6,
+                  fontSize: 18,
                 ),
               if (profileController.isLoadMoreLeaveLoading)
                 const Padding(

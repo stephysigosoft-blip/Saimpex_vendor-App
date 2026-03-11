@@ -27,7 +27,7 @@ Widget NoDataWidget(
         Text(
           title,
           style: GoogleFonts.rubik(
-            fontSize: fontSize ?? 15,
+            fontSize: fontSize ?? 12,
             fontWeight: FontWeight.w600,
             color: Colors.black,
           ),

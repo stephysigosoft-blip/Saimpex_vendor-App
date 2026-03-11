@@ -1392,7 +1392,6 @@ class VendorLeaveForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return VendorDetailCard(
-      height: MediaQuery.of(context).size.height * 0.38,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
