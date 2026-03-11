@@ -814,7 +814,23 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                     child: Container(
                                       height: 40,
                                       child: ElevatedButton(
-                                        onPressed: () => Get.back(),
+                                        onPressed: () async {
+                                          String vendorType =
+                                              await getSavedObject(
+                                                "vendorType",
+                                              );
+                                          if (vendorType == "1") {
+                                            controller.cancelRestaurantOrder(
+                                              context,
+                                              widget.orderId,
+                                            );
+                                          } else {
+                                            controller.cancelGroceryOrder(
+                                              context,
+                                              widget.orderId,
+                                            );
+                                          }
+                                        },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: const Color(
                                             0xFFF1F5F9,
@@ -846,7 +862,23 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                     child: Container(
                                       height: 40,
                                       child: ElevatedButton(
-                                        onPressed: () {},
+                                        onPressed: () async {
+                                          String vendorType =
+                                              await getSavedObject(
+                                                "vendorType",
+                                              );
+                                          if (vendorType == "1") {
+                                            controller.acceptRestaurantOrder(
+                                              context,
+                                              widget.orderId,
+                                            );
+                                          } else {
+                                            controller.acceptGroceryOrder(
+                                              context,
+                                              widget.orderId,
+                                            );
+                                          }
+                                        },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: const Color(
                                             0xFFFF5216,
@@ -873,21 +905,44 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                   ),
                                 ],
                               )
-                            : (controller.orderData!.status.toString() ==
-                                      'accepted' ||
+                            : (controller.orderData!.status.toString() == '2' ||
                                   controller.orderData!.status.toString() ==
-                                      'preparing')
+                                      '3')
                             ? SizedBox(
                                 width: double.infinity,
                                 height: 40,
                                 child: ElevatedButton(
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    String vendorType = await getSavedObject(
+                                      "vendorType",
+                                    );
+
                                     if (controller.orderData!.status
                                             .toString() ==
-                                        'accepted') {
-                                      showSuccessDialog(
-                                        "Order preparation started successfully",
-                                      );
+                                        '3') {
+                                      if (vendorType == "1") {
+                                        controller.markAsReadyRestaurantOrder(
+                                          context,
+                                          widget.orderId,
+                                        );
+                                      } else {
+                                        controller.markAsReadyGroceryOrder(
+                                          context,
+                                          widget.orderId,
+                                        );
+                                      }
+                                    } else {
+                                      if (vendorType == "1") {
+                                        controller.prepareRestaurantOrder(
+                                          context,
+                                          widget.orderId,
+                                        );
+                                      } else {
+                                        controller.prepareGroceryOrder(
+                                          context,
+                                          widget.orderId,
+                                        );
+                                      }
                                     }
                                   },
                                   style: ElevatedButton.styleFrom(
@@ -900,7 +955,7 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                   ),
                                   child: Text(
                                     controller.orderData!.status.toString() ==
-                                            'preparing'
+                                            '3'
                                         ? S.of(context).markAsReady
                                         : S.of(context).prepareOrder,
                                     style: GoogleFonts.rubik(
