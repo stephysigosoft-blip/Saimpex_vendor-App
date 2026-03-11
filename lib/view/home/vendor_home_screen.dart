@@ -92,11 +92,11 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
       case 5:
         return S.current.assignedStatus;
       case 6:
-        return S.current.reachedRestaurant;
+        return "Reached Restaurant";
       case 7:
-        return S.current.pickedUp;
+        return "Picked Up";
       case 8:
-        return S.current.delivering;
+        return "Delivering";
       case 9:
         return S.current.delivered;
       case 10:

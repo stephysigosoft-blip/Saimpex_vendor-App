@@ -43,7 +43,7 @@ class VendorStatusTabs extends StatelessWidget {
     if (tab == "Accepted") return S.of(context).accepted;
     if (tab == "Preparing") return S.of(context).preparing;
     if (tab == "Ready") return S.of(context).ready;
-    if (tab == "On Going") return S.of(context).onGoing;
+    if (tab == "On Going") return S.of(context).ongoing;
     if (tab == "Delivered") return S.of(context).delivered;
     if (tab == "Cancelled") return S.of(context).cancelled;
     return tab;

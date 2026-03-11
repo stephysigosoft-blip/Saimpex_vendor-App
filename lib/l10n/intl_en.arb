@@ -929,5 +929,7 @@
   "tradeLicense": "Trade License",
   "@tradeLicense": {},
   "foodPermit": "Food Permit",
-  "@foodPermit": {}
+  "@foodPermit": {},
+  "preparingFood": "Preparing Food",
+  "ongoing": "Ongoing"
 }

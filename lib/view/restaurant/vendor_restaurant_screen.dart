@@ -274,7 +274,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("BANK DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.18,
+                    height: MediaQuery.of(context).size.height * 0.2,
                     child: Column(
                       children: [
                         _detailRow(
@@ -293,7 +293,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("ABOUT THE RESTAURANT"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.08,
+                    height: MediaQuery.of(context).size.height * 0.1,
                     child: _detailRow(
                       "Category",
                       profile?.restaurantType == 1
@@ -307,7 +307,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("REGISTRATION DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.16,
+                    height: MediaQuery.of(context).size.height * 0.19,
                     child: Column(
                       children: [
                         _detailRow(
@@ -326,7 +326,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
                   _sectionHeader("PAYMENT DETAILS"),
                   const SizedBox(height: 12),
                   _buildDetailCard(
-                    height: MediaQuery.of(context).size.height * 0.12,
+                    height: MediaQuery.of(context).size.height * 0.15,
                     child: Column(
                       children: [
                         _detailRow(
@@ -763,7 +763,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
       localizedLabel = S.of(context).nationalIdNumber;
 
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12.0),
+      padding: const EdgeInsets.only(bottom: 10.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

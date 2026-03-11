@@ -93,11 +93,11 @@ class _OrdersViewAllState extends State<OrdersViewAll> {
       case 5:
         return S.current.assignedStatus;
       case 6:
-        return S.current.reachedRestaurant;
+        return "Reached Restaurant";
       case 7:
-        return S.current.pickedUp;
+        return "Picked Up";
       case 8:
-        return S.current.delivering;
+        return "Delivering";
       case 9:
         return S.current.delivered;
       case 10:
@@ -166,11 +166,7 @@ class _OrdersViewAllState extends State<OrdersViewAll> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-<<<<<<< HEAD
                 const SizedBox(height: 20),
-=======
-                const SizedBox(height: 60),
->>>>>>> 4d1022f (commit after ongoing api integrations on 10/03/2026)
                 Padding(
                   padding: EdgeInsets.symmetric(
                     horizontal: layout.horizontalPadding,
