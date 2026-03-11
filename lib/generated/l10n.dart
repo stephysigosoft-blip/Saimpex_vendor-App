@@ -4539,6 +4539,126 @@ class S {
       args: [],
     );
   }
+
+  /// `ASSIGNED`
+  String get assigned {
+    return Intl.message(
+      'ASSIGNED',
+      name: 'assigned',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `REACHED RESTAURANT`
+  String get reachedRestaurant {
+    return Intl.message(
+      'REACHED RESTAURANT',
+      name: 'reachedRestaurant',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `PICKED UP`
+  String get pickedUp {
+    return Intl.message(
+      'PICKED UP',
+      name: 'pickedUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `DELIVERING`
+  String get delivering {
+    return Intl.message(
+      'DELIVERING',
+      name: 'delivering',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Placed`
+  String get orderPlaced {
+    return Intl.message(
+      'Order Placed',
+      name: 'orderPlaced',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order successfully placed by`
+  String get orderSuccessfullyPlacedBy {
+    return Intl.message(
+      'Order successfully placed by',
+      name: 'orderSuccessfullyPlacedBy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Accepted`
+  String get orderAccepted {
+    return Intl.message(
+      'Order Accepted',
+      name: 'orderAccepted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Preparation Started`
+  String get orderPreparationStarted {
+    return Intl.message(
+      'Order Preparation Started',
+      name: 'orderPreparationStarted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Ready`
+  String get orderReady {
+    return Intl.message(
+      'Order Ready',
+      name: 'orderReady',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Order Picked Up`
+  String get orderPickedUp {
+    return Intl.message(
+      'Order Picked Up',
+      name: 'orderPickedUp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery Started`
+  String get deliveryStarted {
+    return Intl.message(
+      'Delivery Started',
+      name: 'deliveryStarted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delivery Completed`
+  String get deliveryCompleted {
+    return Intl.message(
+      'Delivery Completed',
+      name: 'deliveryCompleted',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

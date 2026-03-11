@@ -931,5 +931,17 @@
   "foodPermit": "Food Permit",
   "@foodPermit": {},
   "preparingFood": "Preparing Food",
-  "ongoing": "Ongoing"
+  "ongoing": "Ongoing",
+  "assigned": "ASSIGNED",
+  "reachedRestaurant": "REACHED RESTAURANT",
+  "pickedUp": "PICKED UP",
+  "delivering": "DELIVERING",
+  "orderPlaced": "Order Placed",
+  "orderSuccessfullyPlacedBy": "Order successfully placed by",
+  "orderAccepted": "Order Accepted",
+  "orderPreparationStarted": "Order Preparation Started",
+  "orderReady": "Order Ready",
+  "orderPickedUp": "Order Picked Up",
+  "deliveryStarted": "Delivery Started",
+  "deliveryCompleted": "Delivery Completed"
 }

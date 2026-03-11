@@ -174,40 +174,40 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                             controller.orderData?.status
                                                         .toString() ==
                                                     '1'
-                                                ? "PENDING"
+                                                ? S.of(context).pending
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '2'
-                                                ? "ACCEPTED"
+                                                ? S.of(context).accepted
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '3'
-                                                ? "PREPARING"
+                                                ? S.of(context).preparing
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '4'
-                                                ? "READY"
+                                                ? S.of(context).ready
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '5'
-                                                ? "ASSIGNED"
+                                                ? S.of(context).assigned
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '6'
-                                                ? "REACHED RESTAURANT"
+                                                ? S.of(context).reachedRestaurant
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '7'
-                                                ? "PICKED UP"
+                                                ? S.of(context).pickedUp
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '8'
-                                                ? "DELIVERING"
+                                                ? S.of(context).delivering
                                                 : controller.orderData?.status
                                                           .toString() ==
                                                       '10'
-                                                ? "CANCELLED"
-                                                : "DELIVERED",
+                                                ? S.of(context).cancelled
+                                                : S.of(context).delivered,
                                             style: GoogleFonts.rubik(
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold,
@@ -554,8 +554,8 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                       controller.orderData!.paymentType
                                                   .toString() ==
                                               "1"
-                                          ? "Cash on delivery"
-                                          : "Online Payment",
+                                          ? S.of(context).cashOnDelivery
+                                          : S.of(context).onlinePayment,
                                       isGreen: true,
                                     ),
                                     const SizedBox(height: 8),
@@ -688,8 +688,8 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                               if (controller.selectedOrderTabIndex == 0) ...[
                                 // Timeline items (Order Overview)
                                 _timelineItem(
-                                  "Order Placed",
-                                  "Order successfully placed by " +
+                                  S.of(context).orderPlaced,
+                                  S.of(context).orderSuccessfullyPlacedBy +" "+
                                       controller.orderData!.userName.toString(),
                                   controller.orderData!.statusLogs![0].updatedAt
                                       .toString(),
@@ -697,8 +697,8 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                   isFirst: true,
                                 ),
                                 _timelineItem(
-                                  "Order Accepted",
-                                  "Order Accepted",
+                                  S.of(context).orderAccepted,
+                                  S.of(context).orderAccepted,
                                   controller.orderData!.status! >= 2
                                       ? controller
                                             .orderData!
@@ -713,7 +713,7 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                 ),
                                 _timelineItem(
                                   S.of(context).preparingFood,
-                                  "Order Preparation Started",
+                                  S.of(context).orderPreparationStarted,
                                   controller.orderData!.status! >= 3
                                       ? controller
                                             .orderData!
@@ -726,8 +726,8 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                   asset: "lib/assets/images/Preparing food.png",
                                 ),
                                 _timelineItem(
-                                  "Ready",
-                                  "Order Ready",
+                                  S.of(context).ready,
+                                  S.of(context).orderReady,
                                   controller.orderData!.status! >= 4
                                       ? controller
                                             .orderData!
@@ -740,8 +740,8 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                   asset: "lib/assets/images/Delivery.png",
                                 ),
                                 _timelineItem(
-                                  "Picked Up",
-                                  "Order Picked Up",
+                                  S.of(context).pickedUp,
+                                  S.of(context).orderPickedUp,
                                   controller.orderData!.status! >= 7
                                       ? controller
                                             .orderData!
@@ -755,8 +755,8 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                       "lib/assets/images/Reached Restaurant.png",
                                 ),
                                 _timelineItem(
-                                  "Delivering",
-                                  "Delivery Started",
+                                  S.of(context).delivering,
+                                  S.of(context).deliveryStarted,
                                   controller.orderData!.status! >= 8
                                       ? controller
                                             .orderData!
@@ -771,8 +771,8 @@ class _VendorOrderDetailsState extends State<VendorOrderDetails> {
                                 ),
 
                                 _timelineItem(
-                                  "Delivered",
-                                  "Delivery Completed",
+                                  S.of(context).delivered,
+                                  S.of(context).deliveryCompleted,
                                   controller.orderData!.status! >= 9
                                       ? controller
                                             .orderData!
