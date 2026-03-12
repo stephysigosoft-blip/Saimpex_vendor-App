@@ -190,7 +190,7 @@ class _LeaveHistoryScreenState extends State<LeaveHistoryScreen> {
               if (profileController.isLoadMoreLeaveLoading)
                 const Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: AppLoader(size: 40)),
                 ),
             ],
           );

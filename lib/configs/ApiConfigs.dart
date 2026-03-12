@@ -44,4 +44,10 @@ class ApiEndPoints {
   static String getPrivacyPolicy = "getPrivacyPolicy";
   static String getContact = "getContact";
   static String getAbout = "getAbout";
+  static String allConversations = "chat/allConversations";
+  static String getConversation = "chat/getConversation";
+  static String sendMessage = "chat/sendMessage";
+  static String customerSearch = "customers/search";
+  static String totalUnreadMessagesCount = "chat/totalUnreadMessagesCount";
+  static String markAsRead = "chat/markAsRead";
 }

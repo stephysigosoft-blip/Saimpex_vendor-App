@@ -74,6 +74,7 @@ class LoginController extends GetxController {
         await savename("roleId", loginModel.data?.details?.roleId ?? 0);
         await savename("vendorType", loginModel.data?.details?.vendorType.toString() ?? "0");
         await savename("vendorId", loginModel.data?.details?.vendorId ?? 0);
+        await savename("userId", loginModel.data?.details?.id ?? 0);
         final languageCode = localization.currentLocale?.languageCode;
         final message = loginModel.message;
         final toastMessage = languageCode == "fr"

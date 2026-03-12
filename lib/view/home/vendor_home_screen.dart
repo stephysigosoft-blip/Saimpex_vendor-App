@@ -29,7 +29,9 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
   final VendorHomeController vendorHomeController =
       const VendorHomeController();
   final HomeController homeController = Get.find<HomeController>();
-  final OrderDetailsController detailsController = Get.put(OrderDetailsController());
+  final OrderDetailsController detailsController = Get.put(
+    OrderDetailsController(),
+  );
   String selectedTab = "Pending";
   static const int _defaultLimit = 5;
   final Map<String, int> _tabCounts = {
@@ -128,7 +130,6 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
     });
   }
 
-
   void _handleAcceptOrder(String orderId) {
     final vendorType =
         homeController.homeData?.data?.vendor?.vendorType?.toString() ?? "0";
@@ -188,7 +189,10 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 SizedBox(height: layout.topOffset),
-                VendorHomeTopBar(horizontalPadding: layout.horizontalPadding,userName:userName),
+                VendorHomeTopBar(
+                  horizontalPadding: layout.horizontalPadding,
+                  userName: userName,
+                ),
                 const SizedBox(height: 28),
                 VendorMembershipCard(
                   horizontalPadding: layout.horizontalPadding,
@@ -205,95 +209,117 @@ class _VendorHomeScreenState extends State<VendorHomeScreen> {
                   totalOrders: (summary?.totalOrders ?? 0).toString(),
                   totalProducts: (summary?.totalProducts ?? 0).toString(),
                 ),
-                const SizedBox(height: 24),
-                VendorDashboardButton(
-                  horizontalPadding: layout.horizontalPadding,
-                  width: size.width,
-                  height: layout.dashboardButtonHeight,
-                ),
-                const SizedBox(height: 10),
-                VendorOrdersHeader(
-                  horizontalPadding: layout.horizontalPadding,
-                  onViewAllPressed: () {
-                    Get.to(() => const OrdersViewAll());
-                  },
-                ),
-                const SizedBox(height: 5),
-                Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: layout.horizontalPadding,
-                  ),
-                  child: CustomSearchBox(
-                    hintText: S.of(context).searchByIdName,
-                    controller: controller.searchController,
-                    onChanged: (value) async {
-                      await controller.fetchHome(
-                        context,
-                        orderStatus: _statusValue(selectedTab),
-                        keyword: value.trim(),
-                        limit: _defaultLimit,
-                      );
-                      _refreshSelectedTabCount();
-                    },
-                    boxColor: Colors.white,
-                    showSearchIcon: true,
-                    width: layout.searchBoxWidth,
-                    height: 44,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                VendorStatusTabs(
-                  height: layout.tabsHeight,
-                  leftPadding: layout.horizontalPadding,
-                  tabWidth: layout.tabWidth,
-                  tabs: tabs,
-                  tabCounts: _tabCounts,
-                  selectedTab: selectedTab,
-                  onTabChanged: (tab) {
-                    setState(() {
-                      selectedTab = tab;
-                    });
-                    _fetchOrders();
-                  },
-                ),
-                const SizedBox(height: 16),
                 Expanded(
-                  child: controller.isFirstLoadRunning
-                      ? const AppLoader()
-                      : orders.isEmpty
-                      ? NoDataWidget(
-                          context,
-                          S.of(context).noOrdersFound,
-                          "",
-                          "lib/assets/images/nodata.png",
-                        )
-                      : ListView.builder(
-                          padding: const EdgeInsets.only(top: 8, bottom: 100),
-                          itemCount: orders.length > 5 ? 5 : orders.length,
-                          itemBuilder: (context, index) {
-                            final order = orders[index];
-                            final price =
-                                double.tryParse(order.total ?? "0") ?? 0;
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 16),
-                              child: VendorOrderListItem(
-                                horizontalPadding: layout.horizontalPadding,
-                                orderId: order.id?.toString() ?? "NA",
-                                customerName:
-                                    order.userName ?? S.of(context).unknown,
-                                itemsCount: order.orderItemsCount ?? 0,
-                                price: price,
-                                dateTime: order.placedAtFormatted ?? "",
-                                status: _statusLabel(order.status),
-                                deliveryBoyName: order.deliveryBoyName,
-                                cancelReason: order.cancelReason,
-                                onAccept: () => _handleAcceptOrder(order.id?.toString() ?? ""),
-                                onReject: () => _handleCancelOrder(order.id?.toString() ?? ""),
-                                onMarkAsReady: () => _handleMarkAsReady(order.id?.toString() ?? ""),
-                              ),
-                            );
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 24),
+                        VendorDashboardButton(
+                          horizontalPadding: layout.horizontalPadding,
+                          width: size.width,
+                          height: layout.dashboardButtonHeight,
+                        ),
+                        const SizedBox(height: 10),
+                        VendorOrdersHeader(
+                          horizontalPadding: layout.horizontalPadding,
+                          onViewAllPressed: () {
+                            Get.to(() => const OrdersViewAll());
                           },
                         ),
+                        const SizedBox(height: 5),
+                        Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: layout.horizontalPadding,
+                          ),
+                          child: CustomSearchBox(
+                            hintText: S.of(context).searchByIdName,
+                            controller: controller.searchController,
+                            onChanged: (value) async {
+                              await controller.fetchHome(
+                                context,
+                                orderStatus: _statusValue(selectedTab),
+                                keyword: value.trim(),
+                                limit: _defaultLimit,
+                              );
+                              _refreshSelectedTabCount();
+                            },
+                            boxColor: Colors.white,
+                            showSearchIcon: true,
+                            width: layout.searchBoxWidth,
+                            height: 44,
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                        VendorStatusTabs(
+                          height: layout.tabsHeight,
+                          leftPadding: layout.horizontalPadding,
+                          tabWidth: layout.tabWidth,
+                          tabs: tabs,
+                          tabCounts: _tabCounts,
+                          selectedTab: selectedTab,
+                          onTabChanged: (tab) {
+                            setState(() {
+                              selectedTab = tab;
+                            });
+                            _fetchOrders();
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        controller.isFirstLoadRunning
+                            ? const AppLoader()
+                            : orders.isEmpty
+                            ? NoDataWidget(
+                                context,
+                                S.of(context).noOrdersFound,
+                                "",
+                                "lib/assets/images/nodata.png",
+                              )
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                padding: const EdgeInsets.only(
+                                  top: 8,
+                                  bottom: 20,
+                                ),
+                                itemCount: orders.length > 5
+                                    ? 5
+                                    : orders.length,
+                                itemBuilder: (context, index) {
+                                  final order = orders[index];
+                                  final price =
+                                      double.tryParse(order.total ?? "0") ?? 0;
+                                  return Padding(
+                                    padding: const EdgeInsets.only(bottom: 16),
+                                    child: VendorOrderListItem(
+                                      horizontalPadding:
+                                          layout.horizontalPadding,
+                                      orderId: order.id?.toString() ?? "NA",
+                                      customerName:
+                                          order.userName ??
+                                          S.of(context).unknown,
+                                      itemsCount: order.orderItemsCount ?? 0,
+                                      price: price,
+                                      dateTime: order.placedAtFormatted ?? "",
+                                      status: _statusLabel(order.status),
+                                      deliveryBoyName: order.deliveryBoyName,
+                                      cancelReason: order.cancelReason,
+                                      onAccept: () => _handleAcceptOrder(
+                                        order.id?.toString() ?? "",
+                                      ),
+                                      onReject: () => _handleCancelOrder(
+                                        order.id?.toString() ?? "",
+                                      ),
+                                      onMarkAsReady: () => _handleMarkAsReady(
+                                        order.id?.toString() ?? "",
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                        const SizedBox(height: 100),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),

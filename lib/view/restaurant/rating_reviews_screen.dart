@@ -99,7 +99,7 @@ class _RatingReviewsScreenState extends State<RatingReviewsScreen> {
               } else {
                 return const Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
-                  child: Center(child: CircularProgressIndicator()),
+                  child: Center(child: AppLoader(size: 40)),
                 );
               }
             },

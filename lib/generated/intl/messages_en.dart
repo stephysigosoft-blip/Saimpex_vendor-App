@@ -36,687 +36,782 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
-        "aNewUpdateIsAvailableForThisAppPleaseDownload":
-            MessageLookupByLibrary.simpleMessage(
-                "A new update is available for this app. Please download the latest version to continue using the app."),
-        "aboutDescription": MessageLookupByLibrary.simpleMessage(
-            "Serving authentic flavors with fresh ingredients. Specializing in continental and oriental cuisines."),
-        "aboutTheRestaurant":
-            MessageLookupByLibrary.simpleMessage("ABOUT THE RESTAURANT"),
-        "aboutUs": MessageLookupByLibrary.simpleMessage("About Us"),
-        "acceptOrder": MessageLookupByLibrary.simpleMessage("Accept Order"),
-        "accepted": MessageLookupByLibrary.simpleMessage("Accepted"),
-        "account": MessageLookupByLibrary.simpleMessage("Account"),
-        "accountName": MessageLookupByLibrary.simpleMessage("Account Name"),
-        "accountNumber": MessageLookupByLibrary.simpleMessage("Account Number"),
-        "active": MessageLookupByLibrary.simpleMessage("ACTIVE"),
-        "activeLabel": MessageLookupByLibrary.simpleMessage("Active"),
-        "add": MessageLookupByLibrary.simpleMessage("Add"),
-        "addDeliveryNotesOptional": MessageLookupByLibrary.simpleMessage(
-            "Add delivery notes (optional)"),
-        "addItem": MessageLookupByLibrary.simpleMessage("Add Item"),
-        "addItemsTitle": MessageLookupByLibrary.simpleMessage("Add Items"),
-        "addMenuTitle": MessageLookupByLibrary.simpleMessage("Add Menu"),
-        "addMoreItems": MessageLookupByLibrary.simpleMessage("Add More Items"),
-        "addNewItem": MessageLookupByLibrary.simpleMessage("ADD NEW ITEM"),
-        "addNewMenu": MessageLookupByLibrary.simpleMessage("ADD NEW MENU"),
-        "address": MessageLookupByLibrary.simpleMessage("Address"),
-        "addressNotAvailable":
-            MessageLookupByLibrary.simpleMessage("Address not available"),
-        "all": MessageLookupByLibrary.simpleMessage("All"),
-        "allItems": MessageLookupByLibrary.simpleMessage("ALL ITEMS"),
-        "allItemsFromThisRestaurant": MessageLookupByLibrary.simpleMessage(
-            "All Items from This Restaurant"),
-        "allItemsFromThisStore":
-            MessageLookupByLibrary.simpleMessage("All Items from this Store"),
-        "allMenus": MessageLookupByLibrary.simpleMessage("ALL MENUS"),
-        "allRestaurants":
-            MessageLookupByLibrary.simpleMessage("All Restaurants"),
-        "allRevenue": MessageLookupByLibrary.simpleMessage("All Revenue"),
-        "allStores": MessageLookupByLibrary.simpleMessage("All Stores"),
-        "alreadyOneCouponIsAppliedOnThisOrderIfYou":
-            MessageLookupByLibrary.simpleMessage(
-                "Already one coupon is applied on this order, if you want to aaply this please remove already applied coupon"),
-        "applied": MessageLookupByLibrary.simpleMessage("Applied"),
-        "apply": MessageLookupByLibrary.simpleMessage("Apply"),
-        "applyCoupon": MessageLookupByLibrary.simpleMessage("Apply Coupon"),
-        "applyOn": MessageLookupByLibrary.simpleMessage("Applied on"),
-        "areYouSureYouWantToCancelThisOrder":
-            MessageLookupByLibrary.simpleMessage(
-                "Are you sure you want to cancel this order?"),
-        "areYouSureYouWantToClearThisChat":
-            MessageLookupByLibrary.simpleMessage(
-                "Are You Sure You Want to Clear This Chat?"),
-        "areYouSureYouWantToDeleteItemFromYour":
-            MessageLookupByLibrary.simpleMessage(
-                "Are you sure you want to delete item from your cart?"),
-        "areYouSureYouWantToDeleteYourAccount":
-            MessageLookupByLibrary.simpleMessage(
-                "Are you sure you want to delete your account?"),
-        "areYouSureYouWantToLogout": MessageLookupByLibrary.simpleMessage(
-            "Are you sure you want to logout?"),
-        "areYouSureYouWantToPlaceThisOrder":
-            MessageLookupByLibrary.simpleMessage(
-                "Are you sure you want to place this order?"),
-        "assigned": MessageLookupByLibrary.simpleMessage("ASSIGNED"),
-        "assignedDeliveryPartner":
-            MessageLookupByLibrary.simpleMessage("Assigned Delivery Partner"),
-        "assignedStatus": MessageLookupByLibrary.simpleMessage("Assigned"),
-        "attributeLabel": MessageLookupByLibrary.simpleMessage("Attribute"),
-        "availableAt": MessageLookupByLibrary.simpleMessage("Available at"),
-        "availablePoints":
-            MessageLookupByLibrary.simpleMessage("Available Points"),
-        "availableStatus": MessageLookupByLibrary.simpleMessage("Available"),
-        "availableTimeHeader":
-            MessageLookupByLibrary.simpleMessage("AVAILABLE TIME"),
-        "averageRatingLabel":
-            MessageLookupByLibrary.simpleMessage("Average Rating"),
-        "bankDetails": MessageLookupByLibrary.simpleMessage("BANK DETAILS"),
-        "bankName": MessageLookupByLibrary.simpleMessage("Bank Name"),
-        "basket": MessageLookupByLibrary.simpleMessage("Basket"),
-        "basketDetailsTitle": MessageLookupByLibrary.simpleMessage("Details"),
-        "basketIdLabel": m0,
-        "basketItems": MessageLookupByLibrary.simpleMessage("Basket Items"),
-        "basketItemsHeader":
-            MessageLookupByLibrary.simpleMessage("BASKET ITEMS"),
-        "basketOrderDetails":
-            MessageLookupByLibrary.simpleMessage("Basket Order Details"),
-        "basketOrders": MessageLookupByLibrary.simpleMessage("Basket Orders"),
-        "basketOrderss": MessageLookupByLibrary.simpleMessage("Basket Orders"),
-        "beverages": MessageLookupByLibrary.simpleMessage("Beverages"),
-        "breakfast": MessageLookupByLibrary.simpleMessage("Breakfast"),
-        "buyNow": MessageLookupByLibrary.simpleMessage("Buy Now"),
-        "byHotelLabel": MessageLookupByLibrary.simpleMessage("[By Hotel]"),
-        "callUs": MessageLookupByLibrary.simpleMessage("Call us"),
-        "camera": MessageLookupByLibrary.simpleMessage("Camera"),
-        "cameraPermissionIsRequiredToScanBarcodes":
-            MessageLookupByLibrary.simpleMessage(
-                "Camera permission is required to scan barcodes"),
-        "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
-        "cancelOrder": MessageLookupByLibrary.simpleMessage("Cancel Order"),
-        "cancelled": MessageLookupByLibrary.simpleMessage("Cancelled"),
-        "cancelledOnLabel": m1,
-        "cart": MessageLookupByLibrary.simpleMessage("Cart"),
-        "cashOnDelivery":
-            MessageLookupByLibrary.simpleMessage("Cash on Delivery"),
-        "categoryLabel": MessageLookupByLibrary.simpleMessage("Category"),
-        "certificates": MessageLookupByLibrary.simpleMessage("CERTIFICATES"),
-        "chat": MessageLookupByLibrary.simpleMessage("Chat"),
-        "chatNow": MessageLookupByLibrary.simpleMessage("Chat now"),
-        "checkout": MessageLookupByLibrary.simpleMessage("Checkout"),
-        "chooseImageFrom":
-            MessageLookupByLibrary.simpleMessage("Choose Image From :"),
-        "classicBasket": MessageLookupByLibrary.simpleMessage("Classic Basket"),
-        "clearAll": MessageLookupByLibrary.simpleMessage("Clear All"),
-        "clickToView": MessageLookupByLibrary.simpleMessage("Click to View"),
-        "comboOffer": MessageLookupByLibrary.simpleMessage("Combo Offer"),
-        "commissionPercentage":
-            MessageLookupByLibrary.simpleMessage("Commission %"),
-        "completed": MessageLookupByLibrary.simpleMessage("COMPLETED"),
-        "completedLeaves":
-            MessageLookupByLibrary.simpleMessage("Completed Leaves"),
-        "confirmProceed":
-            MessageLookupByLibrary.simpleMessage("Confirm & Proceed"),
-        "congratulationsYouveEarned": MessageLookupByLibrary.simpleMessage(
-            "Congratulations! You’ve earned"),
-        "contact": MessageLookupByLibrary.simpleMessage("Contact"),
-        "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
-        "continuee": MessageLookupByLibrary.simpleMessage("Continue"),
-        "coordinates": MessageLookupByLibrary.simpleMessage("Coordinates"),
-        "couponCodeCopied":
-            MessageLookupByLibrary.simpleMessage("Coupon code copied!"),
-        "cravingsCallingAnswerWithABite": MessageLookupByLibrary.simpleMessage(
-            "Cravings calling? Answer with a bite!"),
-        "createNewBasket":
-            MessageLookupByLibrary.simpleMessage("CREATE NEW BASKET"),
-        "createdLabel": m2,
-        "credit": MessageLookupByLibrary.simpleMessage("Credit"),
-        "crop": MessageLookupByLibrary.simpleMessage("Crop"),
-        "cropImage": MessageLookupByLibrary.simpleMessage("Crop Image"),
-        "currentLocation":
-            MessageLookupByLibrary.simpleMessage("Current Location"),
-        "currentlyClosed":
-            MessageLookupByLibrary.simpleMessage("Currently Closed"),
-        "currentlyClosedOpens":
-            MessageLookupByLibrary.simpleMessage("Currently closed • Opens"),
-        "currentlyNoItemsFoundPleaseTryLater":
-            MessageLookupByLibrary.simpleMessage(
-                "Currently no items Found, Please try later..."),
-        "currentlyNoRestaurantsAreAvailableInThisAreaTryAgain":
-            MessageLookupByLibrary.simpleMessage(
-                "Currently no restaurants are available in this area. Try again later."),
-        "currentlyNoRestaurantsFound": MessageLookupByLibrary.simpleMessage(
-            "Currently no restaurants found"),
-        "currentlyNoStoresFound":
-            MessageLookupByLibrary.simpleMessage("Currently no stores found"),
-        "customerNotes": MessageLookupByLibrary.simpleMessage("CUSTOMER NOTES"),
-        "dAgo": MessageLookupByLibrary.simpleMessage("d ago"),
-        "dateLabel": MessageLookupByLibrary.simpleMessage("DATE"),
-        "dateTime": MessageLookupByLibrary.simpleMessage("DATE & TIME"),
-        "dateTimeLabel": MessageLookupByLibrary.simpleMessage("DATE & TIME"),
-        "debit": MessageLookupByLibrary.simpleMessage("Debit"),
-        "delete": MessageLookupByLibrary.simpleMessage("Delete"),
-        "deleteAccount": MessageLookupByLibrary.simpleMessage("Delete Account"),
-        "deleteCart": MessageLookupByLibrary.simpleMessage("Delete Cart"),
-        "deleteChat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
-        "delivered": MessageLookupByLibrary.simpleMessage("Delivered"),
-        "delivering": MessageLookupByLibrary.simpleMessage("DELIVERING"),
-        "deliveryAddress":
-            MessageLookupByLibrary.simpleMessage("DELIVERY ADDRESS"),
-        "deliveryBoys": MessageLookupByLibrary.simpleMessage("Delivery Boys"),
-        "deliveryCompleted":
-            MessageLookupByLibrary.simpleMessage("Delivery Completed"),
-        "deliveryFee": MessageLookupByLibrary.simpleMessage("Delivery Fee"),
-        "deliveryLocation":
-            MessageLookupByLibrary.simpleMessage("Delivery Location"),
-        "deliveryStarted":
-            MessageLookupByLibrary.simpleMessage("Delivery Started"),
-        "descriptionEnglishLabel":
-            MessageLookupByLibrary.simpleMessage("Description (English)"),
-        "didntGetTheOtp":
-            MessageLookupByLibrary.simpleMessage("Didn’t get the OTP?"),
-        "dinnerSpecial": MessageLookupByLibrary.simpleMessage("Dinner Special"),
-        "discountPriceLabel":
-            MessageLookupByLibrary.simpleMessage("Discount Price"),
-        "doYouWantToReplaceThemWithDishesFrom":
-            MessageLookupByLibrary.simpleMessage(
-                ". Do you want to replace them with items from"),
-        "done": MessageLookupByLibrary.simpleMessage("Done"),
-        "driver": MessageLookupByLibrary.simpleMessage("Driver"),
-        "driverDetails": MessageLookupByLibrary.simpleMessage("Driver Details"),
-        "durationLabel": MessageLookupByLibrary.simpleMessage("Duration"),
-        "edit": MessageLookupByLibrary.simpleMessage("Edit"),
-        "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
-        "email": MessageLookupByLibrary.simpleMessage("Email"),
-        "emailUs": MessageLookupByLibrary.simpleMessage("Email us"),
-        "endDate": MessageLookupByLibrary.simpleMessage("End date"),
-        "enterDescriptionHint":
-            MessageLookupByLibrary.simpleMessage("Enter description"),
-        "enterDiscountPriceHint":
-            MessageLookupByLibrary.simpleMessage("Enter Discount Price"),
-        "enterItemNameHint":
-            MessageLookupByLibrary.simpleMessage("Enter item name"),
-        "enterMaxQuantityHint": MessageLookupByLibrary.simpleMessage(
-            "Enter maximum allowed quantity"),
-        "enterMinutesHint":
-            MessageLookupByLibrary.simpleMessage("Enter minutes"),
-        "enterPriceHint": MessageLookupByLibrary.simpleMessage("Enter Price"),
-        "enterSerialNumberHint":
-            MessageLookupByLibrary.simpleMessage("Enter serial number"),
-        "enterYourName":
-            MessageLookupByLibrary.simpleMessage("Enter your name"),
-        "enterYourPassword":
-            MessageLookupByLibrary.simpleMessage("Enter your password"),
-        "enterYourQuantityHere":
-            MessageLookupByLibrary.simpleMessage("Enter your quantity here"),
-        "enterYourUsername":
-            MessageLookupByLibrary.simpleMessage("Enter your username"),
-        "enterYourWhatsappNumber":
-            MessageLookupByLibrary.simpleMessage("Enter your whatsapp number"),
-        "expiresInDays": m3,
-        "filters": MessageLookupByLibrary.simpleMessage("Filters"),
-        "filtersSorting":
-            MessageLookupByLibrary.simpleMessage("Filters & Sorting"),
-        "findSomethingFromThisRestaurant": MessageLookupByLibrary.simpleMessage(
-            "Find something from this restaurant"),
-        "food": MessageLookupByLibrary.simpleMessage("Food"),
-        "foodPermit": MessageLookupByLibrary.simpleMessage("Food Permit"),
-        "friday": MessageLookupByLibrary.simpleMessage("Friday"),
-        "fromDate": MessageLookupByLibrary.simpleMessage("From Date"),
-        "gallery": MessageLookupByLibrary.simpleMessage("Gallery"),
-        "gotIt": MessageLookupByLibrary.simpleMessage("Got It"),
-        "grilledChicken":
-            MessageLookupByLibrary.simpleMessage("Grilled Chicken"),
-        "grocery": MessageLookupByLibrary.simpleMessage("Grocery"),
-        "gstNumber": MessageLookupByLibrary.simpleMessage("GST Number"),
-        "gstVat": MessageLookupByLibrary.simpleMessage("Gst/Vat"),
-        "hAgo": MessageLookupByLibrary.simpleMessage("h ago"),
-        "helpSupport": MessageLookupByLibrary.simpleMessage("Help & Support"),
-        "holderName": MessageLookupByLibrary.simpleMessage("Holder Name"),
-        "home": MessageLookupByLibrary.simpleMessage("Home"),
-        "hr24": MessageLookupByLibrary.simpleMessage("24 Hr"),
-        "ibanNumber": MessageLookupByLibrary.simpleMessage("IBAN Number"),
-        "idNumber": MessageLookupByLibrary.simpleMessage("ID"),
-        "identityProofDocument":
-            MessageLookupByLibrary.simpleMessage("Identity Proof Document"),
-        "inactive": MessageLookupByLibrary.simpleMessage("INACTIVE"),
-        "inactiveLabel": MessageLookupByLibrary.simpleMessage("Inactive"),
-        "invalidProductId":
-            MessageLookupByLibrary.simpleMessage("Invalid product ID"),
-        "invalidProductInformation":
-            MessageLookupByLibrary.simpleMessage("Invalid product information"),
-        "isVegLabel": MessageLookupByLibrary.simpleMessage("Is Veg"),
-        "item": MessageLookupByLibrary.simpleMessage("Item"),
-        "itemIdLabel": MessageLookupByLibrary.simpleMessage("Item Id"),
-        "itemImageLabel": MessageLookupByLibrary.simpleMessage("Item Image"),
-        "itemNameEnglishLabel":
-            MessageLookupByLibrary.simpleMessage("Item Name (English)"),
-        "itemOrdersHeader": MessageLookupByLibrary.simpleMessage("ITEM ORDERS"),
-        "itemTotal": MessageLookupByLibrary.simpleMessage("Item Total"),
-        "itemTypeLabel": MessageLookupByLibrary.simpleMessage("Item Type"),
-        "items": MessageLookupByLibrary.simpleMessage("Items"),
-        "itemsCountLabel": MessageLookupByLibrary.simpleMessage("ITEMS COUNT"),
-        "itemsTotalLabel": MessageLookupByLibrary.simpleMessage("ITEMS TOTAL"),
-        "joinedOn": MessageLookupByLibrary.simpleMessage("Joined on"),
-        "km": MessageLookupByLibrary.simpleMessage("Km"),
-        "language": MessageLookupByLibrary.simpleMessage("Language"),
-        "lastPurchaseLabel":
-            MessageLookupByLibrary.simpleMessage("Last Purchase"),
-        "leaves": MessageLookupByLibrary.simpleMessage("Leaves"),
-        "leavesHistory": MessageLookupByLibrary.simpleMessage("LEAVES HISTORY"),
-        "loadingLocation":
-            MessageLookupByLibrary.simpleMessage("Loading location..."),
-        "login": MessageLookupByLibrary.simpleMessage("Login"),
-        "loginOrSignUp":
-            MessageLookupByLibrary.simpleMessage("Login or Sign up"),
-        "logout": MessageLookupByLibrary.simpleMessage("Logout"),
-        "lunchMenu": MessageLookupByLibrary.simpleMessage("Lunch Menu"),
-        "mAgo": MessageLookupByLibrary.simpleMessage("m ago"),
-        "markAsReady": MessageLookupByLibrary.simpleMessage("Mark as Ready"),
-        "markLeave": MessageLookupByLibrary.simpleMessage("MARK LEAVE"),
-        "markLeaveButton": MessageLookupByLibrary.simpleMessage("Mark Leave"),
-        "maxAllowedQuantityLabel":
-            MessageLookupByLibrary.simpleMessage("Maximum Allowed Quantity"),
-        "membership": MessageLookupByLibrary.simpleMessage("Membership"),
-        "menu": MessageLookupByLibrary.simpleMessage("Menu"),
-        "menuBulkImport":
-            MessageLookupByLibrary.simpleMessage("Menu Bulk Import"),
-        "mins": MessageLookupByLibrary.simpleMessage("Mins"),
-        "missedSomething":
-            MessageLookupByLibrary.simpleMessage("Missed Something?"),
-        "monday": MessageLookupByLibrary.simpleMessage("Monday"),
-        "morePoints": MessageLookupByLibrary.simpleMessage("More Points"),
-        "mruOnThisOrder":
-            MessageLookupByLibrary.simpleMessage("MRU on this order"),
-        "mruWithThisCode":
-            MessageLookupByLibrary.simpleMessage("MRU with this code"),
-        "myOrders": MessageLookupByLibrary.simpleMessage("My Orders"),
-        "myPoints": MessageLookupByLibrary.simpleMessage("My Points"),
-        "myRestaurant": MessageLookupByLibrary.simpleMessage("My Restaurant"),
-        "name": MessageLookupByLibrary.simpleMessage("Name"),
-        "nationalIdNumber":
-            MessageLookupByLibrary.simpleMessage("National Id Number"),
-        "nationalIdType":
-            MessageLookupByLibrary.simpleMessage("National Id Type"),
-        "need": MessageLookupByLibrary.simpleMessage("Need"),
-        "needItFreshAddItToYourCart": MessageLookupByLibrary.simpleMessage(
-            "Need it fresh? Add it to your cart!"),
-        "needsAnUpdate":
-            MessageLookupByLibrary.simpleMessage("Needs An Update"),
-        "no": MessageLookupByLibrary.simpleMessage("No"),
-        "noCategoriesFound":
-            MessageLookupByLibrary.simpleMessage("No Categories Found"),
-        "noConversations":
-            MessageLookupByLibrary.simpleMessage("No Conversations"),
-        "noConversationsFound":
-            MessageLookupByLibrary.simpleMessage("No conversations found"),
-        "noCouponsAvailable":
-            MessageLookupByLibrary.simpleMessage("No Coupons Available"),
-        "noCouponsAvailableRightNow": MessageLookupByLibrary.simpleMessage(
-            "No coupons available right now."),
-        "noDeliveryBoysFound":
-            MessageLookupByLibrary.simpleMessage("No delivery boys found"),
-        "noGroceriesFound":
-            MessageLookupByLibrary.simpleMessage("No Groceries Found"),
-        "noGroceryOrdersYet":
-            MessageLookupByLibrary.simpleMessage("No grocery orders yet"),
-        "noInternetConnection":
-            MessageLookupByLibrary.simpleMessage("No Internet Connection"),
-        "noInternetConnectionDescription": MessageLookupByLibrary.simpleMessage(
-            "Please check your internet connection and try again."),
-        "noItemsFound": MessageLookupByLibrary.simpleMessage("No Items Found"),
-        "noLabel": MessageLookupByLibrary.simpleMessage("No"),
-        "noMessages": MessageLookupByLibrary.simpleMessage("No messages"),
-        "noMessagesYet":
-            MessageLookupByLibrary.simpleMessage("No messages yet"),
-        "noNotifications":
-            MessageLookupByLibrary.simpleMessage("No notifications"),
-        "noNotificationsFound":
-            MessageLookupByLibrary.simpleMessage("No notifications found"),
-        "noOptionsAvailable":
-            MessageLookupByLibrary.simpleMessage("No options available"),
-        "noOrderDetailsFound":
-            MessageLookupByLibrary.simpleMessage("No order details found"),
-        "noOrders": MessageLookupByLibrary.simpleMessage("No Orders"),
-        "noOrdersFound":
-            MessageLookupByLibrary.simpleMessage("No orders found"),
-        "noRedeemableRewards":
-            MessageLookupByLibrary.simpleMessage("No redeemable rewards"),
-        "noRestaurantsFound":
-            MessageLookupByLibrary.simpleMessage("No Restaurants Found"),
-        "noRestaurantsFounds":
-            MessageLookupByLibrary.simpleMessage("No Restaurants Founds"),
-        "noStoresFound":
-            MessageLookupByLibrary.simpleMessage("No Stores Found"),
-        "noTrackingDetailsFound":
-            MessageLookupByLibrary.simpleMessage("No tracking details found"),
-        "noTransactionHistoryAvailable": MessageLookupByLibrary.simpleMessage(
-            "No transaction history available"),
-        "notification": MessageLookupByLibrary.simpleMessage("Notification"),
-        "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
-        "now": MessageLookupByLibrary.simpleMessage("Now"),
-        "off": MessageLookupByLibrary.simpleMessage("OFF"),
-        "ongoing": MessageLookupByLibrary.simpleMessage("Ongoing"),
-        "onlinePayment": MessageLookupByLibrary.simpleMessage("Online Payment"),
-        "order": MessageLookupByLibrary.simpleMessage("ORDER"),
-        "orderAccepted": MessageLookupByLibrary.simpleMessage("Order Accepted"),
-        "orderColon": MessageLookupByLibrary.simpleMessage("Order: "),
-        "orderDetails": MessageLookupByLibrary.simpleMessage("Order Details"),
-        "orderDetailsNotFound":
-            MessageLookupByLibrary.simpleMessage("Order details not found"),
-        "orderDurationBreakdown":
-            MessageLookupByLibrary.simpleMessage("Order Duration Breakdown"),
-        "orderIdLabel": m4,
-        "orderItems": MessageLookupByLibrary.simpleMessage("ORDER ITEMS"),
-        "orderPickedUp":
-            MessageLookupByLibrary.simpleMessage("Order Picked Up"),
-        "orderPlaced": MessageLookupByLibrary.simpleMessage("Order Placed"),
-        "orderPlacedSuccessfully":
-            MessageLookupByLibrary.simpleMessage("Order placed successfully!"),
-        "orderPreparationStarted":
-            MessageLookupByLibrary.simpleMessage("Order Preparation Started"),
-        "orderReady": MessageLookupByLibrary.simpleMessage("Order Ready"),
-        "orderSuccessfullyPlacedBy": MessageLookupByLibrary.simpleMessage(
-            "Order successfully placed by"),
-        "orderTimeline": MessageLookupByLibrary.simpleMessage("Order Timeline"),
-        "ordered": MessageLookupByLibrary.simpleMessage("Ordered"),
-        "orderedItems": MessageLookupByLibrary.simpleMessage("Ordered Items"),
-        "ordersCountLabel":
-            MessageLookupByLibrary.simpleMessage("ORDERS COUNT"),
-        "ordersHeader": MessageLookupByLibrary.simpleMessage("ORDERS"),
-        "otpVerification":
-            MessageLookupByLibrary.simpleMessage("OTP Verification"),
-        "outOfStock": MessageLookupByLibrary.simpleMessage("Out of Stock"),
-        "owner": MessageLookupByLibrary.simpleMessage("Owner"),
-        "ownerEmail": MessageLookupByLibrary.simpleMessage("Owner Email"),
-        "ownerIdentityProof":
-            MessageLookupByLibrary.simpleMessage("OWNER IDENTITY PROOF"),
-        "ownerName": MessageLookupByLibrary.simpleMessage("Owner Name"),
-        "ownerPhone": MessageLookupByLibrary.simpleMessage("Owner Phone"),
-        "packagingCost": MessageLookupByLibrary.simpleMessage("Packaging Cost"),
-        "password": MessageLookupByLibrary.simpleMessage("Password"),
-        "pay": MessageLookupByLibrary.simpleMessage("Pay"),
-        "paymentDetails":
-            MessageLookupByLibrary.simpleMessage("Payment Details"),
-        "paymentOn": MessageLookupByLibrary.simpleMessage("Payment On"),
-        "paymentSummary":
-            MessageLookupByLibrary.simpleMessage("PAYMENT SUMMARY"),
-        "paymentSummaryDetails":
-            MessageLookupByLibrary.simpleMessage("PAYMENT DETAILS"),
-        "paymentType": MessageLookupByLibrary.simpleMessage("Payment Type"),
-        "pending": MessageLookupByLibrary.simpleMessage("Pending"),
-        "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
-        "pickWhatYouWantAndFillYourBasket":
-            MessageLookupByLibrary.simpleMessage(
-                "Pick what you want and fill your basket!"),
-        "pickYourFavouritesAndStartYourFeast":
-            MessageLookupByLibrary.simpleMessage(
-                "Pick your favourites and start your feast!"),
-        "pickedUp": MessageLookupByLibrary.simpleMessage("PICKED UP"),
-        "placeOrder": MessageLookupByLibrary.simpleMessage("Place Order"),
-        "pleaseAddYourItemsToCart": MessageLookupByLibrary.simpleMessage(
-            "Please add your items to cart"),
-        "pleaseChooseLocation":
-            MessageLookupByLibrary.simpleMessage("Please choose location"),
-        "pleaseEnterCouponCode":
-            MessageLookupByLibrary.simpleMessage("Please enter coupon code"),
-        "pleaseEnterNameOfLengthAtleast3": MessageLookupByLibrary.simpleMessage(
-            "Please enter name of length atleast 3"),
-        "pleaseEnterOtp":
-            MessageLookupByLibrary.simpleMessage("Please enter otp"),
-        "pleaseEnterTheVerificationCodeSentTo":
-            MessageLookupByLibrary.simpleMessage(
-                "Please enter the verification code sent to"),
-        "pleaseEnterValidOtp":
-            MessageLookupByLibrary.simpleMessage("Please enter valid otp"),
-        "pleaseEnterYourMobileNumber": MessageLookupByLibrary.simpleMessage(
-            "Please enter your mobile number"),
-        "pleaseEnterYourName":
-            MessageLookupByLibrary.simpleMessage("Please enter your name"),
-        "pleaseEnterYourQuantity":
-            MessageLookupByLibrary.simpleMessage("Please enter your quantity"),
-        "pleaseLeaveThePackageAtTheFrontDoorAndRing":
-            MessageLookupByLibrary.simpleMessage(
-                "Please leave the package at the front door and ring the bell. Thank you!"),
-        "pleaseLogin": MessageLookupByLibrary.simpleMessage("Please login"),
-        "pleaseLoginToUseThisFeature": MessageLookupByLibrary.simpleMessage(
-            "Please login to use this feature"),
-        "pleaseSigninToYourAccountAndStartTheAdventure":
-            MessageLookupByLibrary.simpleMessage(
-                "Please sign-in to your account and start the adventure"),
-        "points": MessageLookupByLibrary.simpleMessage("points"),
-        "pointsLabel": MessageLookupByLibrary.simpleMessage("POINTS"),
-        "popularItems": MessageLookupByLibrary.simpleMessage("Popular Items"),
-        "positionTheBarcodeWithinTheFrame":
-            MessageLookupByLibrary.simpleMessage(
-                "Position the barcode within the frame"),
-        "preparationTimeLabel":
-            MessageLookupByLibrary.simpleMessage("Preparation Time"),
-        "preparationTimeMinutesLabel":
-            MessageLookupByLibrary.simpleMessage("Preparation Time (minutes)"),
-        "prepareOrder": MessageLookupByLibrary.simpleMessage("Prepare Order"),
-        "preparing": MessageLookupByLibrary.simpleMessage("Preparing"),
-        "preparingFood": MessageLookupByLibrary.simpleMessage("Preparing Food"),
-        "priceLabel": MessageLookupByLibrary.simpleMessage("PRICE"),
-        "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
-        "proceed": MessageLookupByLibrary.simpleMessage("Proceed"),
-        "productOutOfStock":
-            MessageLookupByLibrary.simpleMessage("Product out of stock"),
-        "products": MessageLookupByLibrary.simpleMessage("Products"),
-        "profile": MessageLookupByLibrary.simpleMessage("Profile"),
-        "qty": MessageLookupByLibrary.simpleMessage("Qty"),
-        "qtyLabel": m5,
-        "quantity": MessageLookupByLibrary.simpleMessage("Quantity"),
-        "rateOrder": MessageLookupByLibrary.simpleMessage("Rate Order"),
-        "rateOrderedItems":
-            MessageLookupByLibrary.simpleMessage("Rate Ordered Items"),
-        "rateRestaurantReview":
-            MessageLookupByLibrary.simpleMessage("Rate Restaurant Review"),
-        "rateStoreReview":
-            MessageLookupByLibrary.simpleMessage("Rate Store Review"),
-        "rateYourDeliveryExperience": MessageLookupByLibrary.simpleMessage(
-            "Rate Your Delivery Experience"),
-        "rateYourOrder":
-            MessageLookupByLibrary.simpleMessage("Rate Your Order"),
-        "ratingReviews":
-            MessageLookupByLibrary.simpleMessage("RATING & REVIEWS"),
-        "reachedRestaurant":
-            MessageLookupByLibrary.simpleMessage("REACHED RESTAURANT"),
-        "ready": MessageLookupByLibrary.simpleMessage("Ready"),
-        "reasonColonLabel": m6,
-        "reasonForLeave":
-            MessageLookupByLibrary.simpleMessage("Reason For Leave"),
-        "reasonLabel": MessageLookupByLibrary.simpleMessage("Reason"),
-        "receivedPayouts":
-            MessageLookupByLibrary.simpleMessage("Received Payouts"),
-        "redeemNow": MessageLookupByLibrary.simpleMessage("Redeem Now"),
-        "redeemPointsLabel":
-            MessageLookupByLibrary.simpleMessage("REDEEM POINTS"),
-        "redeemableRewards":
-            MessageLookupByLibrary.simpleMessage("Redeemable Rewards"),
-        "redeemed": MessageLookupByLibrary.simpleMessage("Redeemed"),
-        "redeemedAmount":
-            MessageLookupByLibrary.simpleMessage("Redeemed Amount"),
-        "redeemedCustomersHeader":
-            MessageLookupByLibrary.simpleMessage("REDEEMED CUSTOMERS"),
-        "redeemedPoints":
-            MessageLookupByLibrary.simpleMessage("Redeemed Points"),
-        "redeemedStatus": MessageLookupByLibrary.simpleMessage("REDEEMED"),
-        "regDate": MessageLookupByLibrary.simpleMessage("Reg. Date"),
-        "regNumber": MessageLookupByLibrary.simpleMessage("Reg. Number"),
-        "registrationDetails":
-            MessageLookupByLibrary.simpleMessage("REGISTRATION DETAILS"),
-        "reject": MessageLookupByLibrary.simpleMessage("Reject"),
-        "remove": MessageLookupByLibrary.simpleMessage("Remove"),
-        "replace": MessageLookupByLibrary.simpleMessage("Replace"),
-        "replaceCartItem":
-            MessageLookupByLibrary.simpleMessage("Replace cart item?"),
-        "resendCodeIn30Sec":
-            MessageLookupByLibrary.simpleMessage("Resend code in 30 sec"),
-        "resendOtp": MessageLookupByLibrary.simpleMessage("Resend OTP"),
-        "resetButton": MessageLookupByLibrary.simpleMessage("Reset"),
-        "restaurant": MessageLookupByLibrary.simpleMessage("Restaurant"),
-        "restaurantCommission": MessageLookupByLibrary.simpleMessage(
-            "Restaurant Commission Percentage per Order"),
-        "restaurantDetails":
-            MessageLookupByLibrary.simpleMessage("RESTAURANT DETAILS"),
-        "restaurantOne": MessageLookupByLibrary.simpleMessage("Restaurant 1"),
-        "restaurantReports":
-            MessageLookupByLibrary.simpleMessage("Restaurant Reports"),
-        "revenueLabel": MessageLookupByLibrary.simpleMessage("Revenue"),
-        "revenueReport": MessageLookupByLibrary.simpleMessage("Revenue Report"),
-        "reviews": MessageLookupByLibrary.simpleMessage("reviews"),
-        "saimpex": MessageLookupByLibrary.simpleMessage("SAIMPEX"),
-        "salesPerformanceHeader":
-            MessageLookupByLibrary.simpleMessage("SALES & PERFORMANCE"),
-        "saturday": MessageLookupByLibrary.simpleMessage("Saturday"),
-        "save": MessageLookupByLibrary.simpleMessage("Save"),
-        "scanBarcode": MessageLookupByLibrary.simpleMessage("Scan Barcode"),
-        "scheduled": MessageLookupByLibrary.simpleMessage("SCHEDULED"),
-        "search": MessageLookupByLibrary.simpleMessage("Search"),
-        "searchByIdName":
-            MessageLookupByLibrary.simpleMessage("Search by ID, name"),
-        "searchCategories":
-            MessageLookupByLibrary.simpleMessage("Search Categories"),
-        "searchForAreaStreetName": MessageLookupByLibrary.simpleMessage(
-            "Search for area, street name....."),
-        "searchForItems":
-            MessageLookupByLibrary.simpleMessage("Search for items"),
-        "searchNameOrMobileNumber": MessageLookupByLibrary.simpleMessage(
-            "Search name or mobile number"),
-        "selectAttributeHint":
-            MessageLookupByLibrary.simpleMessage("Select attribute"),
-        "selectCategoryHint":
-            MessageLookupByLibrary.simpleMessage("Select Category"),
-        "selectDeliveryLocation":
-            MessageLookupByLibrary.simpleMessage("Select Delivery Location"),
-        "selectTagHint": MessageLookupByLibrary.simpleMessage("Select tag"),
-        "selectTypeHint": MessageLookupByLibrary.simpleMessage("Select type"),
-        "selectYourLocation":
-            MessageLookupByLibrary.simpleMessage("Select Your Location"),
-        "send": MessageLookupByLibrary.simpleMessage("Send"),
-        "serialNoLabel": MessageLookupByLibrary.simpleMessage("Serial No"),
-        "serverDown": MessageLookupByLibrary.simpleMessage("Server Down"),
-        "serviceDeliveryCharge":
-            MessageLookupByLibrary.simpleMessage("Service Delivery Charge"),
-        "settings": MessageLookupByLibrary.simpleMessage("Settings"),
-        "sorryWereDownForMaintenanceWellBeBackUpShortly":
-            MessageLookupByLibrary.simpleMessage(
-                "Sorry, we\'re down for maintenance  We\'ll be back up shortly."),
-        "sortBy": MessageLookupByLibrary.simpleMessage("Sort By"),
-        "sortFilter": MessageLookupByLibrary.simpleMessage("Sort & Filter"),
-        "startDate": MessageLookupByLibrary.simpleMessage("Start date"),
-        "startTypingToSearch":
-            MessageLookupByLibrary.simpleMessage("Start typing to search"),
-        "status": MessageLookupByLibrary.simpleMessage("Status"),
-        "submitButton": MessageLookupByLibrary.simpleMessage("Submit"),
-        "submitLeaveRequest":
-            MessageLookupByLibrary.simpleMessage("SUBMIT LEAVE REQUEST"),
-        "submitRating": MessageLookupByLibrary.simpleMessage("Submit Rating"),
-        "subtotal": MessageLookupByLibrary.simpleMessage("Subtotal"),
-        "sunday": MessageLookupByLibrary.simpleMessage("Sunday"),
-        "sushiPlatter": MessageLookupByLibrary.simpleMessage("Sushi Platter"),
-        "swiftCode": MessageLookupByLibrary.simpleMessage("SWIFT Code"),
-        "tagsLabel": MessageLookupByLibrary.simpleMessage("Tags"),
-        "tax": MessageLookupByLibrary.simpleMessage("Tax"),
-        "termsConditions":
-            MessageLookupByLibrary.simpleMessage("Terms & Conditions"),
-        "theRestaurantPreparingYourFood": MessageLookupByLibrary.simpleMessage(
-            "The restaurant preparing your food"),
-        "thursday": MessageLookupByLibrary.simpleMessage("Thursday"),
-        "toDate": MessageLookupByLibrary.simpleMessage("To Date"),
-        "toPay": MessageLookupByLibrary.simpleMessage("To Pay"),
-        "today": MessageLookupByLibrary.simpleMessage("Today"),
-        "todaysOrders": MessageLookupByLibrary.simpleMessage("Today\'s Orders"),
-        "topSellingDishes":
-            MessageLookupByLibrary.simpleMessage("Top Selling Dishes"),
-        "totalAmount": MessageLookupByLibrary.simpleMessage("Total Amount"),
-        "totalBill": MessageLookupByLibrary.simpleMessage("Total Bill"),
-        "totalOrdersStat": MessageLookupByLibrary.simpleMessage("Total Orders"),
-        "totalProfit": MessageLookupByLibrary.simpleMessage("Total Profit"),
-        "totalReviewsStat":
-            MessageLookupByLibrary.simpleMessage("Total Reviews"),
-        "trackOrder": MessageLookupByLibrary.simpleMessage("Track Order"),
-        "trackYourOrder":
-            MessageLookupByLibrary.simpleMessage("Track Your Order"),
-        "tradeLicense": MessageLookupByLibrary.simpleMessage("Trade License"),
-        "tradeLicenseNo":
-            MessageLookupByLibrary.simpleMessage("Trade License No"),
-        "transactionHistory":
-            MessageLookupByLibrary.simpleMessage("Transaction History"),
-        "tryAgain": MessageLookupByLibrary.simpleMessage("Try Again"),
-        "trySearchingWithDifferentKeywords":
-            MessageLookupByLibrary.simpleMessage(
-                "Try searching with different keywords"),
-        "tuesday": MessageLookupByLibrary.simpleMessage("Tuesday"),
-        "typeAMessage": MessageLookupByLibrary.simpleMessage("Type a message…"),
-        "typeYourReviewHere":
-            MessageLookupByLibrary.simpleMessage("Type your review here"),
-        "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
-        "unknownDriver": MessageLookupByLibrary.simpleMessage("Unknown Driver"),
-        "unknownVendor": MessageLookupByLibrary.simpleMessage("Unknown Vendor"),
-        "upcomingLeaves":
-            MessageLookupByLibrary.simpleMessage("Upcoming Leaves"),
-        "update": MessageLookupByLibrary.simpleMessage("Update"),
-        "updateDetailsButton":
-            MessageLookupByLibrary.simpleMessage("Update Details"),
-        "uploadImageHint":
-            MessageLookupByLibrary.simpleMessage("Upload image here"),
-        "upto": MessageLookupByLibrary.simpleMessage("Upto"),
-        "userName": MessageLookupByLibrary.simpleMessage("User Name"),
-        "username": MessageLookupByLibrary.simpleMessage("Username"),
-        "vatGstNumber": MessageLookupByLibrary.simpleMessage("Vat/Gst Number"),
-        "vegBurger": MessageLookupByLibrary.simpleMessage("Veg Burger"),
-        "vendor": MessageLookupByLibrary.simpleMessage("Vendor"),
-        "vendorType": MessageLookupByLibrary.simpleMessage("Vendor Type"),
-        "version": MessageLookupByLibrary.simpleMessage("Version"),
-        "viewAll": MessageLookupByLibrary.simpleMessage("View All"),
-        "viewAllCoupons":
-            MessageLookupByLibrary.simpleMessage("View all coupons"),
-        "viewDetails": MessageLookupByLibrary.simpleMessage("View Details"),
-        "viewOrders": MessageLookupByLibrary.simpleMessage("View Orders"),
-        "wednesday": MessageLookupByLibrary.simpleMessage("Wednesday"),
-        "welcomeTo": MessageLookupByLibrary.simpleMessage("Welcome to"),
-        "welcomeToSaimpexVendor":
-            MessageLookupByLibrary.simpleMessage("Welcome to Saimpex Vendor!"),
-        "wellBeBackSoon":
-            MessageLookupByLibrary.simpleMessage("We\'ll be back soon"),
-        "weveSentAVerificationCodeToYourWhatsapp":
-            MessageLookupByLibrary.simpleMessage(
-                "We’ve sent a verification code to your WhatsApp"),
-        "whatDoYouNeedToday":
-            MessageLookupByLibrary.simpleMessage("What do you need today?"),
-        "whatsYourName":
-            MessageLookupByLibrary.simpleMessage("What’s your name?"),
-        "withThisCode":
-            MessageLookupByLibrary.simpleMessage("% with this code"),
-        "workingHours": MessageLookupByLibrary.simpleMessage("Working Hours"),
-        "yes": MessageLookupByLibrary.simpleMessage("Yes"),
-        "yesLabel": MessageLookupByLibrary.simpleMessage("Yes"),
-        "yesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
-        "youAreLoggedOutSuccessfully": MessageLookupByLibrary.simpleMessage(
-            "You are logged out successfully."),
-        "youCannotDeleteThisItemFromHereToCheckoutMinimum":
-            MessageLookupByLibrary.simpleMessage(
-                "You cannot delete this item from here, to checkout minimum one product is required"),
-        "youMightAlsoLike":
-            MessageLookupByLibrary.simpleMessage("You might also like"),
-        "youSaved": MessageLookupByLibrary.simpleMessage("You saved"),
-        "yourCartHasDishesFrom":
-            MessageLookupByLibrary.simpleMessage("Your cart has items from"),
-        "yourCartIsEmpty":
-            MessageLookupByLibrary.simpleMessage("Your Cart is Empty"),
-        "yourOrderHasBeenDelivered": MessageLookupByLibrary.simpleMessage(
-            "Your order has been delivered"),
-        "yourOrderHasBeenPickedUpForDelivery":
-            MessageLookupByLibrary.simpleMessage(
-                "Your order has been picked up for delivery"),
-        "yourOrderHasBeenReceived": MessageLookupByLibrary.simpleMessage(
-            "Your order has been received"),
-        "yourOrders": MessageLookupByLibrary.simpleMessage("Your Orders"),
-        "yourTrustedFoodGroceryDeliveryPartner":
-            MessageLookupByLibrary.simpleMessage(
-                "Your trusted food & grocery delivery partner"),
-        "zone": MessageLookupByLibrary.simpleMessage("Zone")
-      };
+    "aNewUpdateIsAvailableForThisAppPleaseDownload":
+        MessageLookupByLibrary.simpleMessage(
+          "A new update is available for this app. Please download the latest version to continue using the app.",
+        ),
+    "aboutDescription": MessageLookupByLibrary.simpleMessage(
+      "Serving authentic flavors with fresh ingredients. Specializing in continental and oriental cuisines.",
+    ),
+    "aboutTheRestaurant": MessageLookupByLibrary.simpleMessage(
+      "ABOUT THE RESTAURANT",
+    ),
+    "aboutUs": MessageLookupByLibrary.simpleMessage("About Us"),
+    "acceptOrder": MessageLookupByLibrary.simpleMessage("Accept Order"),
+    "accepted": MessageLookupByLibrary.simpleMessage("Accepted"),
+    "account": MessageLookupByLibrary.simpleMessage("Account"),
+    "accountName": MessageLookupByLibrary.simpleMessage("Account Name"),
+    "accountNumber": MessageLookupByLibrary.simpleMessage("Account Number"),
+    "active": MessageLookupByLibrary.simpleMessage("ACTIVE"),
+    "activeLabel": MessageLookupByLibrary.simpleMessage("Active"),
+    "add": MessageLookupByLibrary.simpleMessage("Add"),
+    "addDeliveryNotesOptional": MessageLookupByLibrary.simpleMessage(
+      "Add delivery notes (optional)",
+    ),
+    "addItem": MessageLookupByLibrary.simpleMessage("Add Item"),
+    "addItemsTitle": MessageLookupByLibrary.simpleMessage("Add Items"),
+    "addMenuTitle": MessageLookupByLibrary.simpleMessage("Add Menu"),
+    "addMoreItems": MessageLookupByLibrary.simpleMessage("Add More Items"),
+    "addNewItem": MessageLookupByLibrary.simpleMessage("ADD NEW ITEM"),
+    "addNewMenu": MessageLookupByLibrary.simpleMessage("ADD NEW MENU"),
+    "address": MessageLookupByLibrary.simpleMessage("Address"),
+    "addressNotAvailable": MessageLookupByLibrary.simpleMessage(
+      "Address not available",
+    ),
+    "all": MessageLookupByLibrary.simpleMessage("All"),
+    "allItems": MessageLookupByLibrary.simpleMessage("ALL ITEMS"),
+    "allItemsFromThisRestaurant": MessageLookupByLibrary.simpleMessage(
+      "All Items from This Restaurant",
+    ),
+    "allItemsFromThisStore": MessageLookupByLibrary.simpleMessage(
+      "All Items from this Store",
+    ),
+    "allMenus": MessageLookupByLibrary.simpleMessage("ALL MENUS"),
+    "allRestaurants": MessageLookupByLibrary.simpleMessage("All Restaurants"),
+    "allRevenue": MessageLookupByLibrary.simpleMessage("All Revenue"),
+    "allStores": MessageLookupByLibrary.simpleMessage("All Stores"),
+    "alreadyOneCouponIsAppliedOnThisOrderIfYou":
+        MessageLookupByLibrary.simpleMessage(
+          "Already one coupon is applied on this order, if you want to aaply this please remove already applied coupon",
+        ),
+    "applied": MessageLookupByLibrary.simpleMessage("Applied"),
+    "apply": MessageLookupByLibrary.simpleMessage("Apply"),
+    "applyCoupon": MessageLookupByLibrary.simpleMessage("Apply Coupon"),
+    "applyOn": MessageLookupByLibrary.simpleMessage("Applied on"),
+    "areYouSureYouWantToCancelThisOrder": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to cancel this order?",
+    ),
+    "areYouSureYouWantToClearThisChat": MessageLookupByLibrary.simpleMessage(
+      "Are You Sure You Want to Clear This Chat?",
+    ),
+    "areYouSureYouWantToDeleteItemFromYour":
+        MessageLookupByLibrary.simpleMessage(
+          "Are you sure you want to delete item from your cart?",
+        ),
+    "areYouSureYouWantToDeleteYourAccount":
+        MessageLookupByLibrary.simpleMessage(
+          "Are you sure you want to delete your account?",
+        ),
+    "areYouSureYouWantToLogout": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to logout?",
+    ),
+    "areYouSureYouWantToPlaceThisOrder": MessageLookupByLibrary.simpleMessage(
+      "Are you sure you want to place this order?",
+    ),
+    "assigned": MessageLookupByLibrary.simpleMessage("ASSIGNED"),
+    "assignedDeliveryPartner": MessageLookupByLibrary.simpleMessage(
+      "Assigned Delivery Partner",
+    ),
+    "assignedStatus": MessageLookupByLibrary.simpleMessage("Assigned"),
+    "attributeLabel": MessageLookupByLibrary.simpleMessage("Attribute"),
+    "availableAt": MessageLookupByLibrary.simpleMessage("Available at"),
+    "availablePoints": MessageLookupByLibrary.simpleMessage("Available Points"),
+    "availableStatus": MessageLookupByLibrary.simpleMessage("Available"),
+    "availableTimeHeader": MessageLookupByLibrary.simpleMessage(
+      "AVAILABLE TIME",
+    ),
+    "averageRatingLabel": MessageLookupByLibrary.simpleMessage(
+      "Average Rating",
+    ),
+    "bankDetails": MessageLookupByLibrary.simpleMessage("BANK DETAILS"),
+    "bankName": MessageLookupByLibrary.simpleMessage("Bank Name"),
+    "basket": MessageLookupByLibrary.simpleMessage("Basket"),
+    "basketDetailsTitle": MessageLookupByLibrary.simpleMessage("Details"),
+    "basketIdLabel": m0,
+    "basketItems": MessageLookupByLibrary.simpleMessage("Basket Items"),
+    "basketItemsHeader": MessageLookupByLibrary.simpleMessage("BASKET ITEMS"),
+    "basketOrderDetails": MessageLookupByLibrary.simpleMessage(
+      "Basket Order Details",
+    ),
+    "basketOrders": MessageLookupByLibrary.simpleMessage("Basket Orders"),
+    "basketOrderss": MessageLookupByLibrary.simpleMessage("Basket Orders"),
+    "beverages": MessageLookupByLibrary.simpleMessage("Beverages"),
+    "breakfast": MessageLookupByLibrary.simpleMessage("Breakfast"),
+    "buyNow": MessageLookupByLibrary.simpleMessage("Buy Now"),
+    "byHotelLabel": MessageLookupByLibrary.simpleMessage("[By Hotel]"),
+    "callUs": MessageLookupByLibrary.simpleMessage("Call us"),
+    "camera": MessageLookupByLibrary.simpleMessage("Camera"),
+    "cameraPermissionIsRequiredToScanBarcodes":
+        MessageLookupByLibrary.simpleMessage(
+          "Camera permission is required to scan barcodes",
+        ),
+    "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "cancelOrder": MessageLookupByLibrary.simpleMessage("Cancel Order"),
+    "cancelled": MessageLookupByLibrary.simpleMessage("Cancelled"),
+    "cancelledOnLabel": m1,
+    "cart": MessageLookupByLibrary.simpleMessage("Cart"),
+    "cashOnDelivery": MessageLookupByLibrary.simpleMessage("Cash on Delivery"),
+    "categoryLabel": MessageLookupByLibrary.simpleMessage("Category"),
+    "certificates": MessageLookupByLibrary.simpleMessage("CERTIFICATES"),
+    "chat": MessageLookupByLibrary.simpleMessage("Chat"),
+    "chatNow": MessageLookupByLibrary.simpleMessage("Chat now"),
+    "checkout": MessageLookupByLibrary.simpleMessage("Checkout"),
+    "chooseImageFrom": MessageLookupByLibrary.simpleMessage(
+      "Choose Image From :",
+    ),
+    "classicBasket": MessageLookupByLibrary.simpleMessage("Classic Basket"),
+    "clearAll": MessageLookupByLibrary.simpleMessage("Clear All"),
+    "clickToView": MessageLookupByLibrary.simpleMessage("Click to View"),
+    "comboOffer": MessageLookupByLibrary.simpleMessage("Combo Offer"),
+    "commissionPercentage": MessageLookupByLibrary.simpleMessage(
+      "Commission %",
+    ),
+    "completed": MessageLookupByLibrary.simpleMessage("COMPLETED"),
+    "completedLeaves": MessageLookupByLibrary.simpleMessage("Completed Leaves"),
+    "confirmProceed": MessageLookupByLibrary.simpleMessage("Confirm & Proceed"),
+    "congratulationsYouveEarned": MessageLookupByLibrary.simpleMessage(
+      "Congratulations! You’ve earned",
+    ),
+    "contact": MessageLookupByLibrary.simpleMessage("Contact"),
+    "continueText": MessageLookupByLibrary.simpleMessage("Continue"),
+    "continuee": MessageLookupByLibrary.simpleMessage("Continue"),
+    "coordinates": MessageLookupByLibrary.simpleMessage("Coordinates"),
+    "couponCodeCopied": MessageLookupByLibrary.simpleMessage(
+      "Coupon code copied!",
+    ),
+    "cravingsCallingAnswerWithABite": MessageLookupByLibrary.simpleMessage(
+      "Cravings calling? Answer with a bite!",
+    ),
+    "createNewBasket": MessageLookupByLibrary.simpleMessage(
+      "CREATE NEW BASKET",
+    ),
+    "createdLabel": m2,
+    "credit": MessageLookupByLibrary.simpleMessage("Credit"),
+    "crop": MessageLookupByLibrary.simpleMessage("Crop"),
+    "cropImage": MessageLookupByLibrary.simpleMessage("Crop Image"),
+    "currentLocation": MessageLookupByLibrary.simpleMessage("Current Location"),
+    "currentlyClosed": MessageLookupByLibrary.simpleMessage("Currently Closed"),
+    "currentlyClosedOpens": MessageLookupByLibrary.simpleMessage(
+      "Currently closed • Opens",
+    ),
+    "currentlyNoContactsFoundPleaseTryLater":
+        MessageLookupByLibrary.simpleMessage(
+          "Currently no contacts found, Please try later...",
+        ),
+    "currentlyNoItemsFoundPleaseTryLater": MessageLookupByLibrary.simpleMessage(
+      "Currently no items Found, Please try later...",
+    ),
+    "currentlyNoRestaurantsAreAvailableInThisAreaTryAgain":
+        MessageLookupByLibrary.simpleMessage(
+          "Currently no restaurants are available in this area. Try again later.",
+        ),
+    "currentlyNoRestaurantsFound": MessageLookupByLibrary.simpleMessage(
+      "Currently no restaurants found",
+    ),
+    "currentlyNoStoresFound": MessageLookupByLibrary.simpleMessage(
+      "Currently no stores found",
+    ),
+    "customerNotes": MessageLookupByLibrary.simpleMessage("CUSTOMER NOTES"),
+    "dAgo": MessageLookupByLibrary.simpleMessage("d ago"),
+    "dateLabel": MessageLookupByLibrary.simpleMessage("DATE"),
+    "dateTime": MessageLookupByLibrary.simpleMessage("DATE & TIME"),
+    "dateTimeLabel": MessageLookupByLibrary.simpleMessage("DATE & TIME"),
+    "debit": MessageLookupByLibrary.simpleMessage("Debit"),
+    "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "deleteAccount": MessageLookupByLibrary.simpleMessage("Delete Account"),
+    "deleteCart": MessageLookupByLibrary.simpleMessage("Delete Cart"),
+    "deleteChat": MessageLookupByLibrary.simpleMessage("Delete Chat"),
+    "delivered": MessageLookupByLibrary.simpleMessage("Delivered"),
+    "delivering": MessageLookupByLibrary.simpleMessage("DELIVERING"),
+    "deliveryAddress": MessageLookupByLibrary.simpleMessage("DELIVERY ADDRESS"),
+    "deliveryBoys": MessageLookupByLibrary.simpleMessage("Delivery Boys"),
+    "deliveryCompleted": MessageLookupByLibrary.simpleMessage(
+      "Delivery Completed",
+    ),
+    "deliveryFee": MessageLookupByLibrary.simpleMessage("Delivery Fee"),
+    "deliveryLocation": MessageLookupByLibrary.simpleMessage(
+      "Delivery Location",
+    ),
+    "deliveryStarted": MessageLookupByLibrary.simpleMessage("Delivery Started"),
+    "descriptionEnglishLabel": MessageLookupByLibrary.simpleMessage(
+      "Description (English)",
+    ),
+    "didntGetTheOtp": MessageLookupByLibrary.simpleMessage(
+      "Didn’t get the OTP?",
+    ),
+    "dinnerSpecial": MessageLookupByLibrary.simpleMessage("Dinner Special"),
+    "discountPriceLabel": MessageLookupByLibrary.simpleMessage(
+      "Discount Price",
+    ),
+    "doYouWantToReplaceThemWithDishesFrom":
+        MessageLookupByLibrary.simpleMessage(
+          ". Do you want to replace them with items from",
+        ),
+    "done": MessageLookupByLibrary.simpleMessage("Done"),
+    "driver": MessageLookupByLibrary.simpleMessage("Driver"),
+    "driverDetails": MessageLookupByLibrary.simpleMessage("Driver Details"),
+    "durationLabel": MessageLookupByLibrary.simpleMessage("Duration"),
+    "edit": MessageLookupByLibrary.simpleMessage("Edit"),
+    "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
+    "email": MessageLookupByLibrary.simpleMessage("Email"),
+    "emailUs": MessageLookupByLibrary.simpleMessage("Email us"),
+    "endDate": MessageLookupByLibrary.simpleMessage("End date"),
+    "enterDescriptionHint": MessageLookupByLibrary.simpleMessage(
+      "Enter description",
+    ),
+    "enterDiscountPriceHint": MessageLookupByLibrary.simpleMessage(
+      "Enter Discount Price",
+    ),
+    "enterItemNameHint": MessageLookupByLibrary.simpleMessage(
+      "Enter item name",
+    ),
+    "enterMaxQuantityHint": MessageLookupByLibrary.simpleMessage(
+      "Enter maximum allowed quantity",
+    ),
+    "enterMinutesHint": MessageLookupByLibrary.simpleMessage("Enter minutes"),
+    "enterPriceHint": MessageLookupByLibrary.simpleMessage("Enter Price"),
+    "enterSerialNumberHint": MessageLookupByLibrary.simpleMessage(
+      "Enter serial number",
+    ),
+    "enterYourName": MessageLookupByLibrary.simpleMessage("Enter your name"),
+    "enterYourPassword": MessageLookupByLibrary.simpleMessage(
+      "Enter your password",
+    ),
+    "enterYourQuantityHere": MessageLookupByLibrary.simpleMessage(
+      "Enter your quantity here",
+    ),
+    "enterYourUsername": MessageLookupByLibrary.simpleMessage(
+      "Enter your username",
+    ),
+    "enterYourWhatsappNumber": MessageLookupByLibrary.simpleMessage(
+      "Enter your whatsapp number",
+    ),
+    "expiresInDays": m3,
+    "filters": MessageLookupByLibrary.simpleMessage("Filters"),
+    "filtersSorting": MessageLookupByLibrary.simpleMessage("Filters & Sorting"),
+    "findSomethingFromThisRestaurant": MessageLookupByLibrary.simpleMessage(
+      "Find something from this restaurant",
+    ),
+    "food": MessageLookupByLibrary.simpleMessage("Food"),
+    "foodPermit": MessageLookupByLibrary.simpleMessage("Food Permit"),
+    "friday": MessageLookupByLibrary.simpleMessage("Friday"),
+    "fromDate": MessageLookupByLibrary.simpleMessage("From Date"),
+    "gallery": MessageLookupByLibrary.simpleMessage("Gallery"),
+    "gotIt": MessageLookupByLibrary.simpleMessage("Got It"),
+    "grilledChicken": MessageLookupByLibrary.simpleMessage("Grilled Chicken"),
+    "grocery": MessageLookupByLibrary.simpleMessage("Grocery"),
+    "gstNumber": MessageLookupByLibrary.simpleMessage("GST Number"),
+    "gstVat": MessageLookupByLibrary.simpleMessage("Gst/Vat"),
+    "hAgo": MessageLookupByLibrary.simpleMessage("h ago"),
+    "helpSupport": MessageLookupByLibrary.simpleMessage("Help & Support"),
+    "holderName": MessageLookupByLibrary.simpleMessage("Holder Name"),
+    "home": MessageLookupByLibrary.simpleMessage("Home"),
+    "hr24": MessageLookupByLibrary.simpleMessage("24 Hr"),
+    "ibanNumber": MessageLookupByLibrary.simpleMessage("IBAN Number"),
+    "idNumber": MessageLookupByLibrary.simpleMessage("ID"),
+    "identityProofDocument": MessageLookupByLibrary.simpleMessage(
+      "Identity Proof Document",
+    ),
+    "inactive": MessageLookupByLibrary.simpleMessage("INACTIVE"),
+    "inactiveLabel": MessageLookupByLibrary.simpleMessage("Inactive"),
+    "invalidProductId": MessageLookupByLibrary.simpleMessage(
+      "Invalid product ID",
+    ),
+    "invalidProductInformation": MessageLookupByLibrary.simpleMessage(
+      "Invalid product information",
+    ),
+    "isVegLabel": MessageLookupByLibrary.simpleMessage("Is Veg"),
+    "item": MessageLookupByLibrary.simpleMessage("Item"),
+    "itemIdLabel": MessageLookupByLibrary.simpleMessage("Item Id"),
+    "itemImageLabel": MessageLookupByLibrary.simpleMessage("Item Image"),
+    "itemNameEnglishLabel": MessageLookupByLibrary.simpleMessage(
+      "Item Name (English)",
+    ),
+    "itemOrdersHeader": MessageLookupByLibrary.simpleMessage("ITEM ORDERS"),
+    "itemTotal": MessageLookupByLibrary.simpleMessage("Item Total"),
+    "itemTypeLabel": MessageLookupByLibrary.simpleMessage("Item Type"),
+    "items": MessageLookupByLibrary.simpleMessage("Items"),
+    "itemsCountLabel": MessageLookupByLibrary.simpleMessage("ITEMS COUNT"),
+    "itemsTotalLabel": MessageLookupByLibrary.simpleMessage("ITEMS TOTAL"),
+    "joinedOn": MessageLookupByLibrary.simpleMessage("Joined on"),
+    "km": MessageLookupByLibrary.simpleMessage("Km"),
+    "language": MessageLookupByLibrary.simpleMessage("Language"),
+    "lastPurchaseLabel": MessageLookupByLibrary.simpleMessage("Last Purchase"),
+    "leaves": MessageLookupByLibrary.simpleMessage("Leaves"),
+    "leavesHistory": MessageLookupByLibrary.simpleMessage("LEAVES HISTORY"),
+    "loadingLocation": MessageLookupByLibrary.simpleMessage(
+      "Loading location...",
+    ),
+    "login": MessageLookupByLibrary.simpleMessage("Login"),
+    "loginOrSignUp": MessageLookupByLibrary.simpleMessage("Login or Sign up"),
+    "logout": MessageLookupByLibrary.simpleMessage("Logout"),
+    "lunchMenu": MessageLookupByLibrary.simpleMessage("Lunch Menu"),
+    "mAgo": MessageLookupByLibrary.simpleMessage("m ago"),
+    "markAsReady": MessageLookupByLibrary.simpleMessage("Mark as Ready"),
+    "markLeave": MessageLookupByLibrary.simpleMessage("MARK LEAVE"),
+    "markLeaveButton": MessageLookupByLibrary.simpleMessage("Mark Leave"),
+    "maxAllowedQuantityLabel": MessageLookupByLibrary.simpleMessage(
+      "Maximum Allowed Quantity",
+    ),
+    "membership": MessageLookupByLibrary.simpleMessage("Membership"),
+    "menu": MessageLookupByLibrary.simpleMessage("Menu"),
+    "menuBulkImport": MessageLookupByLibrary.simpleMessage("Menu Bulk Import"),
+    "mins": MessageLookupByLibrary.simpleMessage("Mins"),
+    "missedSomething": MessageLookupByLibrary.simpleMessage(
+      "Missed Something?",
+    ),
+    "monday": MessageLookupByLibrary.simpleMessage("Monday"),
+    "morePoints": MessageLookupByLibrary.simpleMessage("More Points"),
+    "mruOnThisOrder": MessageLookupByLibrary.simpleMessage("MRU on this order"),
+    "mruWithThisCode": MessageLookupByLibrary.simpleMessage(
+      "MRU with this code",
+    ),
+    "myOrders": MessageLookupByLibrary.simpleMessage("My Orders"),
+    "myPoints": MessageLookupByLibrary.simpleMessage("My Points"),
+    "myRestaurant": MessageLookupByLibrary.simpleMessage("My Restaurant"),
+    "name": MessageLookupByLibrary.simpleMessage("Name"),
+    "nationalIdNumber": MessageLookupByLibrary.simpleMessage(
+      "National Id Number",
+    ),
+    "nationalIdType": MessageLookupByLibrary.simpleMessage("National Id Type"),
+    "need": MessageLookupByLibrary.simpleMessage("Need"),
+    "needItFreshAddItToYourCart": MessageLookupByLibrary.simpleMessage(
+      "Need it fresh? Add it to your cart!",
+    ),
+    "needsAnUpdate": MessageLookupByLibrary.simpleMessage("Needs An Update"),
+    "no": MessageLookupByLibrary.simpleMessage("No"),
+    "noCategoriesFound": MessageLookupByLibrary.simpleMessage(
+      "No Categories Found",
+    ),
+    "noConversations": MessageLookupByLibrary.simpleMessage("No Conversations"),
+    "noConversationsFound": MessageLookupByLibrary.simpleMessage(
+      "No conversations found",
+    ),
+    "noCouponsAvailable": MessageLookupByLibrary.simpleMessage(
+      "No Coupons Available",
+    ),
+    "noCouponsAvailableRightNow": MessageLookupByLibrary.simpleMessage(
+      "No coupons available right now.",
+    ),
+    "noDeliveryBoysFound": MessageLookupByLibrary.simpleMessage(
+      "No delivery boys found",
+    ),
+    "noGroceriesFound": MessageLookupByLibrary.simpleMessage(
+      "No Groceries Found",
+    ),
+    "noGroceryOrdersYet": MessageLookupByLibrary.simpleMessage(
+      "No grocery orders yet",
+    ),
+    "noInternetConnection": MessageLookupByLibrary.simpleMessage(
+      "No Internet Connection",
+    ),
+    "noInternetConnectionDescription": MessageLookupByLibrary.simpleMessage(
+      "Please check your internet connection and try again.",
+    ),
+    "noItemsFound": MessageLookupByLibrary.simpleMessage("No Items Found"),
+    "noLabel": MessageLookupByLibrary.simpleMessage("No"),
+    "noMessages": MessageLookupByLibrary.simpleMessage("No messages"),
+    "noMessagesYet": MessageLookupByLibrary.simpleMessage("No messages yet"),
+    "noNotifications": MessageLookupByLibrary.simpleMessage("No notifications"),
+    "noNotificationsFound": MessageLookupByLibrary.simpleMessage(
+      "No notifications found",
+    ),
+    "noOptionsAvailable": MessageLookupByLibrary.simpleMessage(
+      "No options available",
+    ),
+    "noOrderDetailsFound": MessageLookupByLibrary.simpleMessage(
+      "No order details found",
+    ),
+    "noOrders": MessageLookupByLibrary.simpleMessage("No Orders"),
+    "noOrdersFound": MessageLookupByLibrary.simpleMessage("No orders found"),
+    "noRedeemableRewards": MessageLookupByLibrary.simpleMessage(
+      "No redeemable rewards",
+    ),
+    "noRestaurantsFound": MessageLookupByLibrary.simpleMessage(
+      "No Restaurants Found",
+    ),
+    "noRestaurantsFounds": MessageLookupByLibrary.simpleMessage(
+      "No Restaurants Founds",
+    ),
+    "noStoresFound": MessageLookupByLibrary.simpleMessage("No Stores Found"),
+    "noTrackingDetailsFound": MessageLookupByLibrary.simpleMessage(
+      "No tracking details found",
+    ),
+    "noTransactionHistoryAvailable": MessageLookupByLibrary.simpleMessage(
+      "No transaction history available",
+    ),
+    "notification": MessageLookupByLibrary.simpleMessage("Notification"),
+    "notifications": MessageLookupByLibrary.simpleMessage("Notifications"),
+    "now": MessageLookupByLibrary.simpleMessage("Now"),
+    "off": MessageLookupByLibrary.simpleMessage("OFF"),
+    "ongoing": MessageLookupByLibrary.simpleMessage("Ongoing"),
+    "onlinePayment": MessageLookupByLibrary.simpleMessage("Online Payment"),
+    "order": MessageLookupByLibrary.simpleMessage("ORDER"),
+    "orderAccepted": MessageLookupByLibrary.simpleMessage("Order Accepted"),
+    "orderColon": MessageLookupByLibrary.simpleMessage("Order: "),
+    "orderDetails": MessageLookupByLibrary.simpleMessage("Order Details"),
+    "orderDetailsNotFound": MessageLookupByLibrary.simpleMessage(
+      "Order details not found",
+    ),
+    "orderDurationBreakdown": MessageLookupByLibrary.simpleMessage(
+      "Order Duration Breakdown",
+    ),
+    "orderIdLabel": m4,
+    "orderItems": MessageLookupByLibrary.simpleMessage("ORDER ITEMS"),
+    "orderPickedUp": MessageLookupByLibrary.simpleMessage("Order Picked Up"),
+    "orderPlaced": MessageLookupByLibrary.simpleMessage("Order Placed"),
+    "orderPlacedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Order placed successfully!",
+    ),
+    "orderPreparationStarted": MessageLookupByLibrary.simpleMessage(
+      "Order Preparation Started",
+    ),
+    "orderReady": MessageLookupByLibrary.simpleMessage("Order Ready"),
+    "orderSuccessfullyPlacedBy": MessageLookupByLibrary.simpleMessage(
+      "Order successfully placed by",
+    ),
+    "orderTimeline": MessageLookupByLibrary.simpleMessage("Order Timeline"),
+    "ordered": MessageLookupByLibrary.simpleMessage("Ordered"),
+    "orderedItems": MessageLookupByLibrary.simpleMessage("Ordered Items"),
+    "ordersCountLabel": MessageLookupByLibrary.simpleMessage("ORDERS COUNT"),
+    "ordersHeader": MessageLookupByLibrary.simpleMessage("ORDERS"),
+    "otpVerification": MessageLookupByLibrary.simpleMessage("OTP Verification"),
+    "outOfStock": MessageLookupByLibrary.simpleMessage("Out of Stock"),
+    "owner": MessageLookupByLibrary.simpleMessage("Owner"),
+    "ownerEmail": MessageLookupByLibrary.simpleMessage("Owner Email"),
+    "ownerIdentityProof": MessageLookupByLibrary.simpleMessage(
+      "OWNER IDENTITY PROOF",
+    ),
+    "ownerName": MessageLookupByLibrary.simpleMessage("Owner Name"),
+    "ownerPhone": MessageLookupByLibrary.simpleMessage("Owner Phone"),
+    "packagingCost": MessageLookupByLibrary.simpleMessage("Packaging Cost"),
+    "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "pay": MessageLookupByLibrary.simpleMessage("Pay"),
+    "paymentDetails": MessageLookupByLibrary.simpleMessage("Payment Details"),
+    "paymentOn": MessageLookupByLibrary.simpleMessage("Payment On"),
+    "paymentSummary": MessageLookupByLibrary.simpleMessage("PAYMENT SUMMARY"),
+    "paymentSummaryDetails": MessageLookupByLibrary.simpleMessage(
+      "PAYMENT DETAILS",
+    ),
+    "paymentType": MessageLookupByLibrary.simpleMessage("Payment Type"),
+    "pending": MessageLookupByLibrary.simpleMessage("Pending"),
+    "phoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+    "pickWhatYouWantAndFillYourBasket": MessageLookupByLibrary.simpleMessage(
+      "Pick what you want and fill your basket!",
+    ),
+    "pickYourFavouritesAndStartYourFeast": MessageLookupByLibrary.simpleMessage(
+      "Pick your favourites and start your feast!",
+    ),
+    "pickedUp": MessageLookupByLibrary.simpleMessage("PICKED UP"),
+    "placeOrder": MessageLookupByLibrary.simpleMessage("Place Order"),
+    "pleaseAddYourItemsToCart": MessageLookupByLibrary.simpleMessage(
+      "Please add your items to cart",
+    ),
+    "pleaseChooseLocation": MessageLookupByLibrary.simpleMessage(
+      "Please choose location",
+    ),
+    "pleaseEnterCouponCode": MessageLookupByLibrary.simpleMessage(
+      "Please enter coupon code",
+    ),
+    "pleaseEnterNameOfLengthAtleast3": MessageLookupByLibrary.simpleMessage(
+      "Please enter name of length atleast 3",
+    ),
+    "pleaseEnterOtp": MessageLookupByLibrary.simpleMessage("Please enter otp"),
+    "pleaseEnterTheVerificationCodeSentTo":
+        MessageLookupByLibrary.simpleMessage(
+          "Please enter the verification code sent to",
+        ),
+    "pleaseEnterValidOtp": MessageLookupByLibrary.simpleMessage(
+      "Please enter valid otp",
+    ),
+    "pleaseEnterYourMobileNumber": MessageLookupByLibrary.simpleMessage(
+      "Please enter your mobile number",
+    ),
+    "pleaseEnterYourName": MessageLookupByLibrary.simpleMessage(
+      "Please enter your name",
+    ),
+    "pleaseEnterYourQuantity": MessageLookupByLibrary.simpleMessage(
+      "Please enter your quantity",
+    ),
+    "pleaseLeaveThePackageAtTheFrontDoorAndRing":
+        MessageLookupByLibrary.simpleMessage(
+          "Please leave the package at the front door and ring the bell. Thank you!",
+        ),
+    "pleaseLogin": MessageLookupByLibrary.simpleMessage("Please login"),
+    "pleaseLoginToUseThisFeature": MessageLookupByLibrary.simpleMessage(
+      "Please login to use this feature",
+    ),
+    "pleaseSigninToYourAccountAndStartTheAdventure":
+        MessageLookupByLibrary.simpleMessage(
+          "Please sign-in to your account and start the adventure",
+        ),
+    "points": MessageLookupByLibrary.simpleMessage("points"),
+    "pointsLabel": MessageLookupByLibrary.simpleMessage("POINTS"),
+    "popularItems": MessageLookupByLibrary.simpleMessage("Popular Items"),
+    "positionTheBarcodeWithinTheFrame": MessageLookupByLibrary.simpleMessage(
+      "Position the barcode within the frame",
+    ),
+    "preparationTimeLabel": MessageLookupByLibrary.simpleMessage(
+      "Preparation Time",
+    ),
+    "preparationTimeMinutesLabel": MessageLookupByLibrary.simpleMessage(
+      "Preparation Time (minutes)",
+    ),
+    "prepareOrder": MessageLookupByLibrary.simpleMessage("Prepare Order"),
+    "preparing": MessageLookupByLibrary.simpleMessage("Preparing"),
+    "preparingFood": MessageLookupByLibrary.simpleMessage("Preparing Food"),
+    "priceLabel": MessageLookupByLibrary.simpleMessage("PRICE"),
+    "privacyPolicy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
+    "proceed": MessageLookupByLibrary.simpleMessage("Proceed"),
+    "productOutOfStock": MessageLookupByLibrary.simpleMessage(
+      "Product out of stock",
+    ),
+    "products": MessageLookupByLibrary.simpleMessage("Products"),
+    "profile": MessageLookupByLibrary.simpleMessage("Profile"),
+    "qty": MessageLookupByLibrary.simpleMessage("Qty"),
+    "qtyLabel": m5,
+    "quantity": MessageLookupByLibrary.simpleMessage("Quantity"),
+    "rateOrder": MessageLookupByLibrary.simpleMessage("Rate Order"),
+    "rateOrderedItems": MessageLookupByLibrary.simpleMessage(
+      "Rate Ordered Items",
+    ),
+    "rateRestaurantReview": MessageLookupByLibrary.simpleMessage(
+      "Rate Restaurant Review",
+    ),
+    "rateStoreReview": MessageLookupByLibrary.simpleMessage(
+      "Rate Store Review",
+    ),
+    "rateYourDeliveryExperience": MessageLookupByLibrary.simpleMessage(
+      "Rate Your Delivery Experience",
+    ),
+    "rateYourOrder": MessageLookupByLibrary.simpleMessage("Rate Your Order"),
+    "ratingReviews": MessageLookupByLibrary.simpleMessage("RATING & REVIEWS"),
+    "reachedRestaurant": MessageLookupByLibrary.simpleMessage(
+      "REACHED RESTAURANT",
+    ),
+    "ready": MessageLookupByLibrary.simpleMessage("Ready"),
+    "reasonColonLabel": m6,
+    "reasonForLeave": MessageLookupByLibrary.simpleMessage("Reason For Leave"),
+    "reasonLabel": MessageLookupByLibrary.simpleMessage("Reason"),
+    "receivedPayouts": MessageLookupByLibrary.simpleMessage("Received Payouts"),
+    "redeemNow": MessageLookupByLibrary.simpleMessage("Redeem Now"),
+    "redeemPointsLabel": MessageLookupByLibrary.simpleMessage("REDEEM POINTS"),
+    "redeemableRewards": MessageLookupByLibrary.simpleMessage(
+      "Redeemable Rewards",
+    ),
+    "redeemed": MessageLookupByLibrary.simpleMessage("Redeemed"),
+    "redeemedAmount": MessageLookupByLibrary.simpleMessage("Redeemed Amount"),
+    "redeemedCustomersHeader": MessageLookupByLibrary.simpleMessage(
+      "REDEEMED CUSTOMERS",
+    ),
+    "redeemedPoints": MessageLookupByLibrary.simpleMessage("Redeemed Points"),
+    "redeemedStatus": MessageLookupByLibrary.simpleMessage("REDEEMED"),
+    "regDate": MessageLookupByLibrary.simpleMessage("Reg. Date"),
+    "regNumber": MessageLookupByLibrary.simpleMessage("Reg. Number"),
+    "registrationDetails": MessageLookupByLibrary.simpleMessage(
+      "REGISTRATION DETAILS",
+    ),
+    "reject": MessageLookupByLibrary.simpleMessage("Reject"),
+    "remove": MessageLookupByLibrary.simpleMessage("Remove"),
+    "replace": MessageLookupByLibrary.simpleMessage("Replace"),
+    "replaceCartItem": MessageLookupByLibrary.simpleMessage(
+      "Replace cart item?",
+    ),
+    "resendCodeIn30Sec": MessageLookupByLibrary.simpleMessage(
+      "Resend code in 30 sec",
+    ),
+    "resendOtp": MessageLookupByLibrary.simpleMessage("Resend OTP"),
+    "resetButton": MessageLookupByLibrary.simpleMessage("Reset"),
+    "restaurant": MessageLookupByLibrary.simpleMessage("Restaurant"),
+    "restaurantCommission": MessageLookupByLibrary.simpleMessage(
+      "Restaurant Commission Percentage per Order",
+    ),
+    "restaurantDetails": MessageLookupByLibrary.simpleMessage(
+      "RESTAURANT DETAILS",
+    ),
+    "restaurantOne": MessageLookupByLibrary.simpleMessage("Restaurant 1"),
+    "restaurantReports": MessageLookupByLibrary.simpleMessage(
+      "Restaurant Reports",
+    ),
+    "revenueLabel": MessageLookupByLibrary.simpleMessage("Revenue"),
+    "revenueReport": MessageLookupByLibrary.simpleMessage("Revenue Report"),
+    "reviews": MessageLookupByLibrary.simpleMessage("reviews"),
+    "saimpex": MessageLookupByLibrary.simpleMessage("SAIMPEX"),
+    "salesPerformanceHeader": MessageLookupByLibrary.simpleMessage(
+      "SALES & PERFORMANCE",
+    ),
+    "saturday": MessageLookupByLibrary.simpleMessage("Saturday"),
+    "save": MessageLookupByLibrary.simpleMessage("Save"),
+    "scanBarcode": MessageLookupByLibrary.simpleMessage("Scan Barcode"),
+    "scheduled": MessageLookupByLibrary.simpleMessage("SCHEDULED"),
+    "search": MessageLookupByLibrary.simpleMessage("Search"),
+    "searchByIdName": MessageLookupByLibrary.simpleMessage(
+      "Search by ID, name",
+    ),
+    "searchCategories": MessageLookupByLibrary.simpleMessage(
+      "Search Categories",
+    ),
+    "searchForAreaStreetName": MessageLookupByLibrary.simpleMessage(
+      "Search for area, street name.....",
+    ),
+    "searchForItems": MessageLookupByLibrary.simpleMessage("Search for items"),
+    "searchNameOrMobileNumber": MessageLookupByLibrary.simpleMessage(
+      "Search name or mobile number",
+    ),
+    "selectAttributeHint": MessageLookupByLibrary.simpleMessage(
+      "Select attribute",
+    ),
+    "selectCategoryHint": MessageLookupByLibrary.simpleMessage(
+      "Select Category",
+    ),
+    "selectDeliveryLocation": MessageLookupByLibrary.simpleMessage(
+      "Select Delivery Location",
+    ),
+    "selectTagHint": MessageLookupByLibrary.simpleMessage("Select tag"),
+    "selectTypeHint": MessageLookupByLibrary.simpleMessage("Select type"),
+    "selectYourLocation": MessageLookupByLibrary.simpleMessage(
+      "Select Your Location",
+    ),
+    "send": MessageLookupByLibrary.simpleMessage("Send"),
+    "serialNoLabel": MessageLookupByLibrary.simpleMessage("Serial No"),
+    "serverDown": MessageLookupByLibrary.simpleMessage("Server Down"),
+    "serviceDeliveryCharge": MessageLookupByLibrary.simpleMessage(
+      "Service Delivery Charge",
+    ),
+    "settings": MessageLookupByLibrary.simpleMessage("Settings"),
+    "sorryWereDownForMaintenanceWellBeBackUpShortly":
+        MessageLookupByLibrary.simpleMessage(
+          "Sorry, we\'re down for maintenance  We\'ll be back up shortly.",
+        ),
+    "sortBy": MessageLookupByLibrary.simpleMessage("Sort By"),
+    "sortFilter": MessageLookupByLibrary.simpleMessage("Sort & Filter"),
+    "startDate": MessageLookupByLibrary.simpleMessage("Start date"),
+    "startTypingToSearch": MessageLookupByLibrary.simpleMessage(
+      "Start typing to search",
+    ),
+    "status": MessageLookupByLibrary.simpleMessage("Status"),
+    "submitButton": MessageLookupByLibrary.simpleMessage("Submit"),
+    "submitLeaveRequest": MessageLookupByLibrary.simpleMessage(
+      "SUBMIT LEAVE REQUEST",
+    ),
+    "submitRating": MessageLookupByLibrary.simpleMessage("Submit Rating"),
+    "subtotal": MessageLookupByLibrary.simpleMessage("Subtotal"),
+    "sunday": MessageLookupByLibrary.simpleMessage("Sunday"),
+    "sushiPlatter": MessageLookupByLibrary.simpleMessage("Sushi Platter"),
+    "swiftCode": MessageLookupByLibrary.simpleMessage("SWIFT Code"),
+    "tagsLabel": MessageLookupByLibrary.simpleMessage("Tags"),
+    "tax": MessageLookupByLibrary.simpleMessage("Tax"),
+    "termsConditions": MessageLookupByLibrary.simpleMessage(
+      "Terms & Conditions",
+    ),
+    "theRestaurantPreparingYourFood": MessageLookupByLibrary.simpleMessage(
+      "The restaurant preparing your food",
+    ),
+    "thursday": MessageLookupByLibrary.simpleMessage("Thursday"),
+    "toDate": MessageLookupByLibrary.simpleMessage("To Date"),
+    "toPay": MessageLookupByLibrary.simpleMessage("To Pay"),
+    "today": MessageLookupByLibrary.simpleMessage("Today"),
+    "todaysOrders": MessageLookupByLibrary.simpleMessage("Today\'s Orders"),
+    "topSellingDishes": MessageLookupByLibrary.simpleMessage(
+      "Top Selling Dishes",
+    ),
+    "totalAmount": MessageLookupByLibrary.simpleMessage("Total Amount"),
+    "totalBill": MessageLookupByLibrary.simpleMessage("Total Bill"),
+    "totalOrdersStat": MessageLookupByLibrary.simpleMessage("Total Orders"),
+    "totalProfit": MessageLookupByLibrary.simpleMessage("Total Profit"),
+    "totalReviewsStat": MessageLookupByLibrary.simpleMessage("Total Reviews"),
+    "trackOrder": MessageLookupByLibrary.simpleMessage("Track Order"),
+    "trackYourOrder": MessageLookupByLibrary.simpleMessage("Track Your Order"),
+    "tradeLicense": MessageLookupByLibrary.simpleMessage("Trade License"),
+    "tradeLicenseNo": MessageLookupByLibrary.simpleMessage("Trade License No"),
+    "transactionHistory": MessageLookupByLibrary.simpleMessage(
+      "Transaction History",
+    ),
+    "tryAgain": MessageLookupByLibrary.simpleMessage("Try Again"),
+    "trySearchingWithDifferentKeywords": MessageLookupByLibrary.simpleMessage(
+      "Try searching with different keywords",
+    ),
+    "tuesday": MessageLookupByLibrary.simpleMessage("Tuesday"),
+    "typeAMessage": MessageLookupByLibrary.simpleMessage("Type a message…"),
+    "typeYourReviewHere": MessageLookupByLibrary.simpleMessage(
+      "Type your review here",
+    ),
+    "unknown": MessageLookupByLibrary.simpleMessage("Unknown"),
+    "unknownDriver": MessageLookupByLibrary.simpleMessage("Unknown Driver"),
+    "unknownVendor": MessageLookupByLibrary.simpleMessage("Unknown Vendor"),
+    "upcomingLeaves": MessageLookupByLibrary.simpleMessage("Upcoming Leaves"),
+    "update": MessageLookupByLibrary.simpleMessage("Update"),
+    "updateDetailsButton": MessageLookupByLibrary.simpleMessage(
+      "Update Details",
+    ),
+    "uploadImage": MessageLookupByLibrary.simpleMessage("Upload Image"),
+    "uploadImageHint": MessageLookupByLibrary.simpleMessage(
+      "Upload image here",
+    ),
+    "upto": MessageLookupByLibrary.simpleMessage("Upto"),
+    "userName": MessageLookupByLibrary.simpleMessage("User Name"),
+    "username": MessageLookupByLibrary.simpleMessage("Username"),
+    "vatGstNumber": MessageLookupByLibrary.simpleMessage("Vat/Gst Number"),
+    "vegBurger": MessageLookupByLibrary.simpleMessage("Veg Burger"),
+    "vendor": MessageLookupByLibrary.simpleMessage("Vendor"),
+    "vendorType": MessageLookupByLibrary.simpleMessage("Vendor Type"),
+    "version": MessageLookupByLibrary.simpleMessage("Version"),
+    "viewAll": MessageLookupByLibrary.simpleMessage("View All"),
+    "viewAllCoupons": MessageLookupByLibrary.simpleMessage("View all coupons"),
+    "viewDetails": MessageLookupByLibrary.simpleMessage("View Details"),
+    "viewOrders": MessageLookupByLibrary.simpleMessage("View Orders"),
+    "wednesday": MessageLookupByLibrary.simpleMessage("Wednesday"),
+    "welcomeTo": MessageLookupByLibrary.simpleMessage("Welcome to"),
+    "welcomeToSaimpexVendor": MessageLookupByLibrary.simpleMessage(
+      "Welcome to Saimpex Vendor!",
+    ),
+    "wellBeBackSoon": MessageLookupByLibrary.simpleMessage(
+      "We\'ll be back soon",
+    ),
+    "weveSentAVerificationCodeToYourWhatsapp":
+        MessageLookupByLibrary.simpleMessage(
+          "We’ve sent a verification code to your WhatsApp",
+        ),
+    "whatDoYouNeedToday": MessageLookupByLibrary.simpleMessage(
+      "What do you need today?",
+    ),
+    "whatsYourName": MessageLookupByLibrary.simpleMessage("What’s your name?"),
+    "withThisCode": MessageLookupByLibrary.simpleMessage("% with this code"),
+    "workingHours": MessageLookupByLibrary.simpleMessage("Working Hours"),
+    "yes": MessageLookupByLibrary.simpleMessage("Yes"),
+    "yesLabel": MessageLookupByLibrary.simpleMessage("Yes"),
+    "yesterday": MessageLookupByLibrary.simpleMessage("Yesterday"),
+    "youAreLoggedOutSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "You are logged out successfully.",
+    ),
+    "youCannotDeleteThisItemFromHereToCheckoutMinimum":
+        MessageLookupByLibrary.simpleMessage(
+          "You cannot delete this item from here, to checkout minimum one product is required",
+        ),
+    "youMightAlsoLike": MessageLookupByLibrary.simpleMessage(
+      "You might also like",
+    ),
+    "youSaved": MessageLookupByLibrary.simpleMessage("You saved"),
+    "yourCartHasDishesFrom": MessageLookupByLibrary.simpleMessage(
+      "Your cart has items from",
+    ),
+    "yourCartIsEmpty": MessageLookupByLibrary.simpleMessage(
+      "Your Cart is Empty",
+    ),
+    "yourOrderHasBeenDelivered": MessageLookupByLibrary.simpleMessage(
+      "Your order has been delivered",
+    ),
+    "yourOrderHasBeenPickedUpForDelivery": MessageLookupByLibrary.simpleMessage(
+      "Your order has been picked up for delivery",
+    ),
+    "yourOrderHasBeenReceived": MessageLookupByLibrary.simpleMessage(
+      "Your order has been received",
+    ),
+    "yourOrders": MessageLookupByLibrary.simpleMessage("Your Orders"),
+    "yourTrustedFoodGroceryDeliveryPartner":
+        MessageLookupByLibrary.simpleMessage(
+          "Your trusted food & grocery delivery partner",
+        ),
+    "zone": MessageLookupByLibrary.simpleMessage("Zone"),
+  };
 }
