@@ -5,6 +5,15 @@ import 'package:saimpex_vendor/resources/colors.dart';
 /// A single chat entry in the chat listing: avatar, name, phone,
 /// last message preview, and timestamp.
 class ChatListingItem extends StatelessWidget {
+  final String initials;
+  final String name;
+  final String phone;
+  final String lastMessage;
+  final String timestamp;
+  final VoidCallback? onTap;
+  final int unreadCount;
+  final String? avatarUrl;
+
   const ChatListingItem({
     super.key,
     required this.initials,
@@ -13,14 +22,9 @@ class ChatListingItem extends StatelessWidget {
     required this.lastMessage,
     required this.timestamp,
     this.onTap,
+    this.unreadCount = 0,
+    this.avatarUrl,
   });
-
-  final String initials;
-  final String name;
-  final String phone;
-  final String lastMessage;
-  final String timestamp;
-  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -87,13 +91,37 @@ class ChatListingItem extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              Text(
-                timestamp,
-                style: GoogleFonts.rubik(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w400,
-                  color: mutedTextColor,
-                ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    timestamp,
+                    style: GoogleFonts.rubik(
+                      fontSize: 11,
+                      fontWeight: FontWeight.w400,
+                      color: mutedTextColor,
+                    ),
+                  ),
+                  if (unreadCount > 0) ...[
+                    const SizedBox(height: 4),
+                    Container(
+                      padding: const EdgeInsets.all(6),
+                      decoration: const BoxDecoration(
+                        color: colorPrimary,
+                        shape: BoxShape.circle,
+                      ),
+                      child: Text(
+                        unreadCount.toString(),
+                        style: GoogleFonts.rubik(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ],
               ),
             ],
           ),
@@ -111,13 +139,27 @@ class ChatListingItem extends StatelessWidget {
         shape: BoxShape.circle,
       ),
       alignment: Alignment.center,
-      child: Text(
-        initials,
-        style: GoogleFonts.rubik(
-          fontSize: 14,
-          fontWeight: FontWeight.w600,
-          color: colorPrimary,
-        ),
+      child: ClipOval(
+        child: avatarUrl != null && avatarUrl!.isNotEmpty
+            ? Image.network(
+                avatarUrl!,
+                width: 48,
+                height: 48,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) => _buildInitials(),
+              )
+            : _buildInitials(),
+      ),
+    );
+  }
+
+  Widget _buildInitials() {
+    return Text(
+      initials,
+      style: GoogleFonts.rubik(
+        fontSize: 14,
+        fontWeight: FontWeight.w600,
+        color: colorPrimary,
       ),
     );
   }

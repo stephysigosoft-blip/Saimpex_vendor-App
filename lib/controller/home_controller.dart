@@ -18,6 +18,7 @@ import '../model/home_model.dart';
 // import 'grocery_controller.dart';
 // import 'cart_controller.dart';
 // import 'chat_controller.dart';
+import 'package:saimpex_vendor/controller/chat_controller.dart';
 import 'profile_controller.dart';
 
 class HomeController extends GetxController {
@@ -50,6 +51,7 @@ class HomeController extends GetxController {
   String veg = "";
   String nonVeg = "";
   bool badge = false;
+  int unreadChatCount = 0;
 
   @override
   void onInit() {
@@ -87,7 +89,14 @@ class HomeController extends GetxController {
           await profileController.getRatingsReviews(context);
           break;
         case 2: // Chat tab
+          // Clear badge immediately when user navigates to chat
+          unreadChatCount = 0;
+          update();
           // Reload chat data if needed
+          final ChatController chatController = Get.put(ChatController());
+          await chatController.getAllConversations(context);
+          // Refresh count after viewing
+          fetchUnreadChatCount();
           break;
         case 3: // Settings tab
           // Reload settings/profile data if needed
@@ -443,13 +452,31 @@ class HomeController extends GetxController {
       debugPrint("home model: ${response.data}");
     } catch (error) {
       debugPrint("home Error: $error");
+      fetchUnreadChatCount();
     } finally {
       if (!isLoadMore) {
         isFirstLoadRunning = false;
       } else {
         isLoadMoreRunning = false;
       }
+      fetchUnreadChatCount();
       update();
+    }
+  }
+
+  Future<void> fetchUnreadChatCount() async {
+    try {
+      var token = await getSavedObject("token");
+      if (token == null || token.toString().isEmpty || token.toString() == "null") return;
+      DioClient().updateToken(token);
+      final response = await DioClient().get(ApiEndPoints.totalUnreadMessagesCount);
+      if (response.data != null && response.data['status'] == true) {
+        final count = response.data['data']?['total_unread_messages_count'];
+        unreadChatCount = (count is int) ? count : int.tryParse(count?.toString() ?? '0') ?? 0;
+        update();
+      }
+    } catch (e) {
+      debugPrint("fetchUnreadChatCount error: $e");
     }
   }
 }

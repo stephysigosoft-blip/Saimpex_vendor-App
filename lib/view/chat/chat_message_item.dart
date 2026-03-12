@@ -11,12 +11,16 @@ class ChatMessageItem extends StatelessWidget {
     required this.timestamp,
     required this.isSent,
     this.showCheckmark = true,
+    this.messageType = 'text',
+    this.attachmentUrl,
   });
 
   final String message;
   final String timestamp;
   final bool isSent;
   final bool showCheckmark;
+  final String messageType;
+  final String? attachmentUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -42,14 +46,31 @@ class ChatMessageItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.end,
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text(
-                message,
-                style: GoogleFonts.rubik(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w400,
-                  color: isSent ? Colors.white : Colors.black,
+              if (messageType == 'image' && attachmentUrl != null)
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 4),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: Image.network(
+                      attachmentUrl!,
+                      width: 200,
+                      fit: BoxFit.cover,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                        Icons.image_not_supported,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                )
+              else if (message.isNotEmpty)
+                Text(
+                  message,
+                  style: GoogleFonts.rubik(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w400,
+                    color: isSent ? Colors.white : Colors.black,
+                  ),
                 ),
-              ),
               const SizedBox(height: 6),
               Row(
                 mainAxisSize: MainAxisSize.min,
