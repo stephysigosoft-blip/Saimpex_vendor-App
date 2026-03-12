@@ -481,6 +481,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
         });
         if (title == "Menu") {
           final profileController = Get.find<ProfileController>();
+          profileController.getAllCategories();
           profileController.fetchGroceryMenus();
           profileController.fetchRestaurantMenus(keyword: _searchKeyword);
         } else if (title == "Items") {
@@ -666,9 +667,10 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
               : (menu.nameEn ?? "");
           return _menuItem(
             name,
-            menu.categoryId ?? "",
+            menu.categoryId?.toString() ?? "",
             id: menu.id.toString(),
             imageUrl: menu.image,
+            categories: profileController.restaurantCategoriesForDropdown,
           );
         }).toList(),
         if (profileController.isLoadMoreRunning)
@@ -703,7 +705,14 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
   }
 
   Widget _buildCategoryAddRow() {
+    final profileController = Get.find<ProfileController>();
     return VendorCategoryAddRow(
+      categories: profileController.restaurantCategoriesForDropdown,
+      selectedCategoryId: profileController.selectedRestaurantCategoryId,
+      onCategoryChanged: (int? categoryId) {
+        profileController.setSelectedRestaurantCategoryId(categoryId);
+        profileController.fetchRestaurantMenus(keyword: _searchKeyword);
+      },
       onAddPressed: () {
         Navigator.push(
           context,
@@ -720,6 +729,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     String? id,
     String price = "50.00 MRU",
     String? discountPrice = "100.00 MRU",
+    List<RestaurantCategory>? categories,
   }) {
     return _richCard(
       id: id ?? "33",
@@ -730,6 +740,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
       imageUrl: imageUrl,
       itemId: id ?? "33",
       isMenu: true,
+      categories: categories,
     );
   }
 
@@ -742,6 +753,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
     String? imageUrl,
     required String itemId,
     bool isMenu = false,
+    List<RestaurantCategory>? categories,
   }) {
     return VendorRichCard(
       id: id,
@@ -752,6 +764,7 @@ class _VendorRestaurantScreenState extends State<VendorRestaurantScreen> {
       imageUrl: imageUrl,
       itemId: itemId,
       isMenu: isMenu,
+      categories: categories,
       onViewDetails: () {
         Navigator.push(
           context,

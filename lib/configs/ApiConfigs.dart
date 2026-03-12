@@ -44,4 +44,6 @@ class ApiEndPoints {
   static String getPrivacyPolicy = "getPrivacyPolicy";
   static String getContact = "getContact";
   static String getAbout = "getAbout";
+  static String getRestaurantCategories = "getRestaurantCategories";
+  static String getRestaurantMenuDetails = "restaurantMenuDetails";
 }

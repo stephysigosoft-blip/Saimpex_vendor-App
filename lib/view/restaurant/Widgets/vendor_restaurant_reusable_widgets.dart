@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:saimpex_vendor/configs/ApiConfigs.dart';
+import 'package:saimpex_vendor/controller/profile_controller.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/app_loader.dart';
 import 'package:saimpex_vendor/utils/widgets/custom_search_box.dart';
@@ -593,9 +594,18 @@ class VendorSearchRow extends StatelessWidget {
 }
 
 class VendorCategoryAddRow extends StatelessWidget {
+  final List<RestaurantCategory> categories;
+  final int? selectedCategoryId;
+  final ValueChanged<int?>? onCategoryChanged;
   final VoidCallback onAddPressed;
 
-  const VendorCategoryAddRow({super.key, required this.onAddPressed});
+  const VendorCategoryAddRow({
+    super.key,
+    required this.categories,
+    required this.selectedCategoryId,
+    required this.onCategoryChanged,
+    required this.onAddPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -611,26 +621,54 @@ class VendorCategoryAddRow extends StatelessWidget {
               border: Border.all(color: const Color(0xFFF1F5F9)),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 12),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Text(
-                    "All Categories",
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: GoogleFonts.rubik(
-                      fontSize: 14,
-                      color: const Color(0xFF1F2937),
-                    ),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton<int?>(
+                value: selectedCategoryId,
+                isExpanded: true,
+                hint: Text(
+                  "All Categories",
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: GoogleFonts.rubik(
+                    fontSize: 14,
+                    color: const Color(0xFF1F2937),
                   ),
                 ),
-                const Icon(
+                icon: const Icon(
                   Icons.keyboard_arrow_down,
                   color: Color(0xFF64748B),
                   size: 18,
                 ),
-              ],
+                items: [
+                  DropdownMenuItem<int?>(
+                    value: null,
+                    child: Text(
+                      "All Categories",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: GoogleFonts.rubik(
+                        fontSize: 14,
+                        color: const Color(0xFF1F2937),
+                      ),
+                    ),
+                  ),
+                  ...categories.map(
+                    (c) => DropdownMenuItem<int?>(
+                      value: c.id,
+                      child: Text(
+                        c.name ?? '',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: GoogleFonts.rubik(
+                          fontSize: 14,
+                          color: const Color(0xFF1F2937),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+                onChanged: onCategoryChanged,
+              ),
             ),
           ),
         ),
@@ -675,6 +713,7 @@ class VendorRichCard extends StatelessWidget {
   final String? imageUrl;
   final String itemId;
   final bool isMenu;
+  final List<RestaurantCategory>? categories;
   final VoidCallback onViewDetails;
   final VoidCallback onEdit;
 
@@ -688,9 +727,29 @@ class VendorRichCard extends StatelessWidget {
     this.imageUrl,
     required this.itemId,
     required this.isMenu,
+    this.categories,
     required this.onViewDetails,
     required this.onEdit,
   });
+
+  String get _displayCategory {
+    if (categories == null || category.isEmpty) return category;
+    // Support plain id "7" or API array string "[7]", "['7']", etc.
+    int? categoryId = int.tryParse(category.trim());
+    if (categoryId == null) {
+      final firstNumber = RegExp(r'\d+').firstMatch(category);
+      if (firstNumber != null) {
+        categoryId = int.tryParse(firstNumber.group(0)!);
+      }
+    }
+    if (categoryId == null) return category;
+    try {
+      final match = categories!.firstWhere((c) => c.id == categoryId);
+      return match.name ?? category;
+    } catch (_) {
+      return category;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -789,7 +848,7 @@ class VendorRichCard extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Text(
-                            category,
+                            _displayCategory,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: GoogleFonts.rubik(

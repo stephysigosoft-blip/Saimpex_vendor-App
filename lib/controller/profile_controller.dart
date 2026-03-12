@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
 import 'package:saimpex_vendor/model/profile_model.dart';
+import 'package:saimpex_vendor/model/restaurant_category_model.dart';
 import 'package:saimpex_vendor/model/rating_review_model.dart';
 import 'package:saimpex_vendor/model/grocery_menus_model.dart';
 import 'package:saimpex_vendor/model/grocery_menu_items_model.dart';
+import 'package:saimpex_vendor/model/restaurant_menu_details_model.dart' hide RestaurantMenu;
 import 'package:saimpex_vendor/model/restaurant_menus_model.dart';
 import 'package:saimpex_vendor/model/restaurant_menu_items_model.dart';
 import 'package:saimpex_vendor/view/Login/login.dart';
@@ -77,6 +79,8 @@ class ProfileController extends GetxController {
   bool isGroceryMenusLoading = false;
 
   List<RestaurantMenu> restaurantMenus = [];
+  RestaurantMenuDetailsData? restaurantMenuDetails;
+  bool isRestaurantMenuDetailsLoading = false;
   bool isRestaurantMenusLoading = false;
   int _page = 0;
   int _limit = 10;
@@ -92,6 +96,15 @@ class ProfileController extends GetxController {
 
   List<RestaurantMenuItemData> restaurantMenuItems = [];
   bool isRestaurantMenuItemsLoading = false;
+
+  List<RestaurantCategoryData> restaurantCategories = [];
+  bool isRestaurantCategoriesLoading = false;
+  int? selectedRestaurantCategoryId;
+
+  List<RestaurantCategory> get restaurantCategoriesForDropdown =>
+      restaurantCategories
+          .map((d) => RestaurantCategory(id: d.id, name: d.nameEn ?? ''))
+          .toList();
 
   Future<void> getRatingsReviews(
     BuildContext context, {
@@ -243,6 +256,8 @@ class ProfileController extends GetxController {
           "limit": _limit,
           "page": _page,
           if (_currentMenuKeyword.isNotEmpty) "keyword": _currentMenuKeyword,
+          if (selectedRestaurantCategoryId != null)
+            "category_id": selectedRestaurantCategoryId,
         },
       );
       final model = RestaurantMenusModel.fromJson(response.data);
@@ -623,11 +638,7 @@ class ProfileController extends GetxController {
 
       final response = await DioClient().get(
         ApiEndPoints.profile,
-        query: {
-          "vendor_type": vendorType ?? "1",
-          "limit": limit,
-          "page": page,
-        },
+        query: {"vendor_type": vendorType ?? "1", "limit": limit, "page": page},
       );
 
       ProfileModel profileModel = ProfileModel.fromJson(response.data);
@@ -873,4 +884,71 @@ class ProfileController extends GetxController {
       debugPrint("updateNotificationStatus Mock Error: $error");
     }
   }
+
+  Future<void> getAllCategories({int? categoryId}) async {
+    try {
+      isRestaurantCategoriesLoading = true;
+      update();
+
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      } else {
+        DioClient().updateToken("");
+      }
+      final response = await DioClient().get(
+        ApiEndPoints.getRestaurantCategories,
+      );
+      final restaurantCategoriesModel = RestaurantAllCategoriesModel.fromJson(
+        response.data,
+      );
+      if (restaurantCategoriesModel.status == 'true') {
+        restaurantCategories = restaurantCategoriesModel.data ?? [];
+      }
+    } catch (error) {
+      debugPrint("getAllCategories Error: $error");
+    } finally {
+      isRestaurantCategoriesLoading = false;
+      update();
+    }
+  }
+
+  void setSelectedRestaurantCategoryId(int? id) {
+    selectedRestaurantCategoryId = id;
+    update();
+  }
+
+  Future<void> getRestaurantMenuDetails({int? restaurantMenuId}) async {
+    try {
+      isRestaurantMenuDetailsLoading = true;
+      update();
+      var token = await getSavedObject("token");
+      if (token != null) {
+        DioClient().updateToken(token);
+      } else {
+        DioClient().updateToken("");
+      }
+      final response = await DioClient().get(
+        ApiEndPoints.getRestaurantMenuDetails,
+        query: restaurantMenuId != null
+            ? {'restaurant_menu_id': restaurantMenuId}
+            : null,
+      );
+      final restaurantMenuDetailsModel = RestaurantMenuDetailsModel.fromJson(response.data);
+      if (restaurantMenuDetailsModel.status) {
+        this.restaurantMenuDetails = restaurantMenuDetailsModel.data;
+      }
+    } catch (error) {
+      debugPrint("getRestaurantMenuDetails Error: $error");
+    } finally {
+      isRestaurantMenuDetailsLoading = false;
+      update();
+    }
+  }
+}
+
+class RestaurantCategory {
+  int? id;
+  String? name;
+  RestaurantCategory({this.id, this.name});
 }

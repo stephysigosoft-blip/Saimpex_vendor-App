@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:saimpex_vendor/configs/ApiConfigs.dart';
+import 'package:saimpex_vendor/controller/profile_controller.dart';
 import 'package:saimpex_vendor/generated/l10n.dart';
 import 'package:saimpex_vendor/utils/widgets/common_background.dart';
 
-class MenuItemDetailsScreen extends StatelessWidget {
+class MenuItemDetailsScreen extends StatefulWidget {
   final String itemId;
 
   const MenuItemDetailsScreen({super.key, required this.itemId});
 
   @override
+  State<MenuItemDetailsScreen> createState() => _MenuItemDetailsScreenState();
+}
+
+class _MenuItemDetailsScreenState extends State<MenuItemDetailsScreen> {
+  @override
+  void initState() {
+    super.initState();
+    final profileController = Get.find<ProfileController>();
+    profileController.getRestaurantMenuDetails(
+      restaurantMenuId: int.tryParse(widget.itemId),
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final profileController = Get.find<ProfileController>();
     return CommonBackground(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -32,104 +50,105 @@ class MenuItemDetailsScreen extends StatelessWidget {
         ),
         centerTitle: false,
       ),
-      child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // ── Main Image ──────────────────────────────────────────
-            ClipRRect(
-              borderRadius: BorderRadius.circular(16),
-              child: Image.asset(
-                'lib/assets/images/Burger.jpg',
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height * 0.25,
-                fit: BoxFit.cover,
-                errorBuilder: (_, __, ___) => Container(
-                  width: double.infinity,
-                  height: MediaQuery.of(context).size.height * 0.25,
-                  color: const Color(0xFFF1F5F9),
-                  child: const Icon(
-                    Icons.fastfood,
-                    size: 60,
-                    color: Color(0xFF94A3B8),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
+      child: GetBuilder<ProfileController>(
+        builder: (_) {
+          if (profileController.isRestaurantMenuDetailsLoading &&
+              profileController.restaurantMenuDetails == null) {
+            return const Center(
+              child: CircularProgressIndicator(color: Color(0xFFFF5216)),
+            );
+          }
+          final details = profileController.restaurantMenuDetails;
+          final menu = details?.restaurantMenu;
+          final lang = profileController.localization.currentLocale?.languageCode;
+          final name = _menuName(menu, lang);
+          final categoryName = _categoryName(menu, lang);
+          final imageUrl = menu?.image != null && menu!.image.isNotEmpty
+              ? ApiConfigs.IMAGE_URL + menu.image
+              : null;
+          final isAvailable = menu?.approvalStatus == 1;
 
-            // ── Name & Status ───────────────────────────────────────
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          return SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  S.of(context).grilledChicken,
-                  style: GoogleFonts.rubik(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w600,
-                    color: const Color(0xFF1F1F1F),
-                  ),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(16),
+                  child: imageUrl != null
+                      ? Image.network(
+                          imageUrl,
+                          width: double.infinity,
+                          height: MediaQuery.of(context).size.height * 0.25,
+                          fit: BoxFit.cover,
+                          errorBuilder: (_, __, ___) => _placeholderImage(context),
+                        )
+                      : _placeholderImage(context),
                 ),
-                _statusBadge(context, S.of(context).availableStatus, true),
+                const SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        name.isNotEmpty ? name : '#${widget.itemId}',
+                        style: GoogleFonts.rubik(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: const Color(0xFF1F1F1F),
+                        ),
+                      ),
+                    ),
+                    _statusBadge(
+                      context,
+                      isAvailable
+                          ? S.of(context).availableStatus
+                          : 'Unavailable',
+                      isAvailable,
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 20),
+                _propertyRow(context, S.of(context).itemIdLabel, '# ${widget.itemId}'),
+                if (menu != null) ...[
+                  _propertyRow(
+                    context,
+                    S.of(context).categoryLabel,
+                    categoryName.isNotEmpty ? categoryName : '—',
+                  ),
+                ],
+                const SizedBox(height: 32),
+                _sectionHeader(context, S.of(context).salesPerformanceHeader),
+                const SizedBox(height: 12),
+                _buildSalesPerformanceCard(
+                  context,
+                  totalOrders: details?.totalOrders ?? 0,
+                  totalRevenue: details?.totalRevenue ?? 0,
+                  averageRating: details?.averageRating ?? 0,
+                  totalRatingCount: details?.totalRatingCount ?? 0,
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    _sectionHeader(context, S.of(context).itemOrdersHeader),
+                    Text(
+                      S.of(context).viewAll,
+                      style: GoogleFonts.rubik(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w500,
+                        color: const Color(0xFFFF5216),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+                _buildOrderCardsList(context, details?.orderDetails ?? []),
+                const SizedBox(height: 100),
               ],
             ),
-            const SizedBox(height: 20),
-
-            // ── Property List ───────────────────────────────────────
-            _propertyRow(context, S.of(context).itemIdLabel, '# $itemId'),
-            _propertyRow(
-              context,
-              S.of(context).priceLabel.toLowerCase(),
-              '39.00 MRU',
-              isPrice: true,
-            ),
-            _propertyRow(context, S.of(context).serialNoLabel, '788'),
-            _propertyRow(
-              context,
-              S.of(context).preparationTimeLabel,
-              '7 ${S.of(context).mins}',
-            ),
-            _propertyRow(context, S.of(context).categoryLabel, 'Juice'),
-            _tagRow(context, S.of(context).tagsLabel, 'Organic'),
-
-            const SizedBox(height: 32),
-
-            // ── AVAILABLE TIME ──────────────────────────────────────
-            _sectionHeader(context, S.of(context).availableTimeHeader),
-            const SizedBox(height: 12),
-            _buildAvailableTimeCard(context),
-
-            const SizedBox(height: 32),
-
-            // ── SALES & PERFORMANCE ─────────────────────────────────
-            _sectionHeader(context, S.of(context).salesPerformanceHeader),
-            const SizedBox(height: 12),
-            _buildSalesPerformanceCard(context),
-
-            const SizedBox(height: 32),
-
-            // ── ITEM ORDERS ─────────────────────────────────────────
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                _sectionHeader(context, S.of(context).itemOrdersHeader),
-                Text(
-                  S.of(context).viewAll,
-                  style: GoogleFonts.rubik(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                    color: const Color(0xFFFF5216),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 12),
-            _buildOrderCard(context),
-
-            const SizedBox(height: 100), // Spacing for bottom button
-          ],
-        ),
+          );
+        },
       ),
       bottomNavigationBar: Container(
         padding: const EdgeInsets.all(16),
@@ -157,6 +176,33 @@ class MenuItemDetailsScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  String _menuName(dynamic menu, String? lang) {
+    if (menu == null) return '';
+    if (lang == 'fr') return menu.nameFr ?? menu.nameEn ?? '';
+    if (lang == 'ar') return menu.nameAr ?? menu.nameEn ?? '';
+    return menu.nameEn ?? '';
+  }
+
+  String _categoryName(dynamic menu, String? lang) {
+    if (menu == null) return '';
+    if (lang == 'fr') return menu.categoryNameFr ?? menu.categoryNameEn ?? '';
+    if (lang == 'ar') return menu.categoryNameAr ?? menu.categoryNameEn ?? '';
+    return menu.categoryNameEn ?? '';
+  }
+
+  Widget _placeholderImage(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      height: MediaQuery.of(context).size.height * 0.25,
+      color: const Color(0xFFF1F5F9),
+      child: const Icon(
+        Icons.fastfood,
+        size: 60,
+        color: Color(0xFF94A3B8),
       ),
     );
   }
@@ -227,40 +273,6 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _tagRow(BuildContext context, String label, String tag) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: GoogleFonts.rubik(
-              fontSize: 14,
-              color: const Color(0xFF64748B),
-              fontWeight: FontWeight.w400,
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-            decoration: BoxDecoration(
-              color: const Color(0xFFEFF6FF),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              tag,
-              style: GoogleFonts.rubik(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: const Color(0xFF1F1F1F),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _sectionHeader(BuildContext context, String title) {
     return Text(
       title,
@@ -272,70 +284,16 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildAvailableTimeCard(BuildContext context) {
-    final List<String> days = [
-      S.of(context).monday,
-      S.of(context).tuesday,
-      S.of(context).wednesday,
-      S.of(context).thursday,
-      S.of(context).friday,
-      S.of(context).saturday,
-      S.of(context).sunday,
-    ];
-
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-      ),
-      child: Column(
-        children: days.map((day) {
-          bool isLast = day == days.last;
-          return Padding(
-            padding: EdgeInsets.only(bottom: isLast ? 0 : 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      day,
-                      style: GoogleFonts.rubik(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w500,
-                        color: const Color(0xFF1F1F1F),
-                      ),
-                    ),
-                    Text(
-                      S.of(context).byHotelLabel,
-                      style: GoogleFonts.rubik(
-                        fontSize: 10,
-                        color: const Color(0xFF94A3B8),
-                        fontWeight: FontWeight.w400,
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  S.of(context).hr24,
-                  style: GoogleFonts.rubik(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: const Color(0xFF1F1F1F),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  Widget _buildSalesPerformanceCard(BuildContext context) {
+  Widget _buildSalesPerformanceCard(
+    BuildContext context, {
+    required int totalOrders,
+    required int totalRevenue,
+    required int averageRating,
+    required int totalRatingCount,
+  }) {
+    final ratingStr = totalRatingCount > 0
+        ? (averageRating / totalRatingCount).toStringAsFixed(1)
+        : '0';
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
@@ -351,7 +309,7 @@ class MenuItemDetailsScreen extends StatelessWidget {
                 child: _buildStatMiniCard(
                   context,
                   S.of(context).totalOrdersStat,
-                  '124',
+                  totalOrders.toString(),
                 ),
               ),
               const SizedBox(width: 12),
@@ -359,7 +317,9 @@ class MenuItemDetailsScreen extends StatelessWidget {
                 child: _buildStatMiniCard(
                   context,
                   S.of(context).revenueLabel,
-                  '4.8k',
+                  totalRevenue >= 1000
+                      ? '${(totalRevenue / 1000).toStringAsFixed(1)}k'
+                      : totalRevenue.toString(),
                 ),
               ),
             ],
@@ -368,17 +328,177 @@ class MenuItemDetailsScreen extends StatelessWidget {
           _propertyRowWithIcon(
             context,
             S.of(context).averageRatingLabel,
-            '4.8',
+            ratingStr,
             Icons.star,
             const Color(0xFFF59E0B),
           ),
-          _propertyRowSimple(context, S.of(context).totalReviewsStat, '12'),
           _propertyRowSimple(
             context,
-            S.of(context).lastPurchaseLabel,
-            '2 ${S.of(context).hAgo}',
+            S.of(context).totalReviewsStat,
+            totalRatingCount.toString(),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildOrderCardsList(BuildContext context, List<dynamic> orderDetails) {
+    if (orderDetails.isEmpty) {
+      return Container(
+        padding: const EdgeInsets.all(24),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: const Color(0xFFF1F5F9)),
+        ),
+        child: Center(
+          child: Text(
+            S.of(context).noOrders,
+            style: GoogleFonts.rubik(
+              fontSize: 14,
+              color: const Color(0xFF94A3B8),
+            ),
+          ),
+        ),
+      );
+    }
+    return Column(
+      children: orderDetails.take(5).map((e) {
+        final map = e is Map ? e as Map<String, dynamic> : <String, dynamic>{};
+        return Padding(
+          padding: const EdgeInsets.only(bottom: 12),
+          child: _buildOrderCard(
+            context,
+            orderId: map['order_id']?.toString() ?? map['id']?.toString() ?? '—',
+            customerName: map['customer_name']?.toString() ??
+                map['user_name']?.toString() ??
+                '—',
+            itemsTotal: map['total']?.toString() ??
+                map['order_total']?.toString() ??
+                '—',
+            dateTime: map['created_at']?.toString() ??
+                map['order_date']?.toString() ??
+                '—',
+            status: map['status']?.toString() ?? 'delivered',
+          ),
+        );
+      }).toList(),
+    );
+  }
+
+  Widget _buildOrderCard(
+    BuildContext context, {
+    required String orderId,
+    required String customerName,
+    required String itemsTotal,
+    required String dateTime,
+    required String status,
+  }) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: const Color(0xFFF1F5F9)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                S.of(context).orderIdLabel(orderId),
+                style: GoogleFonts.rubik(
+                  fontSize: 10,
+                  fontWeight: FontWeight.bold,
+                  color: const Color(0xFFFF5216),
+                ),
+              ),
+              _buildDeliverBadge(context, status),
+            ],
+          ),
+          const SizedBox(height: 8),
+          Text(
+            customerName,
+            style: GoogleFonts.rubik(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: const Color(0xFF1F1F1F),
+            ),
+          ),
+          const SizedBox(height: 16),
+          const Divider(height: 1, color: Color(0xFFF1F5F9)),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    S.of(context).itemsTotalLabel,
+                    style: GoogleFonts.rubik(
+                      fontSize: 10,
+                      color: const Color(0xFF94A3B8),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    '$itemsTotal ${S.of(context).items}',
+                    style: GoogleFonts.rubik(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: const Color(0xFFFF5216),
+                    ),
+                  ),
+                ],
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    S.of(context).dateTimeLabel,
+                    style: GoogleFonts.rubik(
+                      fontSize: 10,
+                      color: const Color(0xFF94A3B8),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    dateTime,
+                    style: GoogleFonts.rubik(
+                      fontSize: 10,
+                      color: const Color(0xFF94A3B8),
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDeliverBadge(BuildContext context, String status) {
+    final isDelivered = status.toLowerCase().contains('deliver');
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+      decoration: BoxDecoration(
+        color: Color(isDelivered ? 0xFF166534 : 0xFF64748B),
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        status.toUpperCase(),
+        style: GoogleFonts.rubik(
+          fontSize: 10,
+          fontWeight: FontWeight.bold,
+          color: Colors.white,
+        ),
       ),
     );
   }
@@ -481,112 +601,4 @@ class MenuItemDetailsScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildOrderCard(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFF1F5F9)),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                S.of(context).orderIdLabel('ORD-882111'),
-                style: GoogleFonts.rubik(
-                  fontSize: 10,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFFFF5216),
-                ),
-              ),
-              _buildDeliverBadge(context),
-            ],
-          ),
-          const SizedBox(height: 8),
-          Text(
-            'Aicha Mint Ahmed',
-            style: GoogleFonts.rubik(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF1F1F1F),
-            ),
-          ),
-          const SizedBox(height: 16),
-          const Divider(height: 1, color: Color(0xFFF1F5F9)),
-          const SizedBox(height: 16),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    S.of(context).itemsTotalLabel,
-                    style: GoogleFonts.rubik(
-                      fontSize: 10,
-                      color: const Color(0xFF94A3B8),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    '3 ${S.of(context).items} • 42.50 MRU',
-                    style: GoogleFonts.rubik(
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
-                      color: const Color(0xFFFF5216),
-                    ),
-                  ),
-                ],
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    S.of(context).dateTimeLabel,
-                    style: GoogleFonts.rubik(
-                      fontSize: 10,
-                      color: const Color(0xFF94A3B8),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Feb 07, 2026 10:45 A.M, ${S.of(context).today}',
-                    style: GoogleFonts.rubik(
-                      fontSize: 10,
-                      color: const Color(0xFF94A3B8),
-                      fontWeight: FontWeight.w400,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildDeliverBadge(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-      decoration: BoxDecoration(
-        color: const Color(0xFF166534),
-        borderRadius: BorderRadius.circular(6),
-      ),
-      child: Text(
-        S.of(context).delivered.toUpperCase(),
-        style: GoogleFonts.rubik(
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-          color: Colors.white,
-        ),
-      ),
-    );
-  }
 }
