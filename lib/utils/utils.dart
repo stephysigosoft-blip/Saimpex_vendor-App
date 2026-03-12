@@ -12,6 +12,7 @@ import 'package:intl/intl.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'widgets/app_loader.dart';
 
 String getCurrencySymbol() {
   return "MRU ";
@@ -203,9 +204,7 @@ void showLoadingDialog(BuildContext context) {
     context: context,
     barrierDismissible: false,
     builder: (context) {
-      return const Center(
-        child: CircularProgressIndicator(color: Color(0xFFFF5216)),
-      );
+      return const AppLoader();
     },
   );
 }

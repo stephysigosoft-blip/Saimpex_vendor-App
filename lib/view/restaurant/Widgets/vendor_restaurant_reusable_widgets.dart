@@ -1179,7 +1179,7 @@ class VendorBasketItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return VendorDetailCard(
-      height: MediaQuery.of(context).size.height * 0.1,
+      height: MediaQuery.of(context).size.height * 0.12,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
@@ -1456,7 +1456,6 @@ class VendorLeaveForm extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return VendorDetailCard(
-      height: MediaQuery.of(context).size.height * 0.38,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

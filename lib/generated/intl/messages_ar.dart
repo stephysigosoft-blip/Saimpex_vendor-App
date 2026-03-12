@@ -170,6 +170,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "currentlyClosed": MessageLookupByLibrary.simpleMessage("مغلق حالياً"),
         "currentlyClosedOpens":
             MessageLookupByLibrary.simpleMessage("مغلق حالياً • يفتح"),
+        "currentlyNoContactsFoundPleaseTryLater":
+            MessageLookupByLibrary.simpleMessage(
+                "حاليا لم يتم العثور على جهات اتصال، يرجى المحاولة لاحقا..."),
         "currentlyNoItemsFoundPleaseTryLater":
             MessageLookupByLibrary.simpleMessage(
                 "لا توجد عناصر حالياً، يرجى المحاولة لاحقاً"),
@@ -581,6 +584,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "update": MessageLookupByLibrary.simpleMessage("تحديث"),
         "updateDetailsButton":
             MessageLookupByLibrary.simpleMessage("تحديث التفاصيل"),
+        "uploadImage": MessageLookupByLibrary.simpleMessage("تحميل الصورة"),
         "uploadImageHint":
             MessageLookupByLibrary.simpleMessage("تحميل الصورة هنا"),
         "upto": MessageLookupByLibrary.simpleMessage("حتى"),

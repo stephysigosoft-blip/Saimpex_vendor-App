@@ -1,4 +1,4 @@
-package com.example.saimpex_vendor
+package saimpex.vendor
 
 import io.flutter.embedding.android.FlutterActivity
 

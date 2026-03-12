@@ -179,6 +179,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Currently Closed"),
         "currentlyClosedOpens":
             MessageLookupByLibrary.simpleMessage("Currently closed • Opens"),
+        "currentlyNoContactsFoundPleaseTryLater":
+            MessageLookupByLibrary.simpleMessage(
+                "Currently no contacts found, Please try later..."),
         "currentlyNoItemsFoundPleaseTryLater":
             MessageLookupByLibrary.simpleMessage(
                 "Currently no items Found, Please try later..."),
@@ -660,6 +663,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "update": MessageLookupByLibrary.simpleMessage("Update"),
         "updateDetailsButton":
             MessageLookupByLibrary.simpleMessage("Update Details"),
+        "uploadImage": MessageLookupByLibrary.simpleMessage("Upload Image"),
         "uploadImageHint":
             MessageLookupByLibrary.simpleMessage("Upload image here"),
         "upto": MessageLookupByLibrary.simpleMessage("Upto"),

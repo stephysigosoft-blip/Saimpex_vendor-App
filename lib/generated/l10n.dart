@@ -600,6 +600,26 @@ class S {
     );
   }
 
+  /// `Currently no contacts found, Please try later...`
+  String get currentlyNoContactsFoundPleaseTryLater {
+    return Intl.message(
+      'Currently no contacts found, Please try later...',
+      name: 'currentlyNoContactsFoundPleaseTryLater',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Upload Image`
+  String get uploadImage {
+    return Intl.message(
+      'Upload Image',
+      name: 'uploadImage',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Currently no restaurants are available in this area. Try again later.`
   String get currentlyNoRestaurantsAreAvailableInThisAreaTryAgain {
     return Intl.message(

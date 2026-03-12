@@ -10,6 +10,7 @@ import 'package:saimpex_vendor/view/restaurant/vendor_restaurant_screen.dart';
 import 'package:saimpex_vendor/view/settings/settings.dart';
 import 'package:saimpex_vendor/view/chat/ChatListing.dart';
 import 'package:saimpex_vendor/controller/profile_controller.dart';
+import 'package:saimpex_vendor/controller/chat_controller.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key, this.isGuest = false, this.initialIndex});
@@ -35,8 +36,11 @@ class _HomeState extends State<Home> {
     super.initState();
     homescreenController = Get.put(HomeController());
     Get.put(ProfileController());
+    Get.put(ChatController()); // Initialize ChatController globally to listen for Pusher events
     homescreenController.selectedcurrentIndex = widget.initialIndex ?? 0;
-    homescreenController.update();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      homescreenController.update();
+    });
   }
 
   Future<bool> _onWillPop() async {
@@ -145,15 +149,79 @@ class _HomeState extends State<Home> {
                             label: S.of(context).myRestaurant,
                           ),
                           BottomNavigationBarItem(
-                            icon: Image.asset(
-                              "lib/assets/images/Chat vendor.png",
-                              height: 24,
-                              color: const Color(0xFF94A3B8),
+                            icon: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Image.asset(
+                                  "lib/assets/images/Chat vendor.png",
+                                  height: 24,
+                                  color: const Color(0xFF94A3B8),
+                                ),
+                                if (controller.unreadChatCount > 0)
+                                  Positioned(
+                                    top: -4,
+                                    right: -6,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(3),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.red,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 16,
+                                        minHeight: 16,
+                                      ),
+                                      child: Text(
+                                        controller.unreadChatCount > 99
+                                            ? '99+'
+                                            : controller.unreadChatCount.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 9,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
-                            activeIcon: Image.asset(
-                              "lib/assets/images/Chat vendor.png",
-                              height: 24,
-                              color: colorPrimary,
+                            activeIcon: Stack(
+                              clipBehavior: Clip.none,
+                              children: [
+                                Image.asset(
+                                  "lib/assets/images/Chat vendor.png",
+                                  height: 24,
+                                  color: colorPrimary,
+                                ),
+                                if (controller.unreadChatCount > 0)
+                                  Positioned(
+                                    top: -4,
+                                    right: -6,
+                                    child: Container(
+                                      padding: const EdgeInsets.all(3),
+                                      decoration: const BoxDecoration(
+                                        color: Colors.red,
+                                        shape: BoxShape.circle,
+                                      ),
+                                      constraints: const BoxConstraints(
+                                        minWidth: 16,
+                                        minHeight: 16,
+                                      ),
+                                      child: Text(
+                                        controller.unreadChatCount > 99
+                                            ? '99+'
+                                            : controller.unreadChatCount.toString(),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 9,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ),
+                                  ),
+                              ],
                             ),
                             label: S.of(context).chat,
                           ),

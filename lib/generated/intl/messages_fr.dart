@@ -187,6 +187,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Actuellement fermé"),
         "currentlyClosedOpens":
             MessageLookupByLibrary.simpleMessage("Actuellement fermé • Ouvre"),
+        "currentlyNoContactsFoundPleaseTryLater":
+            MessageLookupByLibrary.simpleMessage(
+                "Actuellement aucun contact trouvé, veuillez réessayer plus tard..."),
         "currentlyNoItemsFoundPleaseTryLater": MessageLookupByLibrary.simpleMessage(
             "Aucun article trouvé pour le moment, veuillez réessayer plus tard"),
         "currentlyNoRestaurantsAreAvailableInThisAreaTryAgain":
@@ -662,6 +665,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "update": MessageLookupByLibrary.simpleMessage("Mettre à jour"),
         "updateDetailsButton":
             MessageLookupByLibrary.simpleMessage("Mettre à jour les détails"),
+        "uploadImage":
+            MessageLookupByLibrary.simpleMessage("Charger une image"),
         "uploadImageHint":
             MessageLookupByLibrary.simpleMessage("Télécharger l\'image ici"),
         "upto": MessageLookupByLibrary.simpleMessage("Jusqu’à"),

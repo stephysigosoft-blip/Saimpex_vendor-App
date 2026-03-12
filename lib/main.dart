@@ -1,11 +1,14 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:country_picker/country_picker.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:get/route_manager.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:saimpex_vendor/resources/colors.dart';
 import 'package:saimpex_vendor/utils/Utils.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -16,7 +19,12 @@ import 'generated/l10n.dart';
 // localization.translate('ar');
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await FlutterLocalization.instance.ensureInitialized();
+
+  if (Platform.isAndroid && (await Permission.notification.isDenied)) {
+    await Permission.notification.request();
+  }
 
   String? langCode = await getSavedObject("selected_locale") ?? "en";
   Locale locale = Locale(langCode!);
