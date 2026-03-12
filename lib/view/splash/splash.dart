@@ -9,6 +9,7 @@ import 'package:saimpex_vendor/view/Login/login.dart';
 import 'package:saimpex_vendor/controller/home_controller.dart';
 import '../../Utils/Utils.dart';
 import '../home/home.dart';
+import '../notifications/notification.dart';
 
 class Splash extends StatefulWidget {
   const Splash({super.key});
@@ -21,6 +22,8 @@ class _SplashState extends State<Splash> {
   String? isFirstLaunch;
   @override
   void initState() {
+    final firebaseMessaging = FCM();
+    firebaseMessaging.setNotifications();
     splashNavigation();
     super.initState();
   }

@@ -36,7 +36,9 @@ class _HomeState extends State<Home> {
     homescreenController = Get.put(HomeController());
     Get.put(ProfileController());
     homescreenController.selectedcurrentIndex = widget.initialIndex ?? 0;
-    homescreenController.update();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      homescreenController.update();
+    });
   }
 
   Future<bool> _onWillPop() async {

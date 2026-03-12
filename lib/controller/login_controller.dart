@@ -1,4 +1,5 @@
 import 'package:country_picker/country_picker.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:get/get.dart';
@@ -60,9 +61,16 @@ class LoginController extends GetxController {
   ) async {
     try {
       showLoadingDialog(context);
+      String? fcm_token;
+      try {
+        fcm_token = await FirebaseMessaging.instance.getToken();
+      } catch (e) {
+        // Retry after few seconds
+        await Future.delayed(Duration(seconds: 2));
+      }
       final response = await DioClient().post(
         ApiEndPoints.login,
-        body: {"username": userName, "password": password},
+        body: {"username": userName, "password": password,  "fcm": fcm_token,},
       );
       LoginModel loginModel = LoginModel.fromJson(response.data);
       Get.back();
